@@ -1,0 +1,186 @@
+<template>
+    <div class="register">
+        <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" class="register-form">
+            <h3 class="title">iauth 应用权限管理</h3>
+            <el-form-item prop="userName">
+                <el-input v-model="registerForm.userName" type="text" auto-complete="on" placeholder="账号"
+                    :prefix-icon="User">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input v-model="registerForm.password" type="password" auto-complete="on" placeholder="密码"
+                    :prefix-icon="Lock" @keyup.enter="handleRegister">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="confirmPassword">
+                <el-input v-model="registerForm.confirmPassword" type="password" auto-complete="on" placeholder="确认密码"
+                    :prefix-icon="Lock" @keyup.enter="handleRegister">
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="code" v-if="registerForm.captchaEnabled">
+                <el-input v-model="registerForm.code" auto-complete="on" placeholder="验证码" style="width: 63%"
+                    :prefix-icon="Key" @keyup.enter="handleRegister">
+                </el-input>
+                <div class="register-code">
+                    <img :src="registerForm.codeUrl" @click="getCode" class="register-code-img" />
+                </div>
+            </el-form-item>
+            <el-form-item style="width:100%;">
+                <el-button :loading="registerForm.loading" type="primary" style="width:100%;"
+                    @click.prevent="handleRegister(registerFormRef)">
+                    <span v-if="!registerForm.loading">注 册</span>
+                    <span v-else>注 册 中...</span>
+                </el-button>
+                <div style="float: right;">
+                    <router-link class="link-type" :to="'/login'">使用已有账户登录</router-link>
+                </div>
+            </el-form-item>
+        </el-form>
+        <!--  底部  -->
+        <div class="el-register-footer">
+            <span>Copyright © 2018-2023 All Rights Reserved.</span>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { reactive, onMounted, ref } from 'vue';
+import { User, Lock, Key } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus';
+
+
+import { getCodeApi, registerApi } from "../api/login";
+onMounted(() => {
+    getCode();
+})
+const registerForm = reactive({
+    userName: '',
+    password: '',
+    confirmPassword: '',
+    code: '',
+    // 验证码开关
+    captchaEnabled: true,
+    // 验证码图片地址
+    codeUrl: '',
+    loading: false,
+});
+const registerFormRef = ref();
+const confirmPasswordValidate = (rule, value, callback) => {
+    if (value === '') {
+        callback(new Error('请再次输入密码'))
+    } else if (value !== registerForm.password) {
+        callback(new Error("两次输入的密码不一致"))
+    }
+}
+const registerRules = reactive({
+    userName: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+    ],
+    confirmPassword: [{ validator: confirmPasswordValidate, trigger: 'blur' }],
+    code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+})
+
+const getCode = async () => {
+    const result = await getCodeApi();
+    registerForm.captchaEnabled = result.data.captchaEnabled;
+    registerForm.codeUrl = `data:image/png;base64,${result.data.base64Url}`
+};
+
+const handleRegister = async (formEl) => {
+    if (!formEl) return;
+    await formEl.validate(async (valid, fields) => {
+        if (valid) {
+            registerForm.loading = true;
+            const result = await registerApi(registerForm);
+            registerForm.loading = false;
+            if (result.code == 200) {
+                router.push("/login");
+            } else {
+                ElMessage(
+                    {
+                        message: result.msg,
+                        type: 'warning',
+                    }
+                )
+            }
+        } else {
+            console.log('error submit!', fields)
+        }
+    })
+};
+
+</script>
+<style  lang="scss" scoped>
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("../assets/images/login-background.jpg");
+    background-size: cover;
+}
+
+.title {
+    margin: 0px auto 30px auto;
+    text-align: center;
+    color: #707070;
+}
+
+.register-form {
+    border-radius: 6px;
+    background: #ffffff;
+    width: 400px;
+    padding: 25px 25px 5px 25px;
+
+    .el-input {
+        height: 38px;
+
+        input {
+            height: 38px;
+        }
+    }
+
+    .input-icon {
+        height: 39px;
+        width: 14px;
+        margin-left: 2px;
+    }
+}
+
+.register-tip {
+    font-size: 13px;
+    text-align: center;
+    color: #bfbfbf;
+}
+
+.register-code {
+    width: 33%;
+    height: 38px;
+    float: right;
+
+    img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+}
+
+.el-register-footer {
+    height: 40px;
+    line-height: 40px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-family: Arial;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.register-code-img {
+    height: 38px;
+}
+</style>
