@@ -36,3 +36,11 @@ export async function registerApi(data) {
     });
     return result;
 }
+
+export async function getUserInfoApi(){
+    const result = await service({
+        url:"/user",
+        method: "get",
+    })
+    return result;
+}

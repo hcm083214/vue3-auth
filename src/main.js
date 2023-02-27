@@ -1,23 +1,25 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+
 
 import ElementPlus from 'element-plus'
-
 import 'element-plus/dist/index.css'
 import 'nprogress/nprogress.css'
-import "./index.css"
-import './assets/styles/element-variables.scss'
-import './assets/styles/index.scss' // global css
-import './assets/styles/ruoyi.scss' // ruoyi css
 
-import router from "./router/index";
-import App from './App.vue'
+import "@/index.css"
+import '@/assets/styles/element-variables.scss'
+import '@/assets/styles/index.scss'
+import '@/assets/styles/ruoyi.scss'
+
+import router from "@/router/index";
+import App from '@/App.vue'
+import { pinia } from '@/store/index.js'
 
 const app = createApp(App);
-const pinia = createPinia();
 
-app.use(router)
+app.use(pinia)
+    .use(router)
     .use(ElementPlus)
-    .use(pinia)
     .mount('#app');
+
+
 

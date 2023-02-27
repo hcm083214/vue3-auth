@@ -12,10 +12,12 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
-import { getMenuListApi } from "../../api/menu.js";
+import { onMounted, reactive, ref } from 'vue';
+
 import SidebarItem from "./SidebarItem.vue";
 import Logo from "./Logo.vue";
+import { usePermissionStore } from "@/store/permission.js";
+const { usePermissionState } = usePermissionStore();
 
 const activeIndex = ref("1");
 const isCollapse = ref(true);
@@ -28,7 +30,8 @@ const handleSelect = (key, keyPath) => {
     console.log(key, keyPath)
 }
 onMounted(async () => {
-    const result = await getMenuListApi() || [];
+    const result = usePermissionState.menusList || [];
+    console.log("🚀 ~ file: SideBar.vue:35 ~ onMounted ~ result:", result)
     if (result.length > 0) {
         sidebarRouters.router = result.sort((a, b) => a.orderNum - b.orderNum);
     }

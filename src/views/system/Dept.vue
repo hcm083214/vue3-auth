@@ -1,7 +1,6 @@
 <template>
-    <div class="home">
-        <!-- <router-view /> -->
-        1111
+    <div>
+        Dept
     </div>
 </template>
 
@@ -10,7 +9,5 @@
 </script>
 
 <style lang="scss" scoped>
-.home {
-    height: 100%;
-}
+
 </style>

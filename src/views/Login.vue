@@ -42,11 +42,20 @@
 import { onMounted, reactive, ref } from "vue";
 import { User, Lock, Key } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-import { encrypt, decrypt } from '../utils/jsencrypt.js';
-import { setToken } from '../utils/token.js';
-import { getCodeApi, loginApi } from "../api/login";
+import { useRouter, useRoute } from 'vue-router'
+
+import { encrypt, decrypt } from '@/utils/jsencrypt.js';
+import { setToken } from '@/utils/token.js';
+import { REDIRECT_KEY } from "@/router/index.js";
+import { getCodeApi, loginApi } from "@/api/login";
+
+
+const router = useRouter();
+const route = useRoute();
+
 
 const STORAGE_USER = "storageUser";
+const redirectPath = route.query[REDIRECT_KEY] || "/";
 
 
 onMounted(() => {
@@ -82,6 +91,7 @@ const loginRules = reactive({
     ],
     code: [{ required: true, trigger: "change", message: "请输入验证码" }]
 });
+
 const saveUserToStorage = (isRememberMe) => {
     if (isRememberMe) {
         localStorage.setItem(STORAGE_USER, JSON.stringify({
@@ -92,6 +102,7 @@ const saveUserToStorage = (isRememberMe) => {
         localStorage.removeItem(STORAGE_USER);
     }
 }
+
 const handleLogin = async (formEl) => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
@@ -102,6 +113,7 @@ const handleLogin = async (formEl) => {
             loginForm.loading = false;
             if (result.code == 200) {
                 setToken(result.data.token);
+                router.push(redirectPath);
             } else {
                 ElMessage({
                     message: result.msg,

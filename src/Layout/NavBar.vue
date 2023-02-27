@@ -20,6 +20,9 @@
                     <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
                 </el-tooltip>
 
+
+
+                
                 <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
                 <el-tooltip content="布局大小" effect="dark" placement="bottom">
@@ -60,16 +63,24 @@ import hamburger from "../assets/svg/hamburger.svg";
     position: relative;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .hamburger-container {
-        line-height: 46px;
-        height: 100%;
-        float: left;
+        padding: 0 15px;
         cursor: pointer;
-        transition: background .3s;
+        transition: all .3s;
         -webkit-tap-highlight-color: transparent;
+        display: flex;
+        align-items: center;
 
-        &:hover {
+        &>img {
+            width: 20px;
+        }
+
+        &>img:hover {
+            transform:rotate(0.5turn);
             background: rgba(0, 0, 0, .025)
         }
     }

@@ -47,9 +47,12 @@
 import { reactive, onMounted, ref } from 'vue';
 import { User, Lock, Key } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
+import { useRouter } from "vue-router";
 
 
-import { getCodeApi, registerApi } from "../api/login";
+import { getCodeApi, registerApi } from "@/api/login.js";
+
+const router = useRouter();
 onMounted(() => {
     getCode();
 })
@@ -63,6 +66,7 @@ const registerForm = reactive({
     // 验证码图片地址
     codeUrl: '',
     loading: false,
+    uuid: '',
 });
 const registerFormRef = ref();
 const confirmPasswordValidate = (rule, value, callback) => {
@@ -70,6 +74,8 @@ const confirmPasswordValidate = (rule, value, callback) => {
         callback(new Error('请再次输入密码'))
     } else if (value !== registerForm.password) {
         callback(new Error("两次输入的密码不一致"))
+    } else {
+        callback();
     }
 }
 const registerRules = reactive({
@@ -86,7 +92,8 @@ const registerRules = reactive({
 const getCode = async () => {
     const result = await getCodeApi();
     registerForm.captchaEnabled = result.data.captchaEnabled;
-    registerForm.codeUrl = `data:image/png;base64,${result.data.base64Url}`
+    registerForm.codeUrl = `data:image/png;base64,${result.data.base64Url}`;
+    registerForm.uuid = result.data.uuid;
 };
 
 const handleRegister = async (formEl) => {
