@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { getMenuListApi } from "../api/menu.js";
+import { getMenuListApi } from "@/api/menu.js";
 const MENU_LIST = "userMenuList";
 
 export const usePermissionStore = defineStore("permission", () => {
@@ -29,6 +29,12 @@ export const usePermissionStore = defineStore("permission", () => {
                 }
             }
         });
+        menusList.unshift({
+            menuId: 0,
+            path: "home",
+            menuName: "首页",
+            children: []
+        })
         usePermissionState.menusList = menusList;
     }
     return { usePermissionState, generateMenusAction }

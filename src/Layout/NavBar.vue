@@ -1,6 +1,8 @@
 <template>
     <div class="navbar">
-        <div class="hamburger-container"><img :src="hamburger" /></div>
+        <div :class="isShow ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
+            <img :src="hamburger" />
+        </div>
 
         <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class=""
             @toggleClick="toggleSideBar" /> -->
@@ -53,7 +55,15 @@
 </template>
 
 <script setup>
+import { ref, inject } from "vue";
 import hamburger from "../assets/svg/hamburger.svg";
+
+const bus = inject('$bus')
+const isShow = ref(false);
+const toggleSideBar = () => {
+    isShow.value = !isShow.value;
+    bus.emit("sidebarHandler", isShow.value);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -79,8 +89,8 @@ import hamburger from "../assets/svg/hamburger.svg";
             width: 20px;
         }
 
-        &>img:hover {
-            transform:rotate(0.5turn);
+        &.reverse>img {
+            transform: rotate(0.5turn);
             background: rgba(0, 0, 0, .025)
         }
     }

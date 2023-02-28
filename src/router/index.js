@@ -10,7 +10,7 @@ const { userState, setUserInfoAction } = appStore.userStore;
 const modules = import.meta.glob("../views/**/**.vue")
 
 // 静态路由
-const routes = [
+export const staticRoutes = [
     {
         path: '/login',
         name: 'login',
@@ -41,11 +41,6 @@ const routes = [
                 path: "/home",
                 name: "home",
                 component: () => import('@/views/Home.vue'),
-            },
-            {
-                path: "/role",
-                name: "role",
-                component: () => import('@/views/system/Role.vue'),
             }
         ]
     }
@@ -53,7 +48,7 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: staticRoutes,
 });
 const whiteList = ["/login", "/register"];
 NProgress.configure({ showSpinner: false });

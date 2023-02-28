@@ -7,7 +7,7 @@
             <span>{{ item.menuName }}</span>
         </template>
         <el-menu-item-group v-for="child in item.children" :key="child.menuId">
-            <el-menu-item :index="child.menuId + child.menuName" class="menu-item" @click="clickHandler(child)">
+            <el-menu-item :index="child.path" class="menu-item" @click="clickHandler(child)">
                 <router-link :to="{ 'name': child.path }">
                     {{ child.menuName }}
                 </router-link>
@@ -15,8 +15,17 @@
         </el-menu-item-group>
     </el-sub-menu>
     <el-menu-item :index="index" class="menu-item" v-else>
-        <el-icon><icon-menu /></el-icon>
-        <span>{{ item.menuName }}</span>
+        <template v-if="isCollapse">
+            <router-link :to="{ 'name': item.path }">
+                <el-icon><icon-menu /></el-icon>
+            </router-link>
+        </template>
+        <template v-else>
+            <el-icon><icon-menu /></el-icon>
+            <router-link :to="{ 'name': item.path }">
+                <span>{{ item.menuName }}</span>
+            </router-link>
+        </template>
     </el-menu-item>
 </template>
 
@@ -28,12 +37,7 @@ import {
     Setting,
 } from '@element-plus/icons-vue'
 
-import { useRouter } from "vue-router";
-const router = useRouter();
-const clickHandler = (child) => {
-    // router.push({ 'name': child.path })
-}
-const props = defineProps(['item', "index"])
+const props = defineProps(['item', "index", "isCollapse"])
 </script>
 
 <style lang="scss" scoped>

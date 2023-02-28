@@ -1,0 +1,24 @@
+@startuml
+title 路由跳转流程图
+start 
+:从 localStorage 中拿到 token;
+if ( token 是否为空 ) then(Y) 
+    if(path 是否为登陆页) then(Y)
+        :跳转到首页;
+        stop
+    else(N)
+        :设置用户信息;
+        :根据用户信息设置侧边栏菜单;
+        :根据菜单动态生成路由;
+        stop
+    endif 
+else(N)
+    if(path 是否为白名单) then(Y)
+        :直接放行;
+        stop
+    else(N)
+        :跳转到登陆页;
+        stop
+    endif
+endif    
+@enduml

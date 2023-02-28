@@ -3,8 +3,6 @@
         <transition name="sidebarLogoFade">
             <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
                 <img :src="logoImg" class="sidebar-logo" />
-                <h1 class="sidebar-title">
-                    {{ title }} </h1>
             </router-link>
             <router-link v-else key="expand" class="sidebar-logo-link" to="/">
                 <img :src="logoImg" class="sidebar-logo" />

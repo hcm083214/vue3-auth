@@ -1,6 +1,4 @@
 import { createApp } from 'vue'
-
-
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'nprogress/nprogress.css'
@@ -13,13 +11,16 @@ import '@/assets/styles/ruoyi.scss'
 import router from "@/router/index";
 import App from '@/App.vue'
 import { pinia } from '@/store/index.js'
+import EventBus from './utils/bus'
+
+const bus = new EventBus();
 
 const app = createApp(App);
+app.provide('$bus', bus);
+// 挂载到this上
+app.config.globalProperties.$bus = bus;
 
 app.use(pinia)
     .use(router)
     .use(ElementPlus)
     .mount('#app');
-
-
-
