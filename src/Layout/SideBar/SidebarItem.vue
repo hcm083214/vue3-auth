@@ -7,7 +7,7 @@
             <span>{{ item.menuName }}</span>
         </template>
         <el-menu-item-group v-for="child in item.children" :key="child.menuId">
-            <el-menu-item :index="child.path" class="menu-item" @click="clickHandler(child)">
+            <el-menu-item :index="child.path" class="menu-item">
                 <router-link :to="{ 'name': child.path }">
                     {{ child.menuName }}
                 </router-link>

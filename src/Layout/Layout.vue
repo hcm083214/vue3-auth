@@ -2,10 +2,8 @@
     <div :class="isShowSideBar ? 'app-wrapper' : 'app-wrapper hideSidebar'">
         <side-bar class="sidebar-container" />
         <div class="main-container">
-            <div>
-                <nav-bar />
-                <!-- <tags-view v-if="needTagsView" /> -->
-            </div>
+            <nav-bar />
+            <!-- <tags-view v-if="needTagsView" /> -->
             <!-- <app-main /> -->
             <router-view />
             <!-- <right-panel>
@@ -16,8 +14,8 @@
 </template>
 
 <script setup>
-import SideBar from "@/layout/SideBar/SideBar.vue";
-import NavBar from "@/layout/NavBar.vue";
+import SideBar from "@/Layout/SideBar/SideBar.vue";
+import NavBar from "@/Layout/NavBar.vue";
 import { inject, ref } from "vue";
 
 

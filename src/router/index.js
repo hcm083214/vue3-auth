@@ -5,8 +5,7 @@ import Layout from '@/Layout/Layout.vue';
 import { getToken } from "@/utils/token.js";
 import appStore from "@/store/index.js";
 
-const { usePermissionState, generateMenusAction } = appStore.permissionStore;
-const { userState, setUserInfoAction } = appStore.userStore;
+
 const modules = import.meta.glob("../views/**/**.vue")
 
 // 静态路由
@@ -53,6 +52,10 @@ const router = createRouter({
 const whiteList = ["/login", "/register"];
 NProgress.configure({ showSpinner: false });
 router.beforeEach(async (to, from, next) => {
+
+    const { usePermissionState, generateMenusAction } = appStore.permissionStore;
+    const { userState, setUserInfoAction } = appStore.userStore;
+
     NProgress.start();
     if (getToken()) {
         // 登陆后token没过期，路由地址是登陆页直接跳转到首页

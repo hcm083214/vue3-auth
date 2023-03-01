@@ -6,6 +6,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   server: {
+    hmr: true,
     proxy: {
       '/api': {
         target: 'http://localhost:60000',
@@ -20,4 +21,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    sourcemap: true
+  }
 })

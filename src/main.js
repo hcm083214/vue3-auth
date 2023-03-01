@@ -8,12 +8,14 @@ import '@/assets/styles/element-variables.scss'
 import '@/assets/styles/index.scss'
 import '@/assets/styles/ruoyi.scss'
 
-import router from "@/router/index";
+
 import App from '@/App.vue'
-import { pinia } from '@/store/index.js'
+import { pinia,registerStore } from '@/store/index.js'
+import router from "@/router/index";
 import EventBus from './utils/bus'
 
 const bus = new EventBus();
+registerStore();
 
 const app = createApp(App);
 app.provide('$bus', bus);

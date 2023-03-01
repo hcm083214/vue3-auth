@@ -11,5 +11,5 @@ export const registerStore = () => {
     appStore.userStore = useUserStore(pinia);
     appStore.permissionStore = usePermissionStore(pinia);
 }
-registerStore();
+
 export default appStore;

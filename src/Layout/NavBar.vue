@@ -1,42 +1,25 @@
 <template>
     <div class="navbar">
-        <div :class="isShow ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
-            <img :src="hamburger" />
+        <div class="left-menu">
+            <div :class="isShow ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
+                <img :src="hamburger" />
+            </div>
+            <el-breadcrumb separator="/">
+                <template v-for="(menu, index) in data.breadcrumbArr" :key="menu.id">
+                    <el-breadcrumb-item v-if="index">
+                        <span style="color: #999;">{{ menu.menuName }}</span>
+                    </el-breadcrumb-item>
+                    <el-breadcrumb-item v-else :to="{ name: menu.path }">
+                        <span>{{ menu.menuName }}</span>
+                    </el-breadcrumb-item>
+                </template>
+            </el-breadcrumb>
         </div>
-
-        <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class=""
-            @toggleClick="toggleSideBar" /> -->
-
-        <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" /> -->
-        <!-- <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" /> -->
-
         <div class="right-menu">
-            <!-- <template v-if="device !== 'mobile'">
-                <search id="header-search" class="right-menu-item" />
-
-                <el-tooltip content="源码地址" effect="dark" placement="bottom">
-                    <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-                </el-tooltip>
-
-                <el-tooltip content="文档地址" effect="dark" placement="bottom">
-                    <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-                </el-tooltip>
-
-
-
-                
-                <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-                <el-tooltip content="布局大小" effect="dark" placement="bottom">
-                    <size-select id="size-select" class="right-menu-item hover-effect" />
-                </el-tooltip>
-
-            </template> -->
-
-            <!-- <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
                     <img :src="avatar" class="user-avatar">
-                    <i class="el-icon-caret-bottom" />
+                    <el-icon><CaretBottom /></el-icon>
                 </div>
                 <el-dropdown-menu>
                     <router-link to="/user/profile">
@@ -49,14 +32,29 @@
                         <span>退出登录</span>
                     </el-dropdown-item>
                 </el-dropdown-menu>
-            </el-dropdown> -->
+            </el-dropdown>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, inject } from "vue";
+import { ref, inject, watch, reactive } from "vue";
+import { useRoute } from "vue-router";
+import { CaretBottom } from "@element-plus/icons-vue";
+
 import hamburger from "../assets/svg/hamburger.svg";
+import appStore from "@/store/index.js";
+import avatarSvg from "@/assets/images/avatar.svg";
+
+
+const { permissionStore, userStore } = appStore;
+
+const avatar = ref(userStore.userState.avatar || avatarSvg)
+
+const route = useRoute();
+const data = reactive({
+    breadcrumbArr: [],
+})
 
 const bus = inject('$bus')
 const isShow = ref(false);
@@ -64,6 +62,32 @@ const toggleSideBar = () => {
     isShow.value = !isShow.value;
     bus.emit("sidebarHandler", isShow.value);
 }
+
+
+watch(route, (route) => {
+
+    data.breadcrumbArr = [];
+    const path = route.path.replace("/", "")
+    permissionStore.usePermissionState.menusList.forEach((menu) => {
+        if (menu.path === path) {
+            data.breadcrumbArr.push(menu);
+        } else {
+            menu.children.forEach((child) => {
+                if (child.path === path) {
+                    data.breadcrumbArr.push({
+                        path: "/home",
+                        name: 'home',
+                        menuName: "首页",
+                    })
+                    data.breadcrumbArr.push(menu);
+                    data.breadcrumbArr.push(child);
+                }
+            })
+        }
+    })
+}, { immediate: true })
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -76,6 +100,16 @@ const toggleSideBar = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .left-menu {
+        display: flex;
+        justify-content: center;
+
+        :deep(.el-breadcrumb) {
+            display: flex;
+            justify-content: center;
+        }
+    }
 
     .hamburger-container {
         padding: 0 15px;
@@ -111,8 +145,8 @@ const toggleSideBar = () => {
 
     .right-menu {
         float: right;
-        height: 100%;
-        line-height: 50px;
+        display:flex;
+                justify-content: center;
 
         &:focus {
             outline: none;
@@ -125,6 +159,8 @@ const toggleSideBar = () => {
             font-size: 18px;
             color: #5a5e66;
             vertical-align: text-bottom;
+            display:flex;
+                justify-content: center;
 
             &.hover-effect {
                 cursor: pointer;
@@ -142,11 +178,13 @@ const toggleSideBar = () => {
             .avatar-wrapper {
                 margin-top: 5px;
                 position: relative;
+                display:flex;
+                justify-content: center;
 
                 .user-avatar {
                     cursor: pointer;
-                    width: 40px;
-                    height: 40px;
+                    width: 20px;
+                    height: 20px;
                     border-radius: 10px;
                 }
 
