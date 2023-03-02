@@ -1,0 +1,31 @@
+@startuml
+
+title 前端页面权限控制时序图
+
+actor user
+participant 登陆页面 as login
+participant 首页 as home
+participant router 
+participant store
+control 后端服务 as service
+
+user -> login :登陆
+login -> store :dispatch
+activate service
+store -> service :login
+service -> service :校验
+service --> store :token
+store --> login :success
+login -> home :redirect
+home -> router :beforeEach
+router -> store :dispatch
+store -> service :getInfo
+service -> service :roles
+service --> store :roles
+store --> router :roles
+deactivate service
+router -> router :generate\nroutes
+router -> router :addRoutes
+router --> home :routes
+
+@enduml

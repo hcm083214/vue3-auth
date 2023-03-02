@@ -17,6 +17,7 @@ const service = axios.create({
 
 service.interceptors.request.use((config) => {
     const token = getToken() || "";
+    // 从请求头中获取 isNotSetToken，如果为 false 代表不需要携带 token
     const isNotSetToken = (config.headers || {}).isNotSetToken;
     if (token && !isNotSetToken) {
         config.headers['Authorization'] = token;
@@ -24,7 +25,7 @@ service.interceptors.request.use((config) => {
     return config;
 })
 
-service.interceptors.response.use(function (response) {
+service.interceptors.response.use(response => {
     if (response.status === 200) {
         const data = response.data;
         if (data.code === 401 || data.code === 403) {
@@ -38,8 +39,8 @@ service.interceptors.response.use(function (response) {
                     type: 'warning',
                 }
             ).then(() => {
-                location.href = "/";
-            }).catch(() => { })
+                location.reload();
+            })
         }
         return data;
     }
