@@ -43,11 +43,12 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue';
 import { User, Lock, Key } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 import { useRouter } from "vue-router";
+import type { FormInstance, FormRules } from 'element-plus'
 
 
 import { getCodeApi, registerApi } from "@/api/login.js";
@@ -68,8 +69,8 @@ const registerForm = reactive({
     loading: false,
     uuid: '',
 });
-const registerFormRef = ref();
-const confirmPasswordValidate = (rule, value, callback) => {
+const registerFormRef = ref<FormInstance>();
+const confirmPasswordValidate = (rule: any, value: any, callback: any) => {
     if (value === '') {
         callback(new Error('请再次输入密码'))
     } else if (value !== registerForm.password) {
@@ -96,7 +97,7 @@ const getCode = async () => {
     registerForm.uuid = result.data.uuid;
 };
 
-const handleRegister = async (formEl) => {
+const handleRegister = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
         if (valid) {

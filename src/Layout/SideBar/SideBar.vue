@@ -4,34 +4,37 @@
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu :default-active="activeIndex" :collapse="isCollapse" active-text-color="#ffd04b"
                 background-color="#2b2f3a" class="el-menu-vertical" text-color="#fff" mode="vertical">
-                <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item"
-                    :index="item.path" :isCollapse="isCollapse"></sidebar-item>
+                <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item" :index="item.path"
+                    :isCollapse="isCollapse"></sidebar-item>
             </el-menu>
         </el-scrollbar>
     </div>
 </template>
 
-<script setup>
-import { onMounted, reactive, ref, watch,inject } from 'vue';
+<script setup lang="ts">
+import { reactive, ref, watch, inject } from 'vue';
 import { useRoute } from 'vue-router';
 
 import SidebarItem from "./SidebarItem.vue";
 import Logo from "./Logo.vue";
-import { usePermissionStore } from "@/store/permission.js";
+import { usePermissionStore } from "@/store/permission";
+import EventBus, { $busKey } from "@/utils/bus";
+import { Menu } from "@/api/types";
 
 
 const { usePermissionState } = usePermissionStore();
 const result = usePermissionState.menusList || [];
 const sidebarRouters = reactive({
-    router: {}
+    router: {} as Menu[]
 });
 if (result.length > 0) {
-    sidebarRouters.router = result.sort((a, b) => a.orderNum - b.orderNum);
+    sidebarRouters.router = result.sort((a, b) => Number(a.orderNum) - Number(b.orderNum));
 }
 
 const isCollapse = ref(false);
-const eventBus = inject("$bus");
-eventBus.on("sidebarHandler",(isShow)=>{
+const eventBus = inject<EventBus>($busKey) as EventBus;
+console.log("🚀 ~ file: SideBar.vue:35 ~ eventBus:", eventBus)
+eventBus.on(EventBus.sidebarHandler, (isShow:boolean) => {
     console.log(isShow)
     isCollapse.value = isShow;
 })

@@ -19,7 +19,9 @@
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
                     <img :src="avatar" class="user-avatar">
-                    <el-icon><CaretBottom /></el-icon>
+                    <el-icon>
+                        <CaretBottom />
+                    </el-icon>
                 </div>
                 <el-dropdown-menu>
                     <router-link to="/user/profile">
@@ -37,7 +39,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, inject, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
@@ -45,6 +47,8 @@ import { CaretBottom } from "@element-plus/icons-vue";
 import hamburger from "../assets/svg/hamburger.svg";
 import appStore from "@/store/index.js";
 import avatarSvg from "@/assets/images/avatar.svg";
+import EventBus, { $busKey } from "@/utils/bus";
+import { Menu } from "@/api/types";
 
 
 const { permissionStore, userStore } = appStore;
@@ -53,14 +57,14 @@ const avatar = ref(userStore.userState.avatar || avatarSvg)
 
 const route = useRoute();
 const data = reactive({
-    breadcrumbArr: [],
+    breadcrumbArr: [] as Menu[],
 })
 
-const bus = inject('$bus')
+const bus = inject<EventBus>($busKey) as EventBus;
 const isShow = ref(false);
 const toggleSideBar = () => {
     isShow.value = !isShow.value;
-    bus.emit("sidebarHandler", isShow.value);
+    bus.emit(EventBus.sidebarHandler, isShow.value);
 }
 
 
@@ -68,7 +72,7 @@ watch(route, (route) => {
 
     data.breadcrumbArr = [];
     const path = route.path.replace("/", "")
-    permissionStore.usePermissionState.menusList.forEach((menu) => {
+    permissionStore.usePermissionState.menusList.forEach((menu:Menu) => {
         if (menu.path === path) {
             data.breadcrumbArr.push(menu);
         } else {
@@ -76,7 +80,6 @@ watch(route, (route) => {
                 if (child.path === path) {
                     data.breadcrumbArr.push({
                         path: "/home",
-                        name: 'home',
                         menuName: "首页",
                     })
                     data.breadcrumbArr.push(menu);
@@ -145,8 +148,8 @@ watch(route, (route) => {
 
     .right-menu {
         float: right;
-        display:flex;
-                justify-content: center;
+        display: flex;
+        justify-content: center;
 
         &:focus {
             outline: none;
@@ -159,8 +162,8 @@ watch(route, (route) => {
             font-size: 18px;
             color: #5a5e66;
             vertical-align: text-bottom;
-            display:flex;
-                justify-content: center;
+            display: flex;
+            justify-content: center;
 
             &.hover-effect {
                 cursor: pointer;
@@ -178,7 +181,7 @@ watch(route, (route) => {
             .avatar-wrapper {
                 margin-top: 5px;
                 position: relative;
-                display:flex;
+                display: flex;
                 justify-content: center;
 
                 .user-avatar {

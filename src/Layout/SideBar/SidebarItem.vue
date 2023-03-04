@@ -29,12 +29,10 @@
     </el-menu-item>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
-    Document,
     Menu as IconMenu,
     Location,
-    Setting,
 } from '@element-plus/icons-vue'
 
 const props = defineProps(['item', "index", "isCollapse"])

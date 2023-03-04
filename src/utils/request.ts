@@ -1,21 +1,25 @@
-import axios from "axios";
+import axios, {
+    AxiosInstance,
+    AxiosRequestConfig,
+    InternalAxiosRequestConfig,
+    AxiosResponse,
+    AxiosError
+} from "axios";
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { useRouter } from "vue-router";
 
 import { getToken, removeToken } from "./token.js";
-import { REDIRECT_KEY } from "@/router/index.js";
 
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
-const service = axios.create({
+const service: AxiosInstance = axios.create({
     baseURL: '/api',
     // 超时
     timeout: 10000
 })
 
 
-service.interceptors.request.use((config) => {
+service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = getToken() || "";
     // 从请求头中获取 isNotSetToken，如果为 false 代表不需要携带 token
     const isNotSetToken = (config.headers || {}).isNotSetToken;
@@ -25,7 +29,7 @@ service.interceptors.request.use((config) => {
     return config;
 })
 
-service.interceptors.response.use(response => {
+service.interceptors.response.use((response: AxiosResponse) => {
     if (response.status === 200) {
         const data = response.data;
         if (data.code === 401 || data.code === 403) {
@@ -45,7 +49,7 @@ service.interceptors.response.use(response => {
         return data;
     }
 
-}, function (error) {
+}, function (error: AxiosError) {
     if (error.message.indexOf("timeout") !== -1) {
         ElMessage.error("服务器响应超时");
     } else if (error.message.indexOf("Server Error") !== -1) {
@@ -55,5 +59,16 @@ service.interceptors.response.use(response => {
     // 对响应错误做点什么
     return Promise.reject(error);
 });
-
-export default service;
+interface ResultData<T> {
+    code: number;
+    msg: string;
+    data: T
+}
+export default {
+    get<T>(url: string, option?: Object): Promise<ResultData<T>> {
+        return service.get(url, option);
+    },
+    post<T>(url: string, option: AxiosRequestConfig): Promise<ResultData<T>> {
+        return service.post(url, option.data, option);
+    }
+};

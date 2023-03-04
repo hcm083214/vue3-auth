@@ -6,7 +6,6 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    hmr: true,
     proxy: {
       '/api': {
         target: 'http://localhost:60000',

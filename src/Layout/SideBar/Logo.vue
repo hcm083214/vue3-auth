@@ -13,8 +13,8 @@
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue-demi';
+<script setup lang="ts">
+import { ref } from 'vue';
 import logoImg from '../../assets/logo/logo.svg'
 const props = defineProps(['collapse']);
 const title = ref("Auth权限管理");

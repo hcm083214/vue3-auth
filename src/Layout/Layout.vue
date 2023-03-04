@@ -13,15 +13,18 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { inject, ref } from "vue";
+
 import SideBar from "@/Layout/SideBar/SideBar.vue";
 import NavBar from "@/Layout/NavBar.vue";
-import { inject, ref } from "vue";
+import EventBus, { $busKey } from "@/utils/bus";
+
 
 
 let isShowSideBar = ref(true);
-const eventBus = inject("$bus");
-eventBus.on("sidebarHandler", (isShow) => {
+const eventBus = inject<EventBus>($busKey) as EventBus;
+eventBus.on(EventBus.sidebarHandler, (isShow:boolean) => {
     isShowSideBar.value = !isShow;
 })
 </script>

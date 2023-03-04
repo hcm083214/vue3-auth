@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import NProgress from 'nprogress';
 
 import Layout from '@/Layout/Layout.vue';
-import { getToken } from "@/utils/token.js";
-import appStore from "@/store/index.js";
+import { getToken } from "@/utils/token";
+import appStore from "@/store/index";
 
 
 const modules = import.meta.glob("../views/**/**.vue")

@@ -7,8 +7,8 @@ export const useUserStore = defineStore('user', () => {
     const userState = reactive({
         name: '',
         avatar: '',
-        roles: [],
-        permissions: []
+        roles: [] as number[],
+        permissions: [] as number[]
     })
     async function setUserInfoAction() {
         let user = JSON.parse(sessionStorage.getItem(USER_INFO) || "{}");

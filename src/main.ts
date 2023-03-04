@@ -10,15 +10,15 @@ import '@/assets/styles/ruoyi.scss'
 
 
 import App from '@/App.vue'
-import { pinia,registerStore } from '@/store/index.js'
+import { pinia, registerStore } from '@/store/index.js'
 import router from "@/router/index";
-import EventBus from './utils/bus'
+import EventBus, { $busKey } from './utils/bus'
 
 const bus = new EventBus();
 registerStore();
 
 const app = createApp(App);
-app.provide('$bus', bus);
+app.provide($busKey, bus);
 // 挂载到this上
 app.config.globalProperties.$bus = bus;
 

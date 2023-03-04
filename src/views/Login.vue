@@ -38,15 +38,16 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { User, Lock, Key } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { useRouter, useRoute } from 'vue-router'
+import type { FormInstance, FormRules } from 'element-plus'
 
-import { encrypt, decrypt } from '@/utils/jsencrypt.js';
-import { setToken } from '@/utils/token.js';
-import { REDIRECT_KEY } from "@/router/index.js";
+import { encrypt, decrypt } from '@/utils/jsencrypt';
+import { setToken } from '@/utils/token';
+import { REDIRECT_KEY } from "@/router/index";
 import { getCodeApi, loginApi } from "@/api/login";
 
 
@@ -55,8 +56,7 @@ const route = useRoute();
 
 
 const STORAGE_USER = "storageUser";
-const redirectPath = route.query[REDIRECT_KEY] || "/";
-
+const redirectPath = route.query[REDIRECT_KEY] as string || "/" ;
 
 onMounted(() => {
     getCode();
@@ -81,8 +81,8 @@ const loginForm = reactive({
     register: true,
     uuid: "",
 });
-const loginFormRef = ref();
-const loginRules = reactive({
+const loginFormRef = ref<FormInstance>();
+const loginRules = reactive<FormRules>({
     userName: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
     ],
@@ -92,7 +92,7 @@ const loginRules = reactive({
     code: [{ required: true, trigger: "change", message: "请输入验证码" }]
 });
 
-const saveUserToStorage = (isRememberMe) => {
+const saveUserToStorage = (isRememberMe: boolean) => {
     if (isRememberMe) {
         localStorage.setItem(STORAGE_USER, JSON.stringify({
             userName: loginForm.userName,
@@ -103,7 +103,7 @@ const saveUserToStorage = (isRememberMe) => {
     }
 }
 
-const handleLogin = async (formEl) => {
+const handleLogin = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
         if (valid) {
