@@ -1,6 +1,7 @@
 <template>
     <div class="navbar">
         <div class="left-menu">
+            <slot></slot>
             <div :class="isShow ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
                 <img :src="hamburger" />
             </div>
@@ -23,17 +24,16 @@
                         <CaretBottom />
                     </el-icon>
                 </div>
-                <el-dropdown-menu>
-                    <router-link to="/user/profile">
-                        <el-dropdown-item>个人中心</el-dropdown-item>
-                    </router-link>
-                    <el-dropdown-item @click="setting = true">
-                        <span>布局设置</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided @click="logout">
-                        <span>退出登录</span>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <router-link to="/user/profile">
+                            <el-dropdown-item>个人中心</el-dropdown-item>
+                        </router-link>
+                        <el-dropdown-item>
+                            <span>退出登录</span>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
             </el-dropdown>
         </div>
     </div>
@@ -44,7 +44,7 @@ import { ref, inject, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
 
-import hamburger from "../assets/svg/hamburger.svg";
+import hamburger from "@/assets/svg/hamburger.svg";
 import appStore from "@/store/index.js";
 import avatarSvg from "@/assets/images/avatar.svg";
 import EventBus, { $busKey } from "@/utils/bus";
@@ -72,7 +72,7 @@ watch(route, (route) => {
 
     data.breadcrumbArr = [];
     const path = route.path.replace("/", "")
-    permissionStore.usePermissionState.menusList.forEach((menu:Menu) => {
+    permissionStore.usePermissionState.menusList.forEach((menu: Menu) => {
         if (menu.path === path) {
             data.breadcrumbArr.push(menu);
         } else {

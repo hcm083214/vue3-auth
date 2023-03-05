@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar-wrap">
-        <logo v-if="showLogo" :collapse="isCollapse" />
+        <slot></slot>
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu :default-active="activeIndex" :collapse="isCollapse" active-text-color="#ffd04b"
                 background-color="#2b2f3a" class="el-menu-vertical" text-color="#fff" mode="vertical">
@@ -16,7 +16,7 @@ import { reactive, ref, watch, inject } from 'vue';
 import { useRoute } from 'vue-router';
 
 import SidebarItem from "./SidebarItem.vue";
-import Logo from "./Logo.vue";
+
 import { usePermissionStore } from "@/store/permission";
 import EventBus, { $busKey } from "@/utils/bus";
 import { Menu } from "@/api/types";
@@ -33,7 +33,6 @@ if (result.length > 0) {
 
 const isCollapse = ref(false);
 const eventBus = inject<EventBus>($busKey) as EventBus;
-console.log("🚀 ~ file: SideBar.vue:35 ~ eventBus:", eventBus)
 eventBus.on(EventBus.sidebarHandler, (isShow:boolean) => {
     console.log(isShow)
     isCollapse.value = isShow;

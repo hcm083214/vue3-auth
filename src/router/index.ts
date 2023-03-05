@@ -4,7 +4,7 @@ import NProgress from 'nprogress';
 import Layout from '@/Layout/Layout.vue';
 import { getToken } from "@/utils/token";
 import appStore from "@/store/index";
-
+import { Menu } from "@/api/types";
 
 const modules = import.meta.glob("../views/**/**.vue")
 
@@ -123,7 +123,7 @@ router.afterEach(() => {
     NProgress.done()
 });
 
-function generateRoutes(menusPath) {
+function generateRoutes(menusPath:Menu[]) {
     menusPath.length > 0 && menusPath.forEach(menu => {
         router.addRoute("index", {
             path: `/${menu.path}`,

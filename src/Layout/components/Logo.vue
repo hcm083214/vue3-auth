@@ -1,7 +1,7 @@
 <template>
-    <div class="sidebar-logo-container" :class="{ 'collapse': collapse }">
+    <div class="sidebar-logo-container" :class="{ 'collapse': isCollapse }">
         <transition name="sidebarLogoFade">
-            <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
+            <router-link v-if="isCollapse" key="collapse" class="sidebar-logo-link" to="/">
                 <img :src="logoImg" class="sidebar-logo" />
             </router-link>
             <router-link v-else key="expand" class="sidebar-logo-link" to="/">
@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import logoImg from '../../assets/logo/logo.svg'
-const props = defineProps(['collapse']);
+import logoImg from '@/assets/logo/logo.svg'
+const isCollapse = ref(false);
 const title = ref("Auth权限管理");
 </script>
 
@@ -28,7 +28,7 @@ const title = ref("Auth权限管理");
 .sidebarLogoFade-enter,
 .sidebarLogoFade-leave-to {
     opacity: 0;
-}
+} 
 
 .sidebar-logo-container {
     position: relative;
