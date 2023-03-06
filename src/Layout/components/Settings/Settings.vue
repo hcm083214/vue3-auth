@@ -1,10 +1,13 @@
 <template>
-    <div class="fixed pointer" @click="isShow=!isShow">
+    <div class="fixed pointer" @click="isShow = !isShow">
         <el-icon>
             <Setting />
         </el-icon>
     </div>
-    <el-drawer v-model="isShow" title="项目配置" >
+    <el-drawer v-model="isShow" title="项目配置">
+        <el-divider>主题</el-divider>
+        <el-switch v-model="isNight" class="mt-2" style="margin-left: 24px" inline-prompt :active-icon="Check"
+            :inactive-icon="Close" />
         <el-divider>布局</el-divider>
         <layout-radio-picker />
     </el-drawer>
@@ -16,7 +19,10 @@ import { ref } from 'vue';
 
 import LayoutRadioPicker from "@/Layout/components/Settings/LayoutRadioPicker.vue";
 
-const isShow = ref(false)
+const isShow = ref(false);
+
+const isNight = ref(false);
+
 </script>
 
 <style scoped lang="scss">

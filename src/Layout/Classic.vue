@@ -1,78 +1,53 @@
 <template>
-    <div :class="isShowSideBar ? 'app-wrapper' : 'app-wrapper hideSidebar'">
-        <side-bar class="sidebar-container">
+    <div :class="configState.isCollapseSideBar ? 'app-wrapper collapseSidebar' : 'app-wrapper'">
+        <div class="sidebar-container">
             <logo />
-        </side-bar>
+            <side-bar></side-bar>
+        </div>
         <div class="main-container">
             <nav-bar></nav-bar>
             <router-view />
-            <settings />
         </div>
+        <settings />
     </div>
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from "vue";
-
 import SideBar from "@/Layout/components/SideBar/SideBar.vue";
 import NavBar from "@/Layout/components/NavBar.vue";
-import EventBus, { $busKey } from "@/utils/bus";
 import Logo from "@/Layout/components/Logo.vue";
 import Settings from "@/Layout/components/Settings/Settings.vue";
+import appStore from "@/store/index";
 
-
-let isShowSideBar = ref(true);
-const eventBus = inject<EventBus>($busKey) as EventBus;
-eventBus.on(EventBus.sidebarHandler, (isShow: boolean) => {
-    isShowSideBar.value = !isShow;
-})
+const { configState } = appStore.configStore;
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/styles/mixin.scss";
-@import "../assets/styles/variables.scss";
+@import "@/assets/styles/mixin.scss";
+@import "@/assets/styles/variables.scss";
 
 
 .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
+    display: flex;
     width: 100%;
+    height: 100%;
 
-    &.mobile.openSidebar {
-        position: fixed;
-        top: 0;
+    .sidebar-container {
+        max-width: 200px;
+        width: 200px;
+        height: calc(100% - $base-header-height);
     }
-}
 
-.drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-}
+    &.collapseSidebar .sidebar-container {
+        width: $base-collapse-sidebar-width;
+    }
 
-.fixed-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$base-sidebar-width});
-    transition: width 0.28s;
-}
+    .main-container {
+        width: calc(100% - $base-sidebar-width);
+    }
 
-.hideSidebar .fixed-header {
-    width: calc(100% - 66px);
-}
-
-.sidebarHide .fixed-header {
-    width: 100%;
-}
-
-.mobile .fixed-header {
-    width: 100%;
+    &.collapseSidebar .main-container {
+        width: calc(100% - $base-collapse-sidebar-width);
+    }
 }
 </style>

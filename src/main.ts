@@ -6,7 +6,7 @@ import 'nprogress/nprogress.css'
 import "@/index.css"
 import '@/assets/styles/element-variables.scss'
 import '@/assets/styles/index.scss'
-import '@/assets/styles/ruoyi.scss'
+// import '@/assets/styles/ruoyi.scss'
 
 
 import App from '@/App.vue'

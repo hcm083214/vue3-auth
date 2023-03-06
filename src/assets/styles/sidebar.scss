@@ -56,7 +56,6 @@
 
     a {
       display: inline-block;
-      width: 100%;
       overflow: hidden;
     }
 
@@ -109,11 +108,11 @@
 
   .hideSidebar {
     .sidebar-container {
-      width: 66px !important;
+      width: $base-collapse-sidebar-width !important;
     }
 
     .main-container {
-      margin-left: 66px;
+      margin-left: $base-collapse-sidebar-width;
     }
 
     .submenu-title-noDropdown {

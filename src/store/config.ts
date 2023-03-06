@@ -3,11 +3,18 @@ import { reactive } from "vue";
 
 interface Config {
    layoutType: string,
+   isShowSideBar: boolean,
+   isCollapseSideBar: boolean
 }
 export type configKey = keyof Config;
 
-const defaultValue = {
-   "layoutType": 'classic'
+const defaultValue: Config = {
+   // 布局的方式
+   layoutType: 'classic',
+   // 是否显示侧边栏
+   isShowSideBar: true,
+   // 是否折叠侧边栏
+   isCollapseSideBar: false,
 }
 
 const getDefault = (key: configKey) => {
@@ -17,7 +24,9 @@ const getDefault = (key: configKey) => {
 
 export const useConfigStore = defineStore('config', () => {
    const configState: Config = reactive({
-      layoutType: getDefault("layoutType")
+      layoutType: getDefault("layoutType") as string,
+      isShowSideBar: getDefault("isShowSideBar") as boolean,
+      isCollapseSideBar: getDefault("isCollapseSideBar") as boolean,
    })
    const setConfigAction = (key: configKey, value: any) => {
       configState[key] = value;

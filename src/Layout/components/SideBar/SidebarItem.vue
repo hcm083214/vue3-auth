@@ -43,6 +43,12 @@ const props = defineProps(['item', "index", "isCollapse"])
     padding: 0;
 }
 
+:deep(.el-menu--collapse .el-sub-menu__title) {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
 .menu-item {
     height: 50px;
 }

@@ -1,8 +1,9 @@
 <script lang="ts">
-import { h, inject, ref } from "vue";
+import { h } from "vue";
 
 import Classic from "@/Layout/Classic.vue";
 import TopLeft from "@/Layout/TopLeft.vue";
+import Top from "@/Layout/Top.vue";
 import appStore from "@/store/index";
 
 export default {
@@ -13,6 +14,8 @@ export default {
                 return h(Classic)
             } else if (configState.layoutType == "top-left") {
                 return h(TopLeft)
+            } else if (configState.layoutType == "top") {
+                return h(Top)
             }
         }
     }

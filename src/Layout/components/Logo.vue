@@ -1,7 +1,7 @@
 <template>
-    <div class="sidebar-logo-container" :class="{ 'collapse': isCollapse }">
+    <div class="logo-container" :class="{ 'collapse': configState.isCollapseSideBar }">
         <transition name="sidebarLogoFade">
-            <router-link v-if="isCollapse" key="collapse" class="sidebar-logo-link" to="/">
+            <router-link v-if="configState.isCollapseSideBar" key="collapse" class="sidebar-logo-link" to="/">
                 <img :src="logoImg" class="sidebar-logo" />
             </router-link>
             <router-link v-else key="expand" class="sidebar-logo-link" to="/">
@@ -15,12 +15,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 import logoImg from '@/assets/logo/logo.svg'
-const isCollapse = ref(false);
+import appStore from "@/store/index"
+
+const { configState } = appStore.configStore;
 const title = ref("Auth权限管理");
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/variables.scss";
+
 .sidebarLogoFade-enter-active {
     transition: opacity 1.5s;
 }
@@ -28,13 +33,13 @@ const title = ref("Auth权限管理");
 .sidebarLogoFade-enter,
 .sidebarLogoFade-leave-to {
     opacity: 0;
-} 
+}
 
-.sidebar-logo-container {
+.logo-container {
     position: relative;
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
+    width: $base-sidebar-width;
+    height: $base-header-height;
+    line-height: $base-header-height;
     background: #2b2f3a;
     text-align: center;
     overflow: hidden;
@@ -67,5 +72,9 @@ const title = ref("Auth权限管理");
             margin-right: 0px;
         }
     }
+}
+
+.logo-container.collapse {
+    width: $base-collapse-sidebar-width;
 }
 </style>

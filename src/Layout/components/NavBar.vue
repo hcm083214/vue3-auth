@@ -1,8 +1,9 @@
 <template>
-    <div class="navbar">
+    <div class="navbar-wrap">
         <div class="left-menu">
-            <slot></slot>
-            <div :class="isShow ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
+            <slot name="logo" ></slot>
+            <slot name="side-bar"></slot>
+            <div :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
                 <img :src="hamburger" />
             </div>
             <el-breadcrumb separator="/">
@@ -45,13 +46,13 @@ import { useRoute } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
 
 import hamburger from "@/assets/svg/hamburger.svg";
-import appStore from "@/store/index.js";
 import avatarSvg from "@/assets/images/avatar.svg";
+
+import appStore from "@/store/index.js";
 import EventBus, { $busKey } from "@/utils/bus";
 import { Menu } from "@/api/types";
 
-
-const { permissionStore, userStore } = appStore;
+const { permissionStore, userStore, configStore } = appStore;
 
 const avatar = ref(userStore.userState.avatar || avatarSvg)
 
@@ -61,10 +62,15 @@ const data = reactive({
 })
 
 const bus = inject<EventBus>($busKey) as EventBus;
-const isShow = ref(false);
+
+let isCollapse = ref(configStore.configState.isCollapseSideBar);
 const toggleSideBar = () => {
-    isShow.value = !isShow.value;
-    bus.emit(EventBus.sidebarHandler, isShow.value);
+    // store 模式
+    isCollapse.value = !isCollapse.value;
+    configStore.setConfigAction("isCollapseSideBar", isCollapse.value)
+    // 事件总线模式
+    // isShow.value = !isShow.value;
+    // bus.emit(EventBus.sidebarHandler, isShow.value);
 }
 
 
@@ -94,8 +100,10 @@ watch(route, (route) => {
 </script>
 
 <style lang="scss" scoped>
-.navbar {
-    height: 50px;
+@import "@/assets/styles/variables.scss";
+
+.navbar-wrap {
+    height: $base-header-height;
     overflow: hidden;
     position: relative;
     background: #fff;

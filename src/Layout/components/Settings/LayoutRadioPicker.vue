@@ -13,10 +13,10 @@
 import { ref } from 'vue';
 
 import appStore from "@/store/index";
-
-const index = ref("classic");
-
 const configStore = appStore.configStore;
+
+const index = ref(configStore.configState.layoutType);
+
 const layoutRenderMethodHandler = (type: string) => {
   index.value = type;
   configStore.setConfigAction("layoutType", type)
