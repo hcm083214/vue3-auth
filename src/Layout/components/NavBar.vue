@@ -114,8 +114,8 @@ watch(route, (route) => {
     height: $base-header-height;
     overflow: hidden;
     position: relative;
-    background: var(--el-bg-color);
-    color: var(--el-text-color-primary);
+    background: var(--base-navbar-background);
+    color: var(--base-navbar-text-color);
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
     display: flex;
     justify-content: space-between;

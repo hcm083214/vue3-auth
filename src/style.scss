@@ -1,24 +1,27 @@
+@import "@/assets/styles/variables.scss";
+
 :root {
   --base-menu-color: #bfcbd9;
   --base-menu-color-active: #f4f4f5;
   --base-menu-background: #2b2f3a;
   --base-logo-background: #2b2f3a;
-  --base-logo-text-color: #ffffff;
+  --base-logo-text-color: $white;
 
   --base-menu-color: rgba(0, 0, 0, .70);
-  --base-menu-background: #ffffff;
-  --base-icon-text-color: #001529;
-
+  --base-menu-background: $white;
   --base-sub-menu-background: #1f2d3d;
   --base-sub-menu-hover: #001528;
+
+  --base-navbar-background: $white;
+  --base-navbar-text-color: $base-text-color;
+
+  --base-icon-text-color: $base-text-color;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: var(--theme-color);
-  background-color: var(--theme-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -102,10 +105,3 @@ html.dark {
   --el-mask-color: rgba(0, 0, 0, 0.8);
   --el-mask-color-extra-light: rgba(0, 0, 0, 0.3);
 }
-
-
-
-
-
-
-

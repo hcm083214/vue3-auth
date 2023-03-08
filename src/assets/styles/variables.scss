@@ -1,4 +1,5 @@
 // base color
+$white:#fff;
 $blue: #324157;
 $light-blue: #3A71A8;
 $red: #C03639;
@@ -7,6 +8,10 @@ $green: #30B08F;
 $tiffany: #4AB7BD;
 $yellow: #FEC171;
 $panGreen: #30B08F;
+
+// 默认的字体颜色和背景
+$base-text-color: #303133;
+$base-bg-color: #fff;
 
 // 默认菜单主题风格
 $base-menu-color: #bfcbd9;
@@ -37,7 +42,7 @@ $base-sub-menu-hover:#001528;
 */
 
 $base-sidebar-width: 200px;
-$base-collapse-sidebar-width:64px;
+$base-collapse-sidebar-width: 64px;
 $base-header-height: 50px;
 
 // the :export directive is the magic sauce for webpack

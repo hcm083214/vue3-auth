@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { useLayout } from "@/Layout/layout";
 import SideBar from "@/Layout/components/SideBar/SideBar.vue";
 import NavBar from "@/Layout/components/NavBar.vue";
 import Logo from "@/Layout/components/Logo.vue";
@@ -22,8 +21,8 @@ import appStore from "@/store/index";
 
 const { configState, setThemeAction } = appStore.configStore;
 setThemeAction({
-    "--base-logo-background": "#fff",
-    "--base-logo-text-color": "#001529"
+    "--base-logo-background": configState.theme["--base-navbar-background"],
+    "--base-logo-text-color": configState.theme["--base-logo-text-color"],
 });
 </script>
 

@@ -6,6 +6,7 @@ import { setCssVar } from "@/utils/index";
 interface Theme {
    "--base-logo-background"?: string,
    "--base-logo-text-color"?: string,
+   "--base-navbar-background"?: string,
 }
 export type themeKey = keyof Theme;
 
@@ -65,7 +66,6 @@ export const useConfigStore = defineStore('config', () => {
       }
    }
    const setThemeAction = (theme:Theme) => {
-      console.log("🚀 ~ file: config.ts:67 ~ setThemeAction ~ theme:",configState.theme, theme)
       Object.assign(configState.theme, theme);
       Object.keys(configState.theme).forEach(key => setCssVar(key, configState.theme[key]))
       localStorage.setItem("app-config", JSON.stringify(configState));
