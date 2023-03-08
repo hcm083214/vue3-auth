@@ -1,12 +1,13 @@
 <template>
     <div class="navbar-wrap">
         <div class="left-menu">
-            <slot name="logo" ></slot>
+            <slot name="logo"></slot>
             <slot name="side-bar"></slot>
-            <div :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
-                <img :src="hamburger" />
+            <div v-if="isShowBreadCrumb" :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
+                <!-- <img :src="hamburger" /> -->
+                <icon icon="svg-icon:hamburger" :size="20"></icon>
             </div>
-            <el-breadcrumb separator="/">
+            <el-breadcrumb separator="/" v-if="isShowBreadCrumb">
                 <template v-for="(menu, index) in data.breadcrumbArr" :key="menu.id">
                     <el-breadcrumb-item v-if="index">
                         <span style="color: #999;">{{ menu.menuName }}</span>
@@ -45,12 +46,19 @@ import { ref, inject, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
 
-import hamburger from "@/assets/svg/hamburger.svg";
-import avatarSvg from "@/assets/images/avatar.svg";
+import avatarSvg from "@/assets/svg/avatar.svg";
 
 import appStore from "@/store/index.js";
 import EventBus, { $busKey } from "@/utils/bus";
 import { Menu } from "@/api/types";
+import Icon from "@/components/Icon.vue";
+
+const props = defineProps({
+    isShowBreadCrumb :{
+        type:Boolean,
+        default:true
+    }
+})
 
 const { permissionStore, userStore, configStore } = appStore;
 
@@ -106,7 +114,8 @@ watch(route, (route) => {
     height: $base-header-height;
     overflow: hidden;
     position: relative;
-    background: #fff;
+    background: var(--el-bg-color);
+    color: var(--el-text-color-primary);
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
     display: flex;
     justify-content: space-between;

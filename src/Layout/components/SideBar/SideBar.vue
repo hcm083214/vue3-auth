@@ -2,8 +2,9 @@
     <div class="sidebar-wrap">
         <slot></slot>
         <el-scrollbar wrap-class="scrollbar-wrapper">
-            <el-menu :default-active="activeIndex" :collapse="configState.isCollapseSideBar" active-text-color="#ffd04b"
-                background-color="#2b2f3a" class="el-menu-vertical" text-color="#fff" mode="vertical">
+            <el-menu :default-active="activeIndex" :collapse="configState.isCollapseSideBar"
+                :active-text-color="activeTextColor" :background-color="bgColor" class="el-menu-vertical"
+                :text-color="textColor" :mode="menuMode">
                 <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item" :index="item.path"
                     :isCollapse="configState.isCollapseSideBar"></sidebar-item>
             </el-menu>
@@ -21,6 +22,25 @@ import SidebarItem from "./SidebarItem.vue";
 import { usePermissionStore } from "@/store/permission";
 import { Menu } from "@/api/types";
 import appStore from "@/store/index";
+
+const props = defineProps({
+    menuMode: {
+        type: String,
+        default: "vertical"
+    },
+    bgColor: {
+        type: String,
+        default: "#2b2f3a"
+    },
+    textColor: {
+        type: String,
+        default: "#fff"
+    },
+    activeTextColor: {
+        type: String,
+        default: "#ffd04b"
+    },
+})
 
 
 const { usePermissionState } = usePermissionStore();
@@ -56,7 +76,7 @@ watch(route, () => {
     -webkit-transition: width .28s;
     transition: width 0.28s;
     width: 100%;
-    background-color: $base-menu-background;
+    background-color: var(--base-menu-background);
     height: 100%;
     font-size: 0px;
     top: 0;
@@ -66,6 +86,10 @@ watch(route, () => {
     overflow: hidden;
     -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
     box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+
+    &.horizontal-sidebar{
+        box-shadow: none;
+    }
 
     // reset element-ui css
     .horizontal-collapse-transition {

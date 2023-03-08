@@ -18,8 +18,13 @@ import SideBar from "@/Layout/components/SideBar/SideBar.vue";
 import NavBar from "@/Layout/components/NavBar.vue";
 import Logo from "@/Layout/components/Logo.vue";
 import Settings from "@/Layout/components/Settings/Settings.vue";
+import appStore from "@/store/index";
 
-const configState = useLayout();
+const { configState, setThemeAction } = appStore.configStore;
+setThemeAction({
+    "--base-logo-background": "#fff",
+    "--base-logo-text-color": "#001529"
+});
 </script>
 
 <style lang="scss" scoped>
@@ -44,12 +49,13 @@ const configState = useLayout();
 
     .main-container {
         width: calc(100% - $base-sidebar-width);
+
         .header {
             width: 100%;
         }
     }
+
     &.collapseSidebar .main-container {
         width: calc(100% - $base-collapse-sidebar-width);
     }
-}
-</style>
+}</style>

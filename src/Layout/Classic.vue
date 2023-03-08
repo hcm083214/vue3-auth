@@ -19,7 +19,11 @@ import Logo from "@/Layout/components/Logo.vue";
 import Settings from "@/Layout/components/Settings/Settings.vue";
 import appStore from "@/store/index";
 
-const { configState } = appStore.configStore;
+const { configState, setThemeAction } = appStore.configStore;
+setThemeAction({
+    "--base-logo-background": "#2b2f3a",
+    "--base-logo-text-color": "#fff"
+});
 </script>
 
 <style lang="scss" scoped>

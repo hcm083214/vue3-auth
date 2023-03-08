@@ -1,14 +1,14 @@
 <template>
     <div :class="configState.isCollapseSideBar ? 'app-wrapper collapseSidebar' : 'app-wrapper'">
         <div class="main-container">
-            <nav-bar>
+            <nav-bar :isShowBreadCrumb="false">
                 <template v-slot:logo>
                     <logo />
                 </template>
                 <template v-slot:side-bar>
-                    <side-bar ></side-bar>
+                    <side-bar menuMode="horizontal" textColor="#606266" bgColor="#fff" activeTextColor="#409eff" class="horizontal-sidebar"></side-bar>
                 </template>
-            </nav-bar>
+            </nav-bar >
             <router-view />
         </div>
         <settings />
@@ -22,7 +22,11 @@ import Logo from "@/Layout/components/Logo.vue";
 import Settings from "@/Layout/components/Settings/Settings.vue";
 import appStore from "@/store/index";
 
-const { configState } = appStore.configStore;
+const { configState, setThemeAction } = appStore.configStore;
+setThemeAction({
+    "--base-logo-background": "#fff",
+    "--base-logo-text-color": "#001529",
+});
 </script>
 
 <style lang="scss" scoped>

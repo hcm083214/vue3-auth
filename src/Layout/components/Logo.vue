@@ -40,7 +40,8 @@ const title = ref("Auth权限管理");
     width: $base-sidebar-width;
     height: $base-header-height;
     line-height: $base-header-height;
-    background: #2b2f3a;
+    background: var(--base-logo-background);
+    color: var(--base-logo-text-color);
     text-align: center;
     overflow: hidden;
 
@@ -58,7 +59,7 @@ const title = ref("Auth权限管理");
         & .sidebar-title {
             display: inline-block;
             margin: 0;
-            color: #fff;
+            color: var(--base-logo-text-color);
             font-weight: 600;
             line-height: 50px;
             font-size: 14px;
