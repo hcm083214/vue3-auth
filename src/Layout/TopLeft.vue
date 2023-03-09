@@ -22,7 +22,7 @@ import appStore from "@/store/index";
 const { configState, setThemeAction } = appStore.configStore;
 setThemeAction({
     "--base-logo-background": configState.theme["--base-navbar-background"],
-    "--base-logo-text-color": configState.theme["--base-logo-text-color"],
+    "--base-logo-text-color": configState.theme["--base-navbar-text-color"],
 });
 </script>
 

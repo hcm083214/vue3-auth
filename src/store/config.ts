@@ -7,8 +7,19 @@ interface Theme {
    "--base-logo-background"?: string,
    "--base-logo-text-color"?: string,
    "--base-navbar-background"?: string,
+   "--base-navbar-text-color"?: string,
+   "--el-menu-text-color"?: string,
+   "--el-menu-hover-text-color"?: string,
+   "--el-menu-bg-color"?: string,
+   "--el-menu-hover-bg-color"?: string,
+   "--el-menu-active-color"?: string,
 }
 export type themeKey = keyof Theme;
+
+export interface Schema {
+   backgroundColor: string,
+   textColor: string,
+}
 
 interface Config {
    layoutType: string,
@@ -31,9 +42,23 @@ const defaultValue: Config = {
    // 主题
    theme: {
       // logo背景色
-      "--base-logo-background":"#2b2f3a",
+      "--base-logo-background": "#2b2f3a",
       // logo文字颜色
       "--base-logo-text-color": "#001529",
+      // navbar 背景色
+      "--base-navbar-background": "#fff",
+      // navbar 文字颜色
+      "--base-navbar-text-color": "#001529",
+      // sidebar 文字颜色
+      "--el-menu-text-color": "#fff",
+      // sidebar hover 文字颜色
+      "--el-menu-hover-text-color": "#fff",
+      // sidebar 背景色
+      "--el-menu-bg-color": "#2b2f3a",
+      // sidebar hover 背景色
+      "--el-menu-hover-bg-color": "#22262e",
+      // sidebar active 文字颜色
+      "--el-menu-active-color": "#ffd04b",
    },
 }
 
@@ -65,7 +90,7 @@ export const useConfigStore = defineStore('config', () => {
          setIsDark(value)
       }
    }
-   const setThemeAction = (theme:Theme) => {
+   const setThemeAction = (theme: Theme) => {
       Object.assign(configState.theme, theme);
       Object.keys(configState.theme).forEach(key => setCssVar(key, configState.theme[key]))
       localStorage.setItem("app-config", JSON.stringify(configState));

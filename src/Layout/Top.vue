@@ -6,9 +6,9 @@
                     <logo />
                 </template>
                 <template v-slot:side-bar>
-                    <side-bar menuMode="horizontal" textColor="#606266" :bgColor="configState.theme['--base-navbar-background']" activeTextColor="#409eff" class="horizontal-sidebar"></side-bar>
+                    <side-bar menuMode="horizontal" activeTextColor="#409eff" class="horizontal-sidebar"></side-bar>
                 </template>
-            </nav-bar >
+            </nav-bar>
             <router-view />
         </div>
         <settings />
@@ -25,7 +25,9 @@ import appStore from "@/store/index";
 const { configState, setThemeAction } = appStore.configStore;
 setThemeAction({
     "--base-logo-background": configState.theme["--base-navbar-background"],
-    "--base-logo-text-color": configState.theme["--base-logo-text-color"],
+    "--base-logo-text-color": configState.theme["--base-navbar-text-color"],
+    "--el-menu-bg-color": configState.theme["--base-navbar-background"],
+    "--el-menu-text-color": configState.theme["--base-navbar-text-color"],
 });
 </script>
 

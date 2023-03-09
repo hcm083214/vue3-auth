@@ -3,14 +3,18 @@
         <div class="left-menu">
             <slot name="logo"></slot>
             <slot name="side-bar"></slot>
-            <div v-if="isShowBreadCrumb" :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'" @click="toggleSideBar">
+            <div v-if="isShowBreadCrumb" :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'"
+                @click="toggleSideBar">
                 <!-- <img :src="hamburger" /> -->
                 <icon icon="svg-icon:hamburger" :size="20"></icon>
             </div>
-            <el-breadcrumb separator="/" v-if="isShowBreadCrumb">
-                <template v-for="(menu, index) in data.breadcrumbArr" :key="menu.id">
+            <el-breadcrumb separator="/" v-if="isShowBreadCrumb" ref="breadCrumb" :style="{
+                '--el-text-color-regular': configStore.configState.theme['--base-navbar-text-color'],
+                '--el-text-color-primary': configStore.configState.theme['--base-navbar-text-color']
+            }">
+                <template v-for="(menu, index) in     data.breadcrumbArr" :key="menu.id">
                     <el-breadcrumb-item v-if="index">
-                        <span style="color: #999;">{{ menu.menuName }}</span>
+                        <span >{{ menu.menuName }}</span>
                     </el-breadcrumb-item>
                     <el-breadcrumb-item v-else :to="{ name: menu.path }">
                         <span>{{ menu.menuName }}</span>
@@ -47,16 +51,15 @@ import { useRoute } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
 
 import avatarSvg from "@/assets/svg/avatar.svg";
-
 import appStore from "@/store/index.js";
 import EventBus, { $busKey } from "@/utils/bus";
 import { Menu } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 
 const props = defineProps({
-    isShowBreadCrumb :{
-        type:Boolean,
-        default:true
+    isShowBreadCrumb: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -81,7 +84,7 @@ const toggleSideBar = () => {
     // bus.emit(EventBus.sidebarHandler, isShow.value);
 }
 
-
+// 监听路由变化设置面包屑的数据
 watch(route, (route) => {
 
     data.breadcrumbArr = [];

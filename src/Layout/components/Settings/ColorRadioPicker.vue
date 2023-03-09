@@ -1,47 +1,70 @@
 <template>
     <div class="color-radio-picker-warp">
-        <span v-for="(item, i) in schema" :key="`radio-${i}`" class="pointer" :class="{ 'is-active': colorVal === item }"
-            :style="{
-                backgroundColor: item
-            }" @click="colorPickerHandler(item)">
-            <Icon v-if="colorVal === item" color="#fff" icon="ep:check" :size="16" />
-        </span>
+        <div class="color-set">
+            <span v-for="(item, i) in schemaArr" :key="`radio-${i}`" class="pointer"
+                :class="{ 'is-active': colorVal === item.backgroundColor }" :style="{
+                    backgroundColor: item.backgroundColor
+                }" @click="colorPickerHandler(item)">
+            </span>
+        </div>
+        <div class="color-choice">
+            <el-form :model="themeForm" size="small" :inline="true">
+                <el-form-item label="背景色">
+                    <el-color-picker v-model="themeForm.backgroundColor" @change="bgHandler" />
+                </el-form-item>
+                <el-form-item label="字体色">
+                    <el-color-picker v-model="themeForm.textColor" @change="bgHandler" />
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { PropType, reactive, ref } from 'vue';
 
 import appStore from "@/store/index";
+import { Schema } from "@/store/config";
 
 const { configState, setThemeAction } = appStore.configStore;
 
 const props = defineProps({
-    schema: {
-        type: Array,
+    schemaArr: {
+        type: Array as PropType<Schema[]>,
         default: () => ([])
     }
 })
-let colorVal = ref(props.schema[0]);
-const colorPickerHandler = (value: string) => {
-    colorVal.value = value;
-    if (configState.layoutType == "classic") {
-        setThemeAction({
-            "--base-navbar-background": value
-        })
-    } else {
-        setThemeAction({
-            "--base-logo-background": value,
-            "--base-navbar-background": value
-        })
-    }
-}
+const emit = defineEmits(['themeChange']);
+let colorVal = ref(configState.theme['--base-navbar-background'] || props.schemaArr[0].backgroundColor);
+const colorPickerHandler = (value: Schema) => {
+    colorVal.value = value.backgroundColor;
+    themeForm.backgroundColor = value.backgroundColor;
+    themeForm.textColor = value.textColor;
+    emit("themeChange", value);
+};
+
+const themeForm = reactive({
+    backgroundColor: "#fff",
+    textColor: "#000",
+});
+const bgHandler = () => {
+    emit("themeChange", {
+        backgroundColor: themeForm.backgroundColor,
+        textColor: themeForm.textColor,
+    });
+};
 </script>
 
 <style scoped lang="scss">
 .color-radio-picker-warp {
-    display: flex;
-    justify-content: space-around;
+    .color-set {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .color-choice {
+        margin: 10px;
+    }
 
     span {
         width: 20px;

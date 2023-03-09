@@ -21,8 +21,10 @@ import appStore from "@/store/index";
 
 const { configState, setThemeAction } = appStore.configStore;
 setThemeAction({
-    "--base-logo-background": "#2b2f3a",
-    "--base-logo-text-color": "#fff"
+    "--base-logo-background": configState.theme["--el-menu-bg-color"],
+    "--base-logo-text-color": configState.theme["--el-menu-text-color"],
+    "--el-menu-bg-color": configState.theme["--el-menu-bg-color"],
+    "--el-menu-text-color": configState.theme["--el-menu-text-color"],
 });
 </script>
 

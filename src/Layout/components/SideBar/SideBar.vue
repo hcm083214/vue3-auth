@@ -3,8 +3,8 @@
         <slot></slot>
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu :default-active="activeIndex" :collapse="configState.isCollapseSideBar"
-                :active-text-color="activeTextColor" :background-color="bgColor" class="el-menu-vertical"
-                :text-color="textColor" :mode="menuMode">
+                :active-text-color="activeTextColor" :background-color="configState.theme['--el-menu-bg-color']" class="el-menu-vertical"
+                :text-color="configState.theme['--el-menu-text-color']" :mode="menuMode">
                 <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item" :index="item.path"
                     :isCollapse="configState.isCollapseSideBar"></sidebar-item>
             </el-menu>
@@ -28,22 +28,13 @@ const props = defineProps({
         type: String,
         default: "vertical"
     },
-    bgColor: {
-        type: String,
-        default: "#2b2f3a"
-    },
-    textColor: {
-        type: String,
-        default: "#fff"
-    },
     activeTextColor: {
         type: String,
         default: "#ffd04b"
     },
 })
 
-
-const { usePermissionState } = usePermissionStore();
+const { usePermissionState } = appStore.permissionStore;
 const result = usePermissionState.menusList || [];
 const sidebarRouters = reactive({
     router: {} as Menu[]

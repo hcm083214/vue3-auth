@@ -1,16 +1,8 @@
 @import "@/assets/styles/variables.scss";
 
 :root {
-  --base-menu-color: #bfcbd9;
-  --base-menu-color-active: #f4f4f5;
-  --base-menu-background: #2b2f3a;
   --base-logo-background: #2b2f3a;
   --base-logo-text-color: $white;
-
-  --base-menu-color: rgba(0, 0, 0, .70);
-  --base-menu-background: $white;
-  --base-sub-menu-background: #1f2d3d;
-  --base-sub-menu-hover: #001528;
 
   --base-navbar-background: $white;
   --base-navbar-text-color: $base-text-color;
