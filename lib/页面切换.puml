@@ -1,0 +1,13 @@
+@startuml
+title 页面切换时序图
+
+actor user
+participant 配置组件 as config
+participant 显示组件 as view
+database store
+
+user -> config :修改
+config -> store :配置数据
+store --> view :响应式
+view -> view :渲染
+@enduml
