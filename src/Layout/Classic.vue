@@ -6,6 +6,7 @@
         </div>
         <div class="main-container">
             <nav-bar></nav-bar>
+            <tags-view></tags-view>
             <router-view />
         </div>
         <settings />
@@ -15,6 +16,7 @@
 <script setup lang="ts">
 import SideBar from "@/Layout/components/SideBar/SideBar.vue";
 import NavBar from "@/Layout/components/NavBar.vue";
+import TagsView from "@/Layout/components/TagsView.vue";
 import Logo from "@/Layout/components/Logo.vue";
 import Settings from "@/Layout/components/Settings/Settings.vue";
 import appStore from "@/store/index";

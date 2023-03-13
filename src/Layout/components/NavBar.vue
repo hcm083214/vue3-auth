@@ -14,7 +14,7 @@
             }">
                 <template v-for="(menu, index) in     data.breadcrumbArr" :key="menu.id">
                     <el-breadcrumb-item v-if="index">
-                        <span >{{ menu.menuName }}</span>
+                        <span>{{ menu.menuName }}</span>
                     </el-breadcrumb-item>
                     <el-breadcrumb-item v-else :to="{ name: menu.path }">
                         <span>{{ menu.menuName }}</span>
@@ -85,10 +85,10 @@ const toggleSideBar = () => {
 }
 
 // 监听路由变化设置面包屑的数据
-watch(route, (route) => {
+watch(() => route.path, (paths) => {
 
     data.breadcrumbArr = [];
-    const path = route.path.replace("/", "")
+    const path = paths.replace("/", "")
     permissionStore.usePermissionState.menusList.forEach((menu: Menu) => {
         if (menu.path === path) {
             data.breadcrumbArr.push(menu);
@@ -98,6 +98,12 @@ watch(route, (route) => {
                     data.breadcrumbArr.push({
                         path: "/home",
                         menuName: "首页",
+                        menuId: 0,
+                        component: "",
+                        icon: '',
+                        orderNum: '',
+                        perms: '',
+                        children: []
                     })
                     data.breadcrumbArr.push(menu);
                     data.breadcrumbArr.push(child);

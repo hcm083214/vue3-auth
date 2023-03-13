@@ -33,7 +33,7 @@
 import {
     Menu as IconMenu,
     Location,
-} from '@element-plus/icons-vue'
+} from '@element-plus/icons-vue';
 
 const props = defineProps(['item', "index", "isCollapse"])
 </script>
