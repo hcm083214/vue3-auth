@@ -84,7 +84,6 @@ const router = createRouter({
 const whiteList = ["/login", "/register"];
 NProgress.configure({ showSpinner: false });
 router.beforeEach(async (to, from, next) => {
-    // 采用对象解构 usePermissionState 不再具有响应式，const { usePermissionState } = storeToRefs(usePermissionState)
     const { usePermissionState, generateMenusAction } = appStore.permissionStore;
     const { userState, setUserInfoAction } = appStore.userStore;
 

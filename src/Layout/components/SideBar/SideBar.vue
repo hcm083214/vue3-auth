@@ -6,7 +6,7 @@
                 :active-text-color="activeTextColor" :background-color="configState.theme['--el-menu-bg-color']" class="el-menu-vertical"
                 :text-color="configState.theme['--el-menu-text-color']" :mode="menuMode">
                 <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item" :index="item.path"
-                    :isCollapse="configState.isCollapseSideBar"></sidebar-item>
+                    :grade="1"></sidebar-item>
             </el-menu>
         </el-scrollbar>
     </div>

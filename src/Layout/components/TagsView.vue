@@ -4,7 +4,8 @@
             <Icon icon="svg-icon:arrowLeft" :size="20" />
         </div>
         <el-scrollbar class="tags-view">
-            <router-link class="tags-view-item" :to="menu.path" v-for="menu in data.tagsMenuList" :key="menu.menuId">
+            <router-link class="tags-view-item" :to="menu.path" v-for="menu in data.tagsMenuList" :key="menu.menuId"
+                :class="{ 'active': activeIndex == menu.menuId }">
                 <span>{{ menu.menuName }}</span>
             </router-link>
         </el-scrollbar>
@@ -18,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, reactive } from "vue";
+import { watch, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import Icon from "@/components/Icon.vue";
@@ -29,12 +30,24 @@ import appStore from "@/store/index.js";
 const data = reactive({
     tagsMenuList: [] as Menu[]
 })
+const activeIndex = ref(0);
 const { permissionStore } = appStore;
 const route = useRoute();
 watch(() => route.path, (path) => {
     const pathName = path.replace("/", "");
-    permissionStore.usePermissionState.menusList.forEach(menu=>{
-        
+    
+    permissionStore.usePermissionState.menusList.forEach(menu => {
+        if (menu.path === pathName) {
+            data.tagsMenuList.push(menu);
+            activeIndex.value = menu.menuId;
+        } else {
+            menu.children.forEach(menu => {
+                if (menu.path === pathName) {
+                    data.tagsMenuList.push(menu);
+                    activeIndex.value = menu.menuId;
+                }
+            })
+        }
     })
 })
 </script>

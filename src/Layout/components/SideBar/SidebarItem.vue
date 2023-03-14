@@ -1,41 +1,32 @@
 <template>
     <el-sub-menu :index="index" v-if="item.children.length">
         <template #title>
-            <el-icon>
-                <location />
-            </el-icon>
+            <icon v-if="grade == 1" :icon="'svg-icon:'+item.icon"></icon>
             <span>{{ item.menuName }}</span>
         </template>
         <el-menu-item-group v-for="child in item.children" :key="child.menuId">
-            <el-menu-item :index="child.path" class="menu-item">
-                <router-link :to="{ 'name': child.path }">
-                    {{ child.menuName }}
-                </router-link>
-            </el-menu-item>
+            <sidebar-item :item="child" :index="child.path" :grade="gradeInner" />
         </el-menu-item-group>
     </el-sub-menu>
     <el-menu-item :index="index" class="menu-item" v-else>
-        <template v-if="isCollapse">
+        <icon v-if="grade == 1" :icon="'svg-icon:'+item.icon"></icon>
+        <template #title v-if="item.component">
             <router-link :to="{ 'name': item.path }">
-                <el-icon><icon-menu /></el-icon>
+                {{ item.menuName }}
             </router-link>
         </template>
-        <template v-else>
-            <el-icon><icon-menu /></el-icon>
-            <router-link :to="{ 'name': item.path }">
-                <span>{{ item.menuName }}</span>
-            </router-link>
+        <template #title v-else>
+            <el-button text disabled>{{ item.menuName }}</el-button>
         </template>
     </el-menu-item>
 </template>
 
 <script setup lang="ts">
-import {
-    Menu as IconMenu,
-    Location,
-} from '@element-plus/icons-vue';
+import Icon from "@/components/Icon.vue";
 
-const props = defineProps(['item', "index", "isCollapse"])
+const props = defineProps(['item', "index", "grade"]);
+// 用来标记菜单的等级
+let gradeInner = props.grade + 1;
 </script>
 
 <style lang="scss" scoped>
@@ -46,6 +37,10 @@ const props = defineProps(['item', "index", "isCollapse"])
 :deep(.el-menu--collapse .el-sub-menu__title) {
     display: flex;
     justify-content: center;
+    padding: 0;
+}
+
+:deep(.el-menu-item button) {
     padding: 0;
 }
 

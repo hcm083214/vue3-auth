@@ -4,6 +4,17 @@ import { getMenuListApi } from "@/api/menu";
 import { Menu } from "@/api/types";
 const MENU_LIST = "userMenuList";
 
+const getRolesRoutes = (menusList: Menu[], rolesRoutes: Menu[]) => {
+    menusList.forEach(menu => {
+        if (menu.children.length > 0) {
+            getRolesRoutes(menu.children, rolesRoutes);
+        }
+        if (menu.component) {
+            rolesRoutes.push(Object.assign({},menu, { children: [] }))
+        }
+    })
+}
+
 export const usePermissionStore = defineStore("permission", () => {
     const usePermissionState = reactive({
         rolesRoutes: [] as Menu[], // 当前角色的菜单数据转化为路由表 layout 下面的 children
@@ -18,18 +29,7 @@ export const usePermissionStore = defineStore("permission", () => {
             }
             menusList = result.data;
         }
-        menusList.length > 0 && menusList.forEach((menu: Menu) => {
-            let children = menu.children;
-            if (Array.isArray(children)) {
-                for (let index = children.length - 1; index >= 0; index--) {
-                    if (permissions.includes(children[index].menuId)) {
-                        usePermissionState.rolesRoutes.push(children[index]);
-                    } else {
-                        children.splice(index, 1);
-                    }
-                }
-            }
-        });
+        getRolesRoutes(menusList, usePermissionState.rolesRoutes);
 
         usePermissionState.menusList = menusList;
     }
