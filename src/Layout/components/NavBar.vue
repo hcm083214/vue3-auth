@@ -83,34 +83,23 @@ const toggleSideBar = () => {
     // isShow.value = !isShow.value;
     // bus.emit(EventBus.sidebarHandler, isShow.value);
 }
-
-// 监听路由变化设置面包屑的数据
-watch(() => route.path, (paths) => {
-
-    data.breadcrumbArr = [];
-    const path = paths.replace("/", "")
-    permissionStore.usePermissionState.menusList.forEach((menu: Menu) => {
-        if (menu.path === path) {
-            data.breadcrumbArr.push(menu);
+// 设置面包屑的数据
+const setBreadCrumb = (menuList: Menu[], pathName: string, tempArr: Menu[]) => {
+    menuList.forEach((menu, index) => {
+        const temp = [...tempArr] as Menu[];
+        if (menu.path === pathName) {
+            data.breadcrumbArr = [...temp, menu];
         } else {
-            menu.children.forEach((child) => {
-                if (child.path === path) {
-                    data.breadcrumbArr.push({
-                        path: "/home",
-                        menuName: "首页",
-                        menuId: 0,
-                        component: "",
-                        icon: '',
-                        orderNum: '',
-                        perms: '',
-                        children: []
-                    })
-                    data.breadcrumbArr.push(menu);
-                    data.breadcrumbArr.push(child);
-                }
-            })
+            temp.push(menu);
+            setBreadCrumb(menu.children, pathName, temp);
         }
     })
+}
+// 监听路由变化设置面包屑的数据
+watch(() => route.path, (paths) => {
+    data.breadcrumbArr = [];
+    const pathName = paths.replace("/", "")
+    setBreadCrumb(permissionStore.usePermissionState.menusList, pathName, []);
 }, { immediate: true })
 
 
