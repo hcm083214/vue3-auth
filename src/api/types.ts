@@ -24,3 +24,18 @@ export interface Menu {
     orderNum: string,
     children: Menu[]
 }
+export interface RoleList {
+    roleId: number,
+    roleName: string,
+    roleKey: string,
+    roleSort: number,
+    status: string,
+    createTime: Date
+}
+export interface Role {
+    total: number,
+    pageNum: number,
+    pageSize: number,
+    pages: number,
+    list: RoleList[]
+}

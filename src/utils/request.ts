@@ -6,9 +6,7 @@ import axios, {
     AxiosError
 } from "axios";
 import { ElMessage, ElMessageBox } from 'element-plus';
-
 import { getToken, removeToken } from "./token.js";
-
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
@@ -17,7 +15,6 @@ const service: AxiosInstance = axios.create({
     // 超时
     timeout: 10000
 })
-
 
 service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = getToken() || "";
@@ -48,7 +45,6 @@ service.interceptors.response.use((response: AxiosResponse) => {
         }
         return data;
     }
-
 }, function (error: AxiosError) {
     if (error.message.indexOf("timeout") !== -1) {
         ElMessage.error("服务器响应超时");

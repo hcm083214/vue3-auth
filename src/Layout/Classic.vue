@@ -5,9 +5,13 @@
             <side-bar></side-bar>
         </div>
         <div class="main-container">
-            <nav-bar></nav-bar>
-            <tags-view></tags-view>
-            <router-view />
+            <div class="app-header">
+                <nav-bar></nav-bar>
+                <tags-view></tags-view>
+            </div>
+            <div class="app-main">
+                <router-view />
+            </div>
         </div>
         <settings />
     </div>
@@ -44,6 +48,7 @@ setThemeAction({
         max-width: 200px;
         width: 200px;
         height: calc(100% - $base-header-height);
+        position: fixed;
     }
 
     &.collapseSidebar .sidebar-container {
@@ -52,6 +57,16 @@ setThemeAction({
 
     .main-container {
         width: calc(100% - $base-sidebar-width);
+        margin-left: $base-sidebar-width;
+
+        .app-header {
+            position: fixed;
+            width: 100%;
+        }
+
+        .app-main {
+            margin-top: $base-header-height + $tags-view-height;
+        }
     }
 
     &.collapseSidebar .main-container {

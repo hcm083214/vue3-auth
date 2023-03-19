@@ -4,11 +4,11 @@
             <Icon icon="svg-icon:arrowLeft" :size="20" />
         </div>
         <el-scrollbar ref="scrollbarRef" class="scrollbar" @wheel="scrollHandler">
-            <div class="tags-view" ref="innerRef">
-                <router-link class="tags-view-item" :to="menu.path" v-for="menu in data.tagsMenuList" :key="menu.menuId"
+            <div class="tags-view" ref="innerRef" >
+                <router-link :to="menu.path" class="tags-view-item" v-for="menu in data.tagsMenuList" :key="menu.menuId"
                     :class="{ 'active': activeIndex == menu.menuId }">
                     <span>{{ menu.menuName }}</span>
-                    <span class="close">X</span>
+                    <span class="close" @click="removeTags(menu)">X</span>
                 </router-link>
             </div>
         </el-scrollbar>
@@ -71,6 +71,29 @@ watch(() => route.path, (path) => {
 }, {
     immediate: true
 })
+const refreshSelectedTag = () => {
+
+}
+
+const closeSelectedTag = () => {
+
+}
+const closeOthersTags = () => {
+
+}
+const closeAllTags = () => {
+
+}
+
+const removeTags = (menu: Menu) => {
+    if (data.tagsMenuList.length <= 1) return
+    data.tagsMenuList.find((tagsMenu, index) => {
+        if (tagsMenu.menuId === menu.menuId) {
+            // data.tagsMenuList.splice(index, 1);
+            // tempTagsMenuMap.delete(menu.path);
+        }
+    })
+}
 
 let pos = 0;
 const innerRef = ref<HTMLDivElement>();
@@ -97,27 +120,16 @@ const scrollHandler = (e) => {
     scrollbarRef.value!.setScrollLeft(pos);
 }
 
-const refreshSelectedTag = () => {
 
-}
-
-const closeSelectedTag = () => {
-
-}
-const closeOthersTags = () => {
-
-}
-const closeAllTags = () => {
-
-}
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/variables.scss";
 .tags-view-wrap {
     width: 100%;
     display: flex;
     align-items: center;
-    height: 32px;
+    height: $tags-view-height;
     background-color: var(--base-navbar-background);
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
