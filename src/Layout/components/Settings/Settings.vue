@@ -65,7 +65,7 @@ const topicThemeChange = (theme: Schema) => {
             "--base-navbar-background": theme.backgroundColor,
             "--base-navbar-text-color": theme.textColor
         })
-    }else if(configState.layoutType == "top") {
+    } else if (configState.layoutType == "top") {
         setThemeAction({
             "--base-logo-background": theme.backgroundColor,
             "--base-logo-text-color": theme.textColor,
@@ -103,6 +103,7 @@ const menuThemeChange = (theme: Schema) => {
 <style scoped lang="scss">
 .fixed {
     position: fixed;
+    z-index: 2023;
     transform: translateY(-50%);
     top: 50%;
     right: 0;

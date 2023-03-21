@@ -40,7 +40,9 @@ service.interceptors.response.use((response: AxiosResponse) => {
                     type: 'warning',
                 }
             ).then(() => {
+                // 使用 location.reload() 会导致页面手动刷新，导致 router direction path 会导航到404
                 location.reload();
+                // router.push({ path: "/login", query: { redirect: route.fullPath } });
             })
         }
         return data;

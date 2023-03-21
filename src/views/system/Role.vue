@@ -26,16 +26,28 @@
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <el-button type="primary" plain icon="el-icon-plus" @click="handleAdd">新增</el-button>
+                <el-button type="primary" plain @click="handleAdd">
+                    <icon icon="svg-icon:add" />
+                    新增
+                </el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="success" plain icon="el-icon-edit" @click="handleUpdate">修改</el-button>
+                <el-button type="success" plain @click="handleUpdate">
+                    <icon icon="svg-icon:edit" />
+                    修改
+                </el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="danger" plain icon="el-icon-delete" @click="handleDelete">删除</el-button>
+                <el-button type="danger" plain @click="handleDelete">
+                    <icon icon="svg-icon:delete" />
+                    删除
+                </el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="warning" plain icon="el-icon-download" @click="handleExport">导出</el-button>
+                <el-button type="warning" plain @click="handleExport">
+                    <icon icon="svg-icon:export" />
+                    导出
+                </el-button>
             </el-col>
         </el-row>
 
@@ -46,25 +58,31 @@
             <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
             <el-table-column label="显示顺序" prop="roleSort" width="100" />
             <el-table-column label="状态" align="center" width="100">
-                <template slot-scope="scope">
-                    <el-switch active-value="0" inactive-value="1"></el-switch>
+                <template #default="scope">
+                    <el-switch active-value="0" inactive-value="1" v-model="scope.row.status"></el-switch>
                 </template>
             </el-table-column>
             <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-                <template slot-scope="scope">
-                    <span>{{ }}</span>
+                <template #default="scope">
+                    <span>{{ dataFormat(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-                <template slot-scope="scope">
-                    <el-button size="small">修改</el-button>
-                    <el-button size="small">删除</el-button>
-                    <el-dropdown size="small">
-                        <el-button size="small">更多</el-button>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="handleDataScope">数据权限</el-dropdown-item>
-                            <el-dropdown-item command="handleAuthUser">分配用户</el-dropdown-item>
-                        </el-dropdown-menu>
+                <template #default="scope">
+                    <el-button size="small" link type="primary">
+                        <icon icon="svg-icon:edit" />修改
+                    </el-button>
+                    <el-button size="small" link type="primary">
+                        <icon icon="svg-icon:delete" />删除
+                    </el-button>
+                    <el-dropdown size="small" class="dropdown-more">
+                        <el-button size="small" link type="primary">更多</el-button>
+                        <template #dropdown>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="handleDataScope">数据权限</el-dropdown-item>
+                                <el-dropdown-item command="handleAuthUser">分配用户</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
                     </el-dropdown>
                 </template>
             </el-table-column>
@@ -72,7 +90,7 @@
         <div class="pagination">
 
             <span class="size">共{{ pagination.total }}条</span>
-            <el-select v-model="pagination.pageSize" class="m-2 pagination-select" placeholder="Select" >
+            <el-select v-model="pagination.pageSize" class="m-2 pagination-select" placeholder="Select">
                 <el-option v-for="(item, index) in pagination.sizeSelection" :key="index" :label="item + '条/页'"
                     :value="item" />
             </el-select>
@@ -84,9 +102,16 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue';
+import { dayjs } from 'element-plus'
 
-import { getRoleListApi } from "@/api/role";
+import { getRoleListApi, exportRoleListApi } from "@/api/role";
 import { RoleList } from "@/api/types";
+import Icon from "@/components/Icon.vue";
+import { excel } from "@/utils/download";
+
+const dataFormat = (date: string) => {
+    return dayjs(date).format('DD/MM/YYYY')
+}
 
 const tableData = reactive({
     roleList: [] as RoleList[],
@@ -100,8 +125,10 @@ const queryParams = reactive({
     dateRange: [],
 })
 
-onMounted(() => {
-    getRoleList(pagination.currentPage, pagination.pageSize);
+onMounted(async () => {
+    tableData.loading = true;
+    await getRoleList(pagination.currentPage, pagination.pageSize);
+    tableData.loading = false;
 })
 const getRoleList = async (pageNum: number, pageSize: number) => {
     let result = await getRoleListApi({ pageNum, pageSize });
@@ -139,10 +166,10 @@ const handleDelete = () => {
 
 }
 
-const handleExport = () => {
-
+const handleExport = async () => {
+    const result = await exportRoleListApi({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
+    excel(result, "角色列表");
 }
-
 
 const pagination = reactive({
     currentPage: 1,
@@ -150,16 +177,24 @@ const pagination = reactive({
     total: 0,
     sizeSelection: [10, 20, 50, 100, 200]
 })
-watch(pagination, (pagination) => {
-    getRoleList(pagination.currentPage, pagination.pageSize);
+watch(pagination, async (pagination) => {
+    tableData.loading = true;
+    await getRoleList(pagination.currentPage, pagination.pageSize);
+    tableData.loading = false;
 })
 
 </script>
 
 <style lang="scss" scoped>
 .app-container {
-    .roles-table {
-        margin-top: 30px;
+    :deep(.cell) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dropdown-more {
+        margin-left: 10px;
     }
 
     .permission-tree {

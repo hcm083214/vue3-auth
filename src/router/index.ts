@@ -111,9 +111,14 @@ router.beforeEach(async (to, from, next) => {
         // 登陆后token过期,路由地址是白名单直接放行
         if (whiteList.includes(to.path)) {
             next();
+            // next({ path: to.path, query: { redirect: to.fullPath } });
         } else {
             // 登陆后token过期，跳转到首页，query 放入当前路由的path
-            next({ path: "/login", query: { redirect: to.fullPath } });
+            if (to.path == '/404' && to.redirectedFrom != undefined) {
+                next({ path: "/login", query: { redirect: to.redirectedFrom?.fullPath } });
+            } else {
+                next({ path: "/login", query: { redirect: to.fullPath } });
+            }
         }
     }
 });
@@ -122,7 +127,7 @@ router.afterEach(() => {
     NProgress.done()
 });
 
-function generateRoutes(menusPath:Menu[]) {
+function generateRoutes(menusPath: Menu[]) {
     menusPath.length > 0 && menusPath.forEach(menu => {
         router.addRoute("index", {
             path: `/${menu.path}`,

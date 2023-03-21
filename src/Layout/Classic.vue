@@ -49,6 +49,7 @@ setThemeAction({
         width: 200px;
         height: calc(100% - $base-header-height);
         position: fixed;
+        z-index:2023;
     }
 
     &.collapseSidebar .sidebar-container {
@@ -61,6 +62,7 @@ setThemeAction({
 
         .app-header {
             position: fixed;
+            z-index:2023;
             width: 100%;
         }
 

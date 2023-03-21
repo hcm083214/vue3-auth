@@ -11,3 +11,10 @@ export async function getRoleListApi(params: roleListApiQuery) {
     });
     return result;
 }
+export async function exportRoleListApi(params: roleListApiQuery) {
+    let result = await service.get<Role>("/roles/export",{
+        params,
+        responseType: 'blob'
+    });
+    return result;
+}
