@@ -32,22 +32,28 @@
                 </el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="success" plain @click="handleUpdate">
-                    <icon icon="svg-icon:edit" />
-                    修改
-                </el-button>
-            </el-col>
-            <el-col :span="1.5">
-                <el-button type="danger" plain @click="handleDelete">
-                    <icon icon="svg-icon:delete" />
-                    删除
-                </el-button>
-            </el-col>
-            <el-col :span="1.5">
                 <el-button type="warning" plain @click="handleExport">
                     <icon icon="svg-icon:export" />
                     导出
                 </el-button>
+            </el-col>
+            <el-col :span="1.5">
+                <el-button type="success" plain @click="handleExport('template')">
+                    <icon icon="svg-icon:export" />
+                    导入模板
+                </el-button>
+            </el-col>
+
+            <el-col :span="1.5">
+                <el-upload v-model:file-list="fileList" class="upload-demo" method="post" :on-success="handleUploadSuccess"
+                    :on-error="handleUploadError" :show-file-list="false" :action="uploadRequestConfig.uploadUrl"
+                    :headers="uploadRequestConfig.headers" >
+                    <el-button type="success" plain>
+                        <icon icon="svg-icon:import" />
+                        导入
+                    </el-button>
+                </el-upload>
+
             </el-col>
         </el-row>
 
@@ -101,13 +107,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, watch } from 'vue';
-import { dayjs } from 'element-plus'
+import { onMounted, reactive, watch, ref } from 'vue';
+import { dayjs, ElMessage } from 'element-plus'
+import type { UploadProps, UploadUserFile } from 'element-plus'
 
-import { getRoleListApi, exportRoleListApi } from "@/api/role";
+import { getRoleListApi, exportRoleListApi, importTemplateApi, importRoleListApi } from "@/api/role";
 import { RoleList } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 import { excel } from "@/utils/download";
+import { getToken } from "@/utils/token";
 
 const dataFormat = (date: string) => {
     return dayjs(date).format('DD/MM/YYYY')
@@ -130,18 +138,15 @@ onMounted(async () => {
     await getRoleList(pagination.currentPage, pagination.pageSize);
     tableData.loading = false;
 })
+
 const getRoleList = async (pageNum: number, pageSize: number) => {
     let result = await getRoleListApi({ pageNum, pageSize });
-    console.log("🚀 ~ file: Role.vue:108 ~ getRoleList ~ result:", result)
     if (result.code === 200) {
         tableData.roleList = result.data.list;
         pagination.total = result.data.total;
     }
 }
 
-const getList = () => {
-
-}
 const handleQuery = () => {
 
 }
@@ -149,26 +154,49 @@ const resetQuery = () => {
 
 }
 
-const handleAddRole = () => {
-
-}
 const handleAdd = () => {
-
-}
-const handleUpdate = () => {
-
-}
-const handleEdit = () => {
 
 }
 
 const handleDelete = () => {
 
 }
+const fileList = ref<UploadUserFile[]>();
+const uploadRequestConfig = reactive({
+    uploadUrl: "api/roles/import",
+    headers: {
+        Authorization: getToken()
+    }
+})
 
-const handleExport = async () => {
-    const result = await exportRoleListApi({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
-    excel(result, "角色列表");
+const handleUploadSuccess = (response: any) => {
+    console.log(response)
+    if (response.code === 200) {
+        ElMessage({
+            type: 'success',
+            message: response.msg
+        })
+    } else {
+        ElMessage({
+            type: 'error',
+            message: response.msg
+        })
+    }
+}
+const handleUploadError = (error: Error) => {
+    ElMessage({
+        type: 'error',
+        message: "上传失败"
+    })
+}
+const handleExport = async (type?: string) => {
+    if (type === "template") {
+        const result = await importTemplateApi();
+        excel(result, "角色列表导入模板");
+    } else {
+        const result = await exportRoleListApi({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
+        excel(result, "角色列表");
+    }
 }
 
 const pagination = reactive({
@@ -177,6 +205,7 @@ const pagination = reactive({
     total: 0,
     sizeSelection: [10, 20, 50, 100, 200]
 })
+
 watch(pagination, async (pagination) => {
     tableData.loading = true;
     await getRoleList(pagination.currentPage, pagination.pageSize);
