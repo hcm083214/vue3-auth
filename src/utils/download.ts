@@ -2,7 +2,6 @@ type fileType = 'application/vnd.ms-excel' | 'application/msword' | 'application
 const download = (data: any, fileName: string, mineType: fileType) => {
     // 创建 blob
     const blob = new Blob([data], { type: mineType });
-    console.log("🚀 ~ file: download.ts:5 ~ download ~ blob:", blob)
     const downloadUrl = URL.createObjectURL(blob);
     // 为了构建如下元素：<a href=downloadUrl download=fileName>下载</a>
     const a = document.createElement('a');

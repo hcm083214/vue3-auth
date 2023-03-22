@@ -26,7 +26,8 @@ export interface Menu {
 }
 export interface RoleList {
     roleId: number,
-    roleName: string,
+    roleNameCn: string,
+    roleNameEn: string,
     roleKey: string,
     roleSort: number,
     status: string,
