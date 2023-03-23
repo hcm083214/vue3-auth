@@ -6,16 +6,16 @@
                     <el-select v-model="queryParams.roleNameCn" placeholder="请输入角色名称" filterable remote clearable
                         :remote-method="handleRoleSearch" :loading="searchData.isRoleLoading" style="width: 200px"
                         @keyup.enter.native="handleQuery">
-                        <el-option v-for="role in searchData.roleList" :key="role.roleId" :label="role.roleNameCn"
-                            :value="role.roleNameCn" />
+                        <el-option v-for="(item, index) in searchData.searchRoleList" :key="item + index" :label="item"
+                            :value="item" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="权限字符" prop="roleKey">
                     <el-select v-model="queryParams.roleKey" placeholder="请输入权限字符" filterable remote clearable
                         :remote-method="handleRoleKeySearch" :loading="searchData.isRoleKeyLoading" style="width: 200px"
                         @keyup.enter.native="handleQuery">
-                        <el-option v-for="role in searchData.roleList" :key="role.roleId" :label="role.roleKey"
-                            :value="role.roleKey" />
+                        <el-option v-for="(item, index) in searchData.searchRoleKeyList" :key="item + index" :label="item"
+                            :value="item" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
@@ -119,9 +119,9 @@
 <script setup lang="ts">
 import { onMounted, reactive, watch, ref } from 'vue';
 import { dayjs, ElMessage } from 'element-plus'
-import type { UploadUserFile,FormInstance } from 'element-plus'
+import type { UploadUserFile, FormInstance } from 'element-plus'
 
-import { getRoleListApi, exportRoleListApi, importTemplateApi, importRoleListApi } from "@/api/role";
+import { getRoleListApi, exportRoleListApi, importTemplateApi, importRoleListApi, getRoleSearchListApi } from "@/api/role";
 import type { roleListApiQuery } from "@/api/role";
 import { RoleList } from "@/api/types";
 import Icon from "@/components/Icon.vue";
@@ -147,7 +147,8 @@ const searchData = reactive({
             label: "有效"
         }
     ],
-    roleList: [] as RoleList[],
+    searchRoleList: [] as string[],
+    searchRoleKeyList: [] as string[],
     isRoleLoading: false,
     isRoleKeyLoading: false,
 })
@@ -163,26 +164,29 @@ onMounted(async () => {
     await handleQuery();
 })
 
-const getRoleList = async (params: roleListApiQuery, type: string = 'table') => {
+const getRoleList = async (params: roleListApiQuery) => {
     let result = await getRoleListApi(params);
     if (result.code === 200) {
-        if (type == 'table') {
-            tableData.roleList = result.data.list;
-            pagination.total = result.data.total;
-        } else {
-            searchData.roleList = result.data.list;
-        }
-
+        tableData.roleList = result.data.list;
+        pagination.total = result.data.total;
+    } else {
+        tableData.roleList = [];
     }
 }
 const handleRoleSearch = async (query: string) => {
     searchData.isRoleLoading = true;
-    await getRoleList({ pageNum: 1, pageSize: 400, roleNameCn: query }, "search");
+    let result = await getRoleSearchListApi({ searchParams: "role_name_cn" ,roleNameCn: query});
+    if (result.code === 200) {
+        searchData.searchRoleList = result.data;
+    }
     searchData.isRoleLoading = false;
 }
 const handleRoleKeySearch = async (query: string) => {
     searchData.isRoleKeyLoading = true;
-    await getRoleList({ pageNum: 1, pageSize: 400, roleKey: query }, "search");
+    let result = await getRoleSearchListApi({ searchParams: "role_key",roleKey:query });
+    if (result.code === 200) {
+        searchData.searchRoleKeyList = result.data;
+    }
     searchData.isRoleKeyLoading = false;
 }
 const handleQuery = async () => {
@@ -200,9 +204,10 @@ const handleAdd = () => {
 }
 
 const handleDelete = () => {
-    
+
 }
 const fileList = ref<UploadUserFile[]>();
+// 提供给upload组件的请求配置
 const uploadRequestConfig = reactive({
     uploadUrl: "api/roles/import",
     headers: {
