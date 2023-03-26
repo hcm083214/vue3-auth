@@ -28,9 +28,9 @@ export interface RoleList {
     roleId: number,
     roleNameCn: string,
     roleNameEn: string,
-    roleKey: string,
+    functionKey: string,
     roleSort: number,
-    status: string,
+    status: number,
     createTime: Date
 }
 export interface Role {
@@ -39,4 +39,25 @@ export interface Role {
     pageSize: number,
     pages: number,
     list: RoleList[]
+}
+export interface FunctionList {
+    functionId:number,
+    functionNameCn:string,
+    functionNameEn:string,
+    functionKey:string,
+    functionDescriptionCn:string,
+    functionDescriptionEn:string,
+    status:number,
+    createTime: Date,
+    createBy: string,
+    updateTime: Date,
+    updateBy: string,
+}
+
+export interface FunctionResult {
+    total: number,
+    pageNum: number,
+    pageSize: number,
+    pages: number,
+    list: FunctionList[]
 }

@@ -15,5 +15,7 @@ const download = (data: any, fileName: string, mineType: fileType) => {
 }
 // 下载 Excel 方法
 export function excel(data: any, fileName: string) {
-    download(data, fileName, 'application/vnd.ms-excel');
+    if (data) {
+        download(data, fileName, 'application/vnd.ms-excel');
+    }
 }

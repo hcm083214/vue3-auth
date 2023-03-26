@@ -7,8 +7,8 @@ export interface roleListApiQuery {
     roleNameCn?: string,
     roleNameEn?: string,
     status?: string,
-    roleKey?: string,
-    searchParams?: 'role_name_cn' | 'role_name_en' | 'role_key' 
+    functionKey?: string,
+    searchParams?: 'role_name_cn' | 'role_name_en' | 'function_key' 
 }
 /**
  * @description: 根据 params 的设置获取角色列表

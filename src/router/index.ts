@@ -58,6 +58,11 @@ const constantRoutes = [
         component: () => import('@/views/error/404.vue'),
     },
     {
+        path: '/notFound',
+        name: 'notFound',
+        component: () => import('@/views/error/404.vue'),
+    },
+    {
         path: '/:w+',
         hidden: true,
         redirect: '/404',
@@ -102,7 +107,11 @@ router.beforeEach(async (to, from, next) => {
             generateRoutes(usePermissionState.rolesRoutes);
             // 解决使用动态路由地址直接访问，或者刷新页面导致无法找到路由的问题 No match found
             if (to.path == '/404' && to.redirectedFrom != undefined) {
-                next({ path: to.redirectedFrom?.fullPath, replace: true })
+                if (router.hasRoute(to.redirectedFrom?.path)) {
+                    next({ path: to.redirectedFrom?.fullPath, replace: true })
+                } else {
+                    next('/notFound')
+                }
             } else {
                 next()
             }

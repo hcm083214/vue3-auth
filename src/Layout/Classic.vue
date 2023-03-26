@@ -44,16 +44,30 @@ setThemeAction({
     width: 100%;
     height: 100%;
 
+    &.collapseSidebar {
+        .sidebar-container {
+            width: $base-collapse-sidebar-width;
+        }
+
+        .main-container {
+            width: calc(100% - $base-collapse-sidebar-width);
+            margin-left: $base-collapse-sidebar-width;
+        }
+
+        .main-container {
+            width: calc(100% - $base-collapse-sidebar-width);
+
+            .app-header {
+                width: calc(100% - $base-collapse-sidebar-width);
+            }
+        }
+    }
     .sidebar-container {
         max-width: 200px;
         width: 200px;
         height: calc(100% - $base-header-height);
         position: fixed;
-        z-index:2023;
-    }
-
-    &.collapseSidebar .sidebar-container {
-        width: $base-collapse-sidebar-width;
+        z-index: 2023;
     }
 
     .main-container {
@@ -62,8 +76,8 @@ setThemeAction({
 
         .app-header {
             position: fixed;
-            z-index:2023;
-            width: 100%;
+            z-index: 2023;
+            width: calc(100% - $base-sidebar-width);
         }
 
         .app-main {
@@ -71,8 +85,5 @@ setThemeAction({
         }
     }
 
-    &.collapseSidebar .main-container {
-        width: calc(100% - $base-collapse-sidebar-width);
-    }
 }
 </style>

@@ -5,7 +5,6 @@
             <slot name="side-bar"></slot>
             <div v-if="isShowBreadCrumb" :class="isCollapse ? 'hamburger-container ' : 'hamburger-container reverse'"
                 @click="toggleSideBar">
-                <!-- <img :src="hamburger" /> -->
                 <icon icon="svg-icon:hamburger" :size="20"></icon>
             </div>
             <el-breadcrumb separator="/" v-if="isShowBreadCrumb" ref="breadCrumb" :style="{
