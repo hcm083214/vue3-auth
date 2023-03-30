@@ -5,7 +5,7 @@
             <el-menu :default-active="activeIndex" :collapse="configState.isCollapseSideBar"
                 :active-text-color="activeTextColor" :background-color="configState.theme['--el-menu-bg-color']" class="el-menu-vertical"
                 :text-color="configState.theme['--el-menu-text-color']" :mode="menuMode">
-                <sidebar-item v-for="item in sidebarRouters.router" :key="item.menuId" :item="item" :index="item.path"
+                <sidebar-item v-for="item in sidebarRouters.router" :key="item.resourceId" :item="item" :index="item.path"
                     :grade="1"></sidebar-item>
             </el-menu>
         </el-scrollbar>
@@ -19,8 +19,7 @@ import { useRoute } from 'vue-router';
 
 import SidebarItem from "./SidebarItem.vue";
 
-import { usePermissionStore } from "@/store/permission";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 import appStore from "@/store/index";
 
 const props = defineProps({
@@ -37,7 +36,7 @@ const props = defineProps({
 const { usePermissionState } = appStore.permissionStore;
 const result = usePermissionState.menusList || [];
 const sidebarRouters = reactive({
-    router: {} as Menu[]
+    router: {} as Resource[]
 });
 if (result.length > 0) {
     sidebarRouters.router = result.sort((a, b) => Number(a.orderNum) - Number(b.orderNum));

@@ -14,15 +14,15 @@ export interface UserInfo {
     permissions: number[],
 }
 
-export interface Menu {
-    menuId: number,
-    menuName: string,
+export interface Resource {
+    resourceId: number,
+    resourceName: string,
     component: string,
     path: string,
     icon: string,
     perms: string,
     orderNum: string,
-    children: Menu[]
+    children: Resource[]
 }
 export interface RoleList {
     roleId: number,

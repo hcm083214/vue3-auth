@@ -5,9 +5,9 @@
         </div>
         <el-scrollbar ref="scrollbarRef" class="scrollbar" @wheel="scrollHandler">
             <div class="tags-view" ref="innerRef" >
-                <router-link :to="menu.path" class="tags-view-item" v-for="menu in data.tagsMenuList" :key="menu.menuId"
-                    :class="{ 'active': activeIndex == menu.menuId }">
-                    <span>{{ menu.menuName }}</span>
+                <router-link :to="menu.path" class="tags-view-item" v-for="menu in data.tagsMenuList" :key="menu.resourceId"
+                    :class="{ 'active': activeIndex == menu.resourceId }">
+                    <span>{{ menu.resourceName }}</span>
                     <span class="close" @click="removeTags(menu)">X</span>
                 </router-link>
             </div>
@@ -39,25 +39,25 @@ import { useRoute } from "vue-router";
 import { ElScrollbar } from 'element-plus'
 
 import Icon from "@/components/Icon.vue";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 import appStore from "@/store/index.js";
 
 
 const data = reactive({
-    tagsMenuList: [] as Menu[]
+    tagsMenuList: [] as Resource[]
 })
 const activeIndex = ref(0);
 const { permissionStore } = appStore;
 const route = useRoute();
 
 const tempTagsMenuMap = new Map<string, number>();
-const setTagsMenuList = (menuList: Menu[], pathName: string) => {
+const setTagsMenuList = (menuList: Resource[], pathName: string) => {
     menuList.find((menu) => {
         if (menu.path === pathName) {
-            activeIndex.value = menu.menuId;
+            activeIndex.value = menu.resourceId;
         }
         if (menu.path === pathName && !tempTagsMenuMap.has(pathName)) {
-            tempTagsMenuMap.set(pathName, menu.menuId)
+            tempTagsMenuMap.set(pathName, menu.resourceId)
             data.tagsMenuList.push(menu);
         } else {
             setTagsMenuList(menu.children, pathName);
@@ -85,10 +85,10 @@ const closeAllTags = () => {
 
 }
 
-const removeTags = (menu: Menu) => {
+const removeTags = (menu: Resource) => {
     if (data.tagsMenuList.length <= 1) return
     data.tagsMenuList.find((tagsMenu, index) => {
-        if (tagsMenu.menuId === menu.menuId) {
+        if (tagsMenu.resourceId === menu.resourceId) {
             // data.tagsMenuList.splice(index, 1);
             // tempTagsMenuMap.delete(menu.path);
         }

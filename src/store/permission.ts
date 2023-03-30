@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { getMenuListApi } from "@/api/menu";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 const MENU_LIST = "userMenuList";
 
-const getRolesRoutes = (menusList: Menu[], rolesRoutes: Menu[]) => {
+const getRolesRoutes = (menusList: Resource[], rolesRoutes: Resource[]) => {
     menusList.forEach(menu => {
         if (menu.children.length > 0) {
             getRolesRoutes(menu.children, rolesRoutes);
@@ -17,8 +17,8 @@ const getRolesRoutes = (menusList: Menu[], rolesRoutes: Menu[]) => {
 
 export const usePermissionStore = defineStore("permission", () => {
     const usePermissionState = reactive({
-        rolesRoutes: [] as Menu[], // 当前角色的菜单数据转化为路由表 layout 下面的 children
-        menusList: [] as Menu[],// 后端返回的菜单数据
+        rolesRoutes: [] as Resource[], // 当前角色的菜单数据转化为路由表 layout 下面的 children
+        menusList: [] as Resource[],// 后端返回的菜单数据
     })
     const generateMenusAction = async (permissions: number[]) => {
         let menusList = JSON.parse(sessionStorage.getItem(MENU_LIST) || "[]");

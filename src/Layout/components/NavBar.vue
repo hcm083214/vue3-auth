@@ -13,10 +13,10 @@
             }">
                 <template v-for="(menu, index) in     data.breadcrumbArr" :key="menu.id">
                     <el-breadcrumb-item v-if="index">
-                        <span>{{ menu.menuName }}</span>
+                        <span>{{ menu.resourceName }}</span>
                     </el-breadcrumb-item>
                     <el-breadcrumb-item v-else :to="{ name: menu.path }">
-                        <span>{{ menu.menuName }}</span>
+                        <span>{{ menu.resourceName }}</span>
                     </el-breadcrumb-item>
                 </template>
             </el-breadcrumb>
@@ -52,7 +52,7 @@ import { CaretBottom } from "@element-plus/icons-vue";
 import avatarSvg from "@/assets/svg/avatar.svg";
 import appStore from "@/store/index.js";
 import EventBus, { $busKey } from "@/utils/bus";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 
 const props = defineProps({
@@ -68,7 +68,7 @@ const avatar = ref(userStore.userState.avatar || avatarSvg)
 
 const route = useRoute();
 const data = reactive({
-    breadcrumbArr: [] as Menu[],
+    breadcrumbArr: [] as Resource[],
 })
 
 const bus = inject<EventBus>($busKey) as EventBus;
@@ -83,9 +83,9 @@ const toggleSideBar = () => {
     // bus.emit(EventBus.sidebarHandler, isShow.value);
 }
 // 设置面包屑的数据
-const setBreadCrumb = (menuList: Menu[], pathName: string, tempArr: Menu[]) => {
+const setBreadCrumb = (menuList: Resource[], pathName: string, tempArr: Resource[]) => {
     menuList.forEach((menu, index) => {
-        const temp = [...tempArr] as Menu[];
+        const temp = [...tempArr] as Resource[];
         if (menu.path === pathName) {
             data.breadcrumbArr = [...temp, menu];
         } else {

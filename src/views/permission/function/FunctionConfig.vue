@@ -43,7 +43,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 
 import { getAllMenuListApi } from "@/api/menu";
 import { getPermissionIdListApi, editFunctionInfoApi, addFunctionInfoApi } from "@/api/function";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 
 const emit = defineEmits(["handleConfig"]);
 const props = defineProps({
@@ -79,7 +79,7 @@ const treeDefaultProps = {
     label: 'menuName',
 }
 const treeData = reactive({
-    allPermissionList: [] as Menu[],
+    allPermissionList: [] as Resource[],
     selectPermissionIdList: [] as number[],
     isLoading: false,
 })

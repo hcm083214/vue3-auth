@@ -2,9 +2,9 @@
     <el-sub-menu :index="index" v-if="item.children.length">
         <template #title>
             <icon v-if="grade == 1" :icon="'svg-icon:' + item.icon"></icon>
-            <span>{{ item.menuName }}</span>
+            <span>{{ item.resourceName }}</span>
         </template>
-        <el-menu-item-group v-for="child in item.children" :key="child.menuId">
+        <el-menu-item-group v-for="child in item.children" :key="child.resourceId">
             <sidebar-item :item="child" :index="child.path" :grade="gradeInner" />
         </el-menu-item-group>
     </el-sub-menu>
@@ -12,10 +12,10 @@
         <el-menu-item :index="index" class="menu-item">
             <icon v-if="grade == 1" :icon="'svg-icon:' + item.icon"></icon>
             <template #title v-if="item.component">
-                {{ item.menuName }}
+                {{ item.resourceName }}
             </template>
             <template #title v-else>
-                <el-button text disabled>{{ item.menuName }}</el-button>
+                <el-button text disabled>{{ item.resourceName }}</el-button>
             </template>
         </el-menu-item>
     </router-link>

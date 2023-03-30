@@ -1,12 +1,12 @@
 import service from "../utils/request";
-import { Menu } from "@/api/types";
+import { Resource } from "@/api/types";
 
 export async function getMenuListApi() {
-    let result = await service.get<Menu[]>("/menus");
+    let result = await service.get<Resource[]>("/resource/menu");
     return result;
 }
 
 export async function getAllMenuListApi() {
-    let result = await service.get<Menu[]>("/menus/all");
+    let result = await service.get<Resource[]>("/resource/all");
     return result;
 }
