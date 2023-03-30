@@ -37,7 +37,8 @@
 
                 <el-table-column label="状态" align="center" width="100" v-if="rows.label == '状态'">
                     <template #default="scope">
-                        <el-switch active-value="1" inactive-value="0" v-model="scope.row.status"></el-switch>
+                        <el-switch active-value="1" inactive-value="0" v-model="scope.row.status"
+                            @change="handleEdit(scope.row, true)"></el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column label="创建时间" align="center" prop="createTime" width="180" v-else-if="rows.label == '创建时间'">
@@ -49,7 +50,7 @@
             </template>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button size="small" link type="primary">
+                    <el-button size="small" link type="primary" @click="handleEdit(scope.row)">
                         <icon icon="svg-icon:edit" />修改
                     </el-button>
                     <el-button size="small" link type="primary">
@@ -100,11 +101,11 @@ const emit = defineEmits(["handleEvent"])
 const handleAdd = () => {
     emit("handleEvent", { mode: "Add" })
 }
-const handleExport = (type: 'template' | undefined) => {
+const handleExport = (exportType: 'template' | undefined) => {
     emit("handleEvent", {
         mode: "Export",
         option: {
-            type
+            exportType
         }
     })
 }
@@ -125,6 +126,17 @@ const handleUploadError = (error: Error) => {
     ElMessage({
         type: 'error',
         message: "上传失败"
+    })
+}
+
+const handleEdit = (row: any, isEditStatus = false) => {
+    console.log("🚀 ~ file: CommonTable.vue:132 ~ handleEdit ~ row:", row)
+    emit("handleEvent", {
+        mode: "Edit",
+        option: {
+            rowData: row,
+            isEditStatus
+        }
     })
 }
 </script>

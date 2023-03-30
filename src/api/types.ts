@@ -41,17 +41,17 @@ export interface Role {
     list: RoleList[]
 }
 export interface FunctionList {
-    functionId:number,
-    functionNameCn:string,
-    functionNameEn:string,
-    functionKey:string,
-    functionDescriptionCn:string,
-    functionDescriptionEn:string,
-    status:number,
-    createTime: Date,
-    createBy: string,
-    updateTime: Date,
-    updateBy: string,
+    functionId: number,
+    functionNameCn: string,
+    functionNameEn: string,
+    functionKey: string,
+    functionDescriptionCn: string,
+    functionDescriptionEn: string,
+    status?: string,
+    createTime?: Date,
+    createBy?: string,
+    updateTime?: Date,
+    updateBy?: string,
 }
 
 export interface FunctionResult {

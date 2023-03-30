@@ -24,10 +24,10 @@
                             :value="status.value" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="创建时间">
+                <!-- <el-form-item label="创建时间">
                     <el-date-picker v-model="queryParams.dateRange" style="width: 200px" value-format="YYYY/MM/DD"
                         type="daterange" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <div class="search-btn">
                 <el-button type="primary" @click="handleQuery">搜索</el-button>
@@ -80,7 +80,12 @@ const getSearchList = async (searchKey: searchKey, searchVal: string) => {
     searchData.isRoleLoading = true;
     let result = await getRoleSearchListApi({ searchParams: searchKey, [searchKey]: searchVal });
     if (result.code === 200) {
-        searchData.searchRoleList = result.data;
+        if (searchKey === "function_key") {
+            searchData.searchRoleKeyList = result.data;
+        } else {
+            searchData.searchRoleList = result.data;
+        }
+
     }
     searchData.isRoleLoading = false;
 }
@@ -238,6 +243,7 @@ const currentPageChange = async (pageNum: number) => {
     .dropdown-more {
         margin-left: 10px;
     }
+
     .permission-tree {
         margin-bottom: 30px;
     }
