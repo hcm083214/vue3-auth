@@ -17,11 +17,13 @@ export interface UserInfo {
 export interface Resource {
     resourceId: number,
     resourceName: string,
+    parentId: number,
     component: string,
     path: string,
     icon: string,
-    perms: string,
-    orderNum: string,
+    perms?: string,
+    orderNum?: string,
+    resourceType: string,
     children: Resource[]
 }
 export interface RoleList {

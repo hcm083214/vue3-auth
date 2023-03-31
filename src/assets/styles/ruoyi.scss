@@ -64,9 +64,6 @@
     word-break: break-word;
 }
 
-.el-dialog:not(.is-fullscreen) {
-	margin-top: 6vh !important;
-}
 
 .el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
     overflow: auto;
@@ -283,4 +280,16 @@
 
 .pointer{
 	cursor: pointer;
+}
+
+.flex{
+	display: flex;
+}
+
+.justify-content-center{
+	justify-content: center;
+}
+
+.align-items-center{
+	align-items: center;
 }

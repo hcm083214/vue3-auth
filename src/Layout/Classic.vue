@@ -7,7 +7,7 @@
         <div class="main-container">
             <div class="app-header">
                 <nav-bar></nav-bar>
-                <tags-view></tags-view>
+                <!-- <tags-view></tags-view> -->
             </div>
             <div class="app-main">
                 <router-view />
@@ -81,7 +81,7 @@ setThemeAction({
         }
 
         .app-main {
-            margin-top: $base-header-height + $tags-view-height;
+            margin-top: $base-header-height ;
         }
     }
 

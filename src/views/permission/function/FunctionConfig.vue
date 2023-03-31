@@ -24,7 +24,7 @@
             <div class="el-form-item__label">对应的菜单列表</div>
             <div class="tree-content">
                 <el-tree ref="treeRef" v-loading="treeData.isLoading" :data="treeData.allPermissionList" show-checkbox
-                    node-key="menuId" :default-expanded-keys="treeData.selectPermissionIdList" :check-strictly="true"
+                    node-key="resourceId" :default-expanded-keys="treeData.selectPermissionIdList" :check-strictly="true"
                     :default-checked-keys="treeData.selectPermissionIdList" :props="treeDefaultProps" />
             </div>
         </div>
@@ -41,7 +41,7 @@ import { reactive, ref } from "vue";
 import { ElTree, ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus'
 
-import { getAllMenuListApi } from "@/api/menu";
+import { getResourceApi } from "@/api/menu";
 import { getPermissionIdListApi, editFunctionInfoApi, addFunctionInfoApi } from "@/api/function";
 import { Resource } from "@/api/types";
 
@@ -74,9 +74,9 @@ const resetQuery = (formEl: FormInstance | undefined) => {
 
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const treeDefaultProps = {
-    id: 'menuId',
+    id: 'resourceId',
     children: 'children',
-    label: 'menuName',
+    label: 'resourceName',
 }
 const treeData = reactive({
     allPermissionList: [] as Resource[],
@@ -85,7 +85,7 @@ const treeData = reactive({
 })
 const getTreeData = async () => {
     treeData.isLoading = true;
-    const result1 = await getAllMenuListApi();
+    const result1 = await getResourceApi();
     if (result1.code === 200) {
         treeData.allPermissionList = result1.data;
     }
@@ -113,6 +113,7 @@ const handleClick = async (formEl: FormInstance | undefined, mode: string) => {
         result = await editFunctionInfoApi({ ...functionForm, permissionIds: selectPermissionIdList })
     }
     if (result?.code === 200) {
+        // 关闭弹框
         emit("handleConfig");
     } else {
         ElMessage({
