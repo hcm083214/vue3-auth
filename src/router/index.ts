@@ -107,7 +107,7 @@ router.beforeEach(async (to, from, next) => {
             generateRoutes(usePermissionState.rolesRoutes);
             // 解决使用动态路由地址直接访问，或者刷新页面导致无法找到路由的问题 No match found
             if (to.path == '/404' && to.redirectedFrom != undefined) {
-                if (router.hasRoute(to.redirectedFrom?.path)) {
+                if (router.getRoutes().find(item => item.path === to.redirectedFrom?.path)) {
                     next({ path: to.redirectedFrom?.fullPath, replace: true })
                 } else {
                     next('/notFound')

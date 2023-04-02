@@ -2,6 +2,7 @@
     <div class="app-container">
         <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">功能权限关系快速编辑</el-button>
         <el-button type="success" class="mb10" @click="handleAdd">新增菜单权限</el-button>
+        <el-button type="success" class="mb10" @click="handleSyncResource">资源同步</el-button>
         <el-table :data="menuData.menuList" v-loading="menuData.isLoading" style="width: 100%; margin-bottom: 20px"
             row-key="resourceId" border header-row-class-name="table-header" class="table-header">
             <el-table-column prop="resourceId" label="资源id" sortable />
@@ -15,14 +16,13 @@
             <el-table-column prop="perms" label="权限标识" sortable />
             <el-table-column align="center" label="操作">
                 <template #default="scope">
-                    <div v-if="scope.row.resourceType !== 'F'">
-                        <el-button size="small" link type="primary" @click="handleEdit(scope.row)">
-                            <icon icon="svg-icon:edit" />修改
-                        </el-button>
-                        <el-button size="small" link type="primary">
-                            <icon icon="svg-icon:delete" />删除
-                        </el-button>
-                    </div>
+                    <el-button v-if="scope.row.resourceType !== 'F'" size="small" link type="primary"
+                        @click="handleEdit(scope.row)">
+                        <icon icon="svg-icon:edit" />修改
+                    </el-button>
+                    <el-button size="small" link type="primary" @click="handleDelete(scope.row)">
+                        <icon icon="svg-icon:delete" />删除
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,10 +49,10 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 
-import { getResourceApi, editResourceParentIdApi } from "@/api/menu"
+import { getResourceApi, editResourceParentIdApi, syncApiList, deleteResourceApi } from "@/api/menu"
 import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import SourceConfig from "@/views/permission/source/SourceConfig.vue"
 
 onMounted(() => {
@@ -78,6 +78,10 @@ const getResourceData = async () => {
     }
     menuData.isLoading = false;
 }
+const handleSyncResource = async () => {
+    await syncApiList();
+    await getResourceData();
+}
 const typeConvert = (type: "M" | "C" | "F") => {
     const map = {
         M: "目录",
@@ -86,15 +90,41 @@ const typeConvert = (type: "M" | "C" | "F") => {
     }
     return map[type];
 }
-
-// 功能权限关系快速编辑逻辑
-const isShowParentSetDialog = ref(false);
 const handleEdit = (menu: Resource) => {
+    // 菜单和目录才可编辑
     isShowConfigDialog.value = true;
     configData.resource = menu;
     configData.title = "菜单编辑";
     configData.mode = "Edit";
 }
+const deleteResourceFn = (list: Resource[], deleteResource: Resource) => {
+    for (let i = list.length - 1; i >= 0; i--) {
+        if (list[i].resourceId === deleteResource.resourceId) {
+            list.splice(i, 1);
+            break;
+        }
+        if (list[i].children.length > 0) {
+            deleteResourceFn(list[i].children, deleteResource);
+        }
+    }
+}
+const handleDelete = async (resource: Resource) => {
+    await ElMessageBox.confirm(
+        `确认删除`,
+        '系统提示',
+        {
+            confirmButtonText: `确认`,
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+    await deleteResourceApi(resource.resourceId);
+    deleteResourceFn(menuData.menuList, resource);
+
+}
+
+// 功能权限关系快速编辑逻辑
+const isShowParentSetDialog = ref(false);
 const handleEditParentId = async () => {
     const result = await editResourceParentIdApi(menuData.menuList);
     if (result.code === 200) {

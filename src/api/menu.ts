@@ -37,12 +37,28 @@ export async function getApiList() {
 }
 
 /**
+ * @description: 同步API列表
+ * @return {*}
+ */
+export async function syncApiList() {
+    return await service.get("/resource/api/sync");
+}
+
+/**
  * @description: 获取功能权限列表（菜单+api接口）
  * @return {*}
  */
 export async function getResourceApi() {
     let result = await service.get<Resource[]>("/resource/all");
     return result;
+}
+
+/**
+ * @description: 获取功能权限列表（菜单+api接口）
+ * @return {*}
+ */
+export async function deleteResourceApi(resourceId: number) {
+    return await service.post(`/resource/all/resource_id/${resourceId}`, {});
 }
 
 /**

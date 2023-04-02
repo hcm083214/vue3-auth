@@ -8,7 +8,7 @@
     "jsx": "preserve",
     "resolveJsonModule": true,
     // 解决使用 obj[key] 报错问题
-    "suppressImplicitAnyIndexErrors":true,
+    // "suppressImplicitAnyIndexErrors":true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": [

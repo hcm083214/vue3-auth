@@ -25,24 +25,26 @@ service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     }
     return config;
 })
-
+let lock = false;
 service.interceptors.response.use((response: AxiosResponse) => {
     if (response.status === 200) {
         const data = response.data;
         if (data.code === 401 || data.code === 403) {
             removeToken();
-            ElMessageBox.confirm(
-                '登录状态已过期，您可以继续留在该页面，或者重新登录',
+            let msg = data.msg;
+            !lock && ElMessageBox.confirm(
+                `${msg ? msg : '你的登陆已经过期'}，您可以继续留在该页面，或者重新登录`,
                 '系统提示',
                 {
-                    confirmButtonText: '重新登陆',
+                    confirmButtonText: `重新登录`,
                     cancelButtonText: '取消',
                     type: 'warning',
                 }
             ).then(() => {
-                // 使用 location.reload() 会导致页面手动刷新，导致 router direction path 会导航到404
                 location.reload();
+                lock = false;
             })
+            lock = true;
         }
         return data;
     }

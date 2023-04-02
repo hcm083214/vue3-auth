@@ -135,13 +135,20 @@ const dialogConfig = reactive({
 interface TableHandlerOption {
     mode: "Add" | "Export" | "Edit" | "Delete",
     option?: {
-        type: string
+        type?: string,
+        rowData?: RoleList
     }
 }
 const tableHandleEventObj = {
     handleAdd() {
         dialogConfig.isVisible = true;
         dialogConfig.title = "新增角色";
+    },
+    handleEdit(option: TableHandlerOption) {
+        console.log("🚀 ~ file: Role.vue:147 ~ handleEdit ~ option:", option)
+        const role = option.option?.rowData as RoleList;
+        dialogConfig.isVisible = true;
+        dialogConfig.title = `编辑角色（${role.roleId}）`;
     },
     handleDelete() {
 
@@ -200,7 +207,6 @@ const tableData = reactive({
     }
 })
 const tableHandler = (option: TableHandlerOption) => {
-    console.log(option)
     tableHandleEventObj[`handle${option.mode}`](option);
 }
 const handleQuery = () => {
