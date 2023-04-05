@@ -35,13 +35,18 @@
             <el-table-column type="selection" width="55" align="center" />
             <template v-for="rows in props.tableHeaderConfig" :key="rows.label">
 
-                <el-table-column label="状态" align="center" width="100" v-if="rows.label == '状态'">
+                <el-table-column :label="rows.label" align="center" :width="rows.width" v-if="rows.label == '状态'">
                     <template #default="scope">
                         <el-switch active-value="1" inactive-value="0" v-model="scope.row.status"
                             @change="handleEdit(scope.row, true)"></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" align="center" prop="createTime" width="180" v-else-if="rows.label == '创建时间'">
+                <el-table-column :label="rows.label" align="center" :width="rows.width" v-else-if="rows.label == '权限列表'">
+                    <template #default="scope">
+                        <span>{{ getFunctionListString(scope.row) }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column :label="rows.label" align="center" prop="createTime" :width="rows.width" v-else-if="rows.label == '创建时间'">
                     <template #default="scope">
                         <span>{{ dataFormat(scope.row.createTime, "YYYY/MM/DD HH:mm:ss") }}</span>
                     </template>
@@ -69,6 +74,7 @@ import { ElMessage } from 'element-plus';
 
 import { dataFormat } from "@/utils/index";
 import Icon from "@/components/Icon.vue";
+import { FunctionList, RoleList } from "@/api/types";
 const props = defineProps({
     isLoading: {
         type: Boolean,
@@ -108,6 +114,13 @@ const handleExport = (exportType: 'template' | undefined) => {
             exportType
         }
     })
+}
+const getFunctionListString = (role: RoleList) => {
+    if (!!role.functionList) {
+        return role.functionList.reduce((prev: string, next: FunctionList, index: number) => index == 0 ? prev + next.functionKey : prev + ',' + next.functionKey, "")
+    } else {
+        return ''
+    }
 }
 const handleUploadSuccess = (response: any) => {
     if (response.code === 200) {

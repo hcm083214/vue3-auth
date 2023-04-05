@@ -1,5 +1,5 @@
 import service from "../utils/request";
-import { UserInfo,Captcha } from "@/api/types"
+import { UserInfo, Captcha } from "@/api/types"
 
 interface LoginRequestData {
     userName: string,
@@ -12,6 +12,11 @@ interface LoginRequestData {
     uuid: string,
 }
 
+/**
+ * @description: 获取验证码
+ * @param {*} type string | math
+ * @return {*}
+ */
 export async function getCodeApi(type = "string") {
     let result = await service.get<Captcha>("/captcha/image", {
         params: {
@@ -24,6 +29,11 @@ export async function getCodeApi(type = "string") {
     return result;
 }
 
+/**
+ * @description: 登入服务
+ * @param {LoginRequestData} data
+ * @return {*}
+ */
 export async function loginApi(data: LoginRequestData) {
     let result = await service.post<UserInfo>("/login", {
         headers: {
@@ -34,6 +44,11 @@ export async function loginApi(data: LoginRequestData) {
     return result;
 }
 
+/**
+ * @description: 注册服务
+ * @param {LoginRequestData} data
+ * @return {*}
+ */
 export async function registerApi(data: LoginRequestData) {
     let result = await service.post<UserInfo>("/register", {
         headers: {
@@ -44,7 +59,19 @@ export async function registerApi(data: LoginRequestData) {
     return result;
 }
 
+/**
+ * @description: 得到登陆用户信息
+ * @return {*}
+ */
 export async function getUserInfoApi() {
     const result = await service.get<UserInfo>("/user");
     return result;
+}
+
+/**
+ * @description: 用户登出
+ * @return {*}
+ */
+export async function logoutApi() {
+    return await service.post<UserInfo>("/logout", {});
 }

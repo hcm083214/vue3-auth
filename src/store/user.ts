@@ -4,12 +4,13 @@ import { reactive } from 'vue';
 import { getUserInfoApi } from "../api/login";
 const USER_INFO = "userInformation";
 export const useUserStore = defineStore('user', () => {
-    const userState = reactive({
+    const initUserInfo = {
         name: '',
         avatar: '',
         roles: [] as number[],
         permissions: [] as number[]
-    })
+    }
+    const userState = reactive(initUserInfo);
     async function setUserInfoAction() {
         let user = JSON.parse(sessionStorage.getItem(USER_INFO) || "{}");
         if (!sessionStorage.getItem(USER_INFO)) {
@@ -17,7 +18,7 @@ export const useUserStore = defineStore('user', () => {
             if (result.code === 200) {
                 userState.name = result.data.userName;
                 userState.avatar = result.data.avatar;
-                userState.roles = result.data.roles;
+                userState.roles = result.data.roleIds;
                 userState.permissions = result.data.permissions;
                 sessionStorage.setItem(USER_INFO, JSON.stringify(result.data));
             }
@@ -28,6 +29,10 @@ export const useUserStore = defineStore('user', () => {
             userState.permissions = user.permissions;
         }
 
+    };
+    function clearUserInfoAction() {
+        Object.assign(userState, initUserInfo);
+        sessionStorage.removeItem(USER_INFO);
     }
-    return { userState, setUserInfoAction }
+    return { userState, setUserInfoAction, clearUserInfoAction }
 })

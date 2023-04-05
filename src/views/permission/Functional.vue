@@ -91,7 +91,7 @@ const handleFunctionSearch = async (query: string) => {
     }
 }
 const handleFunctionKeySearch = async (query: string) => {
-    const result = await getFunctionSearchListApi({ searchParams: "function_key", functionNameCn: query });
+    const result = await getFunctionSearchListApi({ searchParams: "function_key", functionKey: query });
     if (result.code === 200) {
         searchData.searchFunctionKeyList = result.data;
     }
@@ -149,7 +149,7 @@ const tableData = reactive({
         {
             label: '创建时间',
             prop: 'createTime',
-            width: 120,
+            width: 180,
         },
     ],
     // 提供给upload组件的请求配置
@@ -178,6 +178,9 @@ const tableHandleEventObj = {
             dialogConfig.mode = "Edit";
             dialogData.value = functions;
         }
+    },
+    handleDelete(){
+
     },
     async handleExport(option: TableHandlerOption) {
         let result;

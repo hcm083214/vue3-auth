@@ -42,8 +42,8 @@
             @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" />
 
         <el-dialog v-model="dialogConfig.isVisible" :title="dialogConfig.title" width="50%" top="100px"
-            :close-on-click-modal="false" draggable>
-            <role-config />
+            :close-on-click-modal="false" destroy-on-close draggable>
+            <role-config :roleConfigData="roleConfigData.data" :mode="roleConfigData.mode" @handleConfig="handleConfig" />
         </el-dialog>
     </div>
 </template>
@@ -52,9 +52,9 @@
 import { onMounted, reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus'
 
-import { getRoleListApi, exportRoleListApi, importTemplateApi, importRoleListApi, getRoleSearchListApi } from "@/api/role";
+import { getRoleListApi, exportRoleListApi, importTemplateApi, importRoleListApi, getRoleSearchListApi, editRoleInfoApi } from "@/api/role";
 import type { roleListApiQuery } from "@/api/role";
-import { RoleList } from "@/api/types";
+import { RoleList, FunctionList } from "@/api/types";
 import { excel } from "@/utils/download";
 import { getToken } from "@/utils/token";
 import RoleConfig from "@/views/permission/role/RoleConfig.vue";
@@ -136,19 +136,28 @@ interface TableHandlerOption {
     mode: "Add" | "Export" | "Edit" | "Delete",
     option?: {
         type?: string,
-        rowData?: RoleList
+        rowData?: RoleList,
+        isEditStatus?: boolean,
     }
 }
 const tableHandleEventObj = {
     handleAdd() {
         dialogConfig.isVisible = true;
         dialogConfig.title = "新增角色";
+        roleConfigData.data = initRoleConfigData;
+        roleConfigData.mode = 'Add';
     },
-    handleEdit(option: TableHandlerOption) {
-        console.log("🚀 ~ file: Role.vue:147 ~ handleEdit ~ option:", option)
+    async handleEdit(option: TableHandlerOption) {
         const role = option.option?.rowData as RoleList;
-        dialogConfig.isVisible = true;
-        dialogConfig.title = `编辑角色（${role.roleId}）`;
+        const isEditStatus = option.option?.isEditStatus;
+        if (isEditStatus) {
+            await editRoleInfoApi(role);
+        } else {
+            dialogConfig.isVisible = true;
+            dialogConfig.title = `编辑角色（${role.roleId}）`;
+            roleConfigData.data = role;
+            roleConfigData.mode = 'Edit';
+        }
     },
     handleDelete() {
 
@@ -178,14 +187,14 @@ const tableData = reactive({
             width: 150,
         },
         {
-            label: '权限字符',
-            prop: 'functionKey',
+            label: '权限列表',
+            prop: 'functionList',
             width: 150,
         },
         {
             label: '角色描述',
             prop: 'roleDescriptionCn',
-            width: 200,
+            width: 220,
         },
         {
             label: '状态',
@@ -195,7 +204,7 @@ const tableData = reactive({
         {
             label: '创建时间',
             prop: 'createTime',
-            width: 120,
+            width: 160,
         },
     ],
     // 提供给upload组件的请求配置
@@ -221,10 +230,31 @@ const pagination = reactive({
     sizeSelection: [10, 20, 50, 100, 200]
 })
 const pageSizeChange = async (pageSize: number) => {
+    pagination.pageSize = pageSize;
     getRoleList({ pageNum: pagination.currentPage, pageSize, ...queryParams })
 }
 const currentPageChange = async (pageNum: number) => {
+    pagination.currentPage = pageNum;
     getRoleList({ pageNum, pageSize: pagination.pageSize, ...queryParams })
+}
+
+// 角色新增或者修改
+const initRoleConfigData = {
+    roleId: -1,
+    roleNameCn: '',
+    roleNameEn: '',
+    roleDescriptionCn: '',
+    roleDescriptionEn: '',
+    functionJson: '',
+    functionList: [] as FunctionList[]
+}
+const roleConfigData = reactive({
+    data: {} as RoleList,
+    mode: ''
+})
+const handleConfig = () => {
+    dialogConfig.isVisible = false;
+    handleQuery();
 }
 
 </script>

@@ -40,6 +40,7 @@ const sidebarRouters = reactive({
 });
 if (result.length > 0) {
     sidebarRouters.router = result.sort((a, b) => Number(a.orderNum) - Number(b.orderNum));
+    console.log("🚀 ~ file: SideBar.vue:43 ~ sidebarRouters.router:", sidebarRouters.router)
 }
 const { configState } = appStore.configStore;
 // const isCollapse = ref(false);

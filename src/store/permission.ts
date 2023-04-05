@@ -9,10 +9,27 @@ const getRolesRoutes = (menusList: Resource[], rolesRoutes: Resource[]) => {
         if (menu.children.length > 0) {
             getRolesRoutes(menu.children, rolesRoutes);
         }
-        if (menu.component) {
-            rolesRoutes.push(Object.assign({},menu, { children: [] }))
+        if (menu.component?.trim()) {
+            rolesRoutes.push(Object.assign({}, menu, { children: [] }))
         }
     })
+}
+
+/**
+ * @description: 删除component为空的资源
+ * @param {Resource} menusList
+ * @return {*}
+ */
+const getMenuList = (menusList: Resource[]) => {
+    let lens = menusList.length
+    for (let i = lens - 1; i >= 0; i--) {
+        if (menusList[i].children.length > 0) {
+            getMenuList(menusList[i].children);
+        }
+        if (menusList[i].resourceType === "F") {
+            menusList.splice(i, 1);
+        }
+    }
 }
 
 export const usePermissionStore = defineStore("permission", () => {
@@ -29,10 +46,16 @@ export const usePermissionStore = defineStore("permission", () => {
             }
             menusList = result.data;
         }
+        getMenuList(menusList);
         getRolesRoutes(menusList, usePermissionState.rolesRoutes);
 
         usePermissionState.menusList = menusList;
     }
-    return { usePermissionState, generateMenusAction }
+    const clearUserPermissionAction = () => {
+        usePermissionState.menusList = [];
+        usePermissionState.rolesRoutes = [];
+        sessionStorage.removeItem(MENU_LIST);
+    }
+    return { usePermissionState, generateMenusAction, clearUserPermissionAction }
 })
 

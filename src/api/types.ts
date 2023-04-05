@@ -10,7 +10,7 @@ export interface UserInfo {
     userType: string,
     avatar: string,
     token: string,
-    roles: number[],
+    roleIds: number[],
     permissions: number[],
 }
 
@@ -30,10 +30,13 @@ export interface RoleList {
     roleId: number,
     roleNameCn: string,
     roleNameEn: string,
-    functionKey: string,
-    roleSort: number,
-    status: number,
-    createTime: Date
+    roleDescriptionCn: string,
+    roleDescriptionEn: string,
+    functionJson: string,
+    functionList: FunctionList[],
+    roleSort?: number,
+    status?: string,
+    createTime?: Date
 }
 export interface Role {
     total: number,

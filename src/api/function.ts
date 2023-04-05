@@ -13,7 +13,7 @@ export interface FunctionListApiQuery {
     searchParams?: 'function_name_cn' | 'function_name_en' | 'function_key'
 }
 /**
- * @description: 获取功能权限详情列表
+ * @description: 分页获取功能权限详情列表
  * @param {FunctionListApiQuery} params
  * @return {*}
  */

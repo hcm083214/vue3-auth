@@ -29,9 +29,9 @@ let lock = false;
 service.interceptors.response.use((response: AxiosResponse) => {
     if (response.status === 200) {
         const data = response.data;
-        if (data.code === 401 || data.code === 403) {
+        let msg = data.msg;
+        if (data.code === 401) {
             removeToken();
-            let msg = data.msg;
             !lock && ElMessageBox.confirm(
                 `${msg ? msg : '你的登陆已经过期'}，您可以继续留在该页面，或者重新登录`,
                 '系统提示',
@@ -45,6 +45,12 @@ service.interceptors.response.use((response: AxiosResponse) => {
                 lock = false;
             })
             lock = true;
+        }
+        if (data.code === 403) {
+            ElMessage({
+                type: 'warning',
+                message: msg
+            })
         }
         return data;
     }

@@ -2,13 +2,15 @@ import service from "../utils/request";
 import { Role } from "@/api/types";
 
 export interface roleListApiQuery {
+    roleId?: number,
     pageNum?: number,
     pageSize?: number,
     roleNameCn?: string,
     roleNameEn?: string,
     status?: string,
     functionKey?: string,
-    searchParams?: 'role_name_cn' | 'role_name_en' | 'function_key' 
+    functionJson?: string,
+    searchParams?: 'role_name_cn' | 'role_name_en' | 'function_key'
 }
 /**
  * @description: 根据 params 的设置获取角色列表
@@ -20,6 +22,28 @@ export async function getRoleListApi(params: roleListApiQuery) {
         params
     });
     return result;
+}
+
+/**
+ * @description: 角色信息修改
+ * @param {roleListApiQuery} params
+ * @return {*}
+ */
+export async function editRoleInfoApi(params: roleListApiQuery) {
+    return await service.post<Role>(`/roles/role_id/${params.roleId}`, {
+        data: params
+    });
+}
+
+/**
+ * @description: 角色新增
+ * @param {roleListApiQuery} params
+ * @return {*}
+ */
+export async function addRoleInfoApi(params: roleListApiQuery) {
+    return await service.post<Role>(`/roles`, {
+        data: params
+    });
 }
 
 /**

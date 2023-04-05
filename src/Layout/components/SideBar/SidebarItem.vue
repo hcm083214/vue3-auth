@@ -1,5 +1,5 @@
 <template>
-    <el-sub-menu :index="index" v-if="item.children.length">
+    <el-sub-menu :index="index" v-if="item.resourceType == 'M'">
         <template #title>
             <icon v-if="grade == 1" :icon="'svg-icon:' + item.icon"></icon>
             <span>{{ item.resourceName }}</span>

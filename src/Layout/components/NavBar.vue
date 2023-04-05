@@ -34,7 +34,7 @@
                         <router-link to="/user/profile">
                             <el-dropdown-item>个人中心</el-dropdown-item>
                         </router-link>
-                        <el-dropdown-item>
+                        <el-dropdown-item @click="logout">
                             <span>退出登录</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref, inject, watch, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { CaretBottom } from "@element-plus/icons-vue";
 
 import avatarSvg from "@/assets/svg/avatar.svg";
@@ -54,6 +54,8 @@ import appStore from "@/store/index.js";
 import EventBus, { $busKey } from "@/utils/bus";
 import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
+import { logoutApi } from "@/api/login";
+import { removeToken } from "@/utils/token";
 
 const props = defineProps({
     isShowBreadCrumb: {
@@ -67,6 +69,7 @@ const { permissionStore, userStore, configStore } = appStore;
 const avatar = ref(userStore.userState.avatar || avatarSvg)
 
 const route = useRoute();
+const router = useRouter();
 const data = reactive({
     breadcrumbArr: [] as Resource[],
 })
@@ -101,6 +104,15 @@ watch(() => route.path, (paths) => {
     setBreadCrumb(permissionStore.usePermissionState.menusList, pathName, []);
 }, { immediate: true })
 
+const logout = async () => {
+    const result = await logoutApi();
+    if (result.code === 200) {
+        removeToken();
+        permissionStore.clearUserPermissionAction();
+        userStore.clearUserInfoAction();
+        router.push({ name: 'login' })
+    }
+}
 
 </script>
 
