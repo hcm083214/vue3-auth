@@ -1,0 +1,139 @@
+Date : 2023-04-06 08:47:52
+Directory : d:\前端学习\08.project\10.vue3-auth\src
+Total : 85 files,  5083 codes, 286 comments, 677 blanks, all 6046 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| vue        |         37 |      3,275 |          9 |        392 |      3,676 |
+| SCSS       |         10 |        957 |         67 |        198 |      1,222 |
+| TypeScript |         19 |        725 |        210 |         85 |      1,020 |
+| XML        |         18 |        113 |          0 |          0 |        113 |
+| CSS        |          1 |         13 |          0 |          2 |         15 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                 | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                    |         85 |      5,083 |        286 |        677 |      6,046 |
+| . (Files)                                                                            |          5 |        134 |          3 |         24 |        161 |
+| Layout                                                                               |         15 |      1,181 |          8 |        184 |      1,373 |
+| Layout (Files)                                                                       |          5 |        195 |          8 |         35 |        238 |
+| Layout\components                                                                    |         10 |        986 |          0 |        149 |      1,135 |
+| Layout\components (Files)                                                            |          3 |        467 |          0 |         74 |        541 |
+| Layout\components\Settings                                                           |          5 |        329 |          0 |         39 |        368 |
+| Layout\components\SideBar                                                            |          2 |        190 |          0 |         36 |        226 |
+| api                                                                                  |          5 |        254 |        125 |         29 |        408 |
+| assets                                                                               |         27 |        978 |         67 |        191 |      1,236 |
+| assets (Files)                                                                       |          1 |          1 |          0 |          0 |          1 |
+| assets\logo                                                                          |          1 |          1 |          0 |          0 |          1 |
+| assets\styles                                                                        |          9 |        865 |         67 |        191 |      1,123 |
+| assets\svg                                                                           |         16 |        111 |          0 |          0 |        111 |
+| components                                                                           |          3 |        240 |          0 |         15 |        255 |
+| router                                                                               |          1 |        101 |         46 |          8 |        155 |
+| store                                                                                |          4 |        183 |         19 |         20 |        222 |
+| utils                                                                                |          6 |        158 |         10 |         17 |        185 |
+| views                                                                                |         19 |      1,854 |          8 |        189 |      2,051 |
+| views (Files)                                                                        |          4 |        380 |          3 |         49 |        432 |
+| views\error                                                                          |          2 |        307 |          0 |         41 |        348 |
+| views\permission                                                                     |          7 |      1,113 |          5 |         75 |      1,193 |
+| views\permission (Files)                                                             |          4 |        702 |          4 |         47 |        753 |
+| views\permission\function                                                            |          1 |        146 |          0 |         11 |        157 |
+| views\permission\role                                                                |          1 |        118 |          1 |          8 |        127 |
+| views\permission\source                                                              |          1 |        147 |          0 |          9 |        156 |
+| views\system                                                                         |          6 |         54 |          0 |         24 |         78 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                             | language   | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\前端学习\08.project\10.vue3-auth\src\App.vue                                          | vue        |          7 |          0 |          8 |         15 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\Classic.vue                               | vue        |         75 |          1 |         13 |         89 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\Layout.vue                                | vue        |         21 |          0 |          2 |         23 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\Top.vue                                   | vue        |         42 |          0 |          6 |         48 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\TopLeft.vue                               | vue        |         50 |          0 |         10 |         60 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Logo.vue                       | vue        |         69 |          0 |         13 |         82 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\NavBar.vue                     | vue        |        202 |          0 |         30 |        232 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Settings\ColorRadioPicker.vue  | vue        |         72 |          0 |          9 |         81 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Settings\IconDark.vue          | vue        |          8 |          0 |          3 |         11 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Settings\IconLight.vue         | vue        |          8 |          0 |          3 |         11 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Settings\LayoutRadioPicker.vue | vue        |        126 |          0 |         19 |        145 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\Settings\Settings.vue          | vue        |        115 |          0 |          5 |        120 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\SideBar\SideBar.vue            | vue        |        146 |          0 |         30 |        176 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\SideBar\SidebarItem.vue        | vue        |         44 |          0 |          6 |         50 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\components\TagsView.vue                   | vue        |        196 |          0 |         31 |        227 |
+| d:\前端学习\08.project\10.vue3-auth\src\Layout\layout.ts                                 | TypeScript |          7 |          7 |          4 |         18 |
+| d:\前端学习\08.project\10.vue3-auth\src\api\function.ts                                  | TypeScript |         54 |         34 |          9 |         97 |
+| d:\前端学习\08.project\10.vue3-auth\src\api\login.ts                                     | TypeScript |         46 |         25 |          6 |         77 |
+| d:\前端学习\08.project\10.vue3-auth\src\api\menu.ts                                      | TypeScript |         34 |         32 |          6 |         72 |
+| d:\前端学习\08.project\10.vue3-auth\src\api\role.ts                                      | TypeScript |         55 |         34 |          5 |         94 |
+| d:\前端学习\08.project\10.vue3-auth\src\api\types.ts                                     | TypeScript |         65 |          0 |          3 |         68 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\logo\logo.svg                             | XML        |          1 |          0 |          0 |          1 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\btn.scss                           | SCSS       |         83 |          0 |         17 |        100 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\element-ui.scss                    | SCSS       |         70 |          7 |         15 |         92 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\element-variables.scss             | SCSS       |          8 |         15 |          9 |         32 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\index.scss                         | SCSS       |        154 |          3 |         36 |        193 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\mixin.scss                         | SCSS       |         56 |          0 |         11 |         67 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\ruoyi.scss                         | SCSS       |        240 |         13 |         43 |        296 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\sidebar.scss                       | SCSS       |        179 |          6 |         42 |        227 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\transition.scss                    | SCSS       |         39 |          4 |         11 |         54 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\styles\variables.scss                     | SCSS       |         36 |         19 |          7 |         62 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\add.svg                               | XML        |          9 |          0 |          0 |          9 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\arrowLeft.svg                         | XML        |          5 |          0 |          0 |          5 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\arrowRight.svg                        | XML        |          5 |          0 |          0 |          5 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\avatar.svg                            | XML        |         13 |          0 |          0 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\dark.svg                              | XML        |          6 |          0 |          0 |          6 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\delete.svg                            | XML        |          9 |          0 |          0 |          9 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\edit.svg                              | XML        |          6 |          0 |          0 |          6 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\export.svg                            | XML        |          8 |          0 |          0 |          8 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\hamburger.svg                         | XML        |          9 |          0 |          0 |          9 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\home.svg                              | XML        |          6 |          0 |          0 |          6 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\import.svg                            | XML        |          5 |          0 |          0 |          5 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\light.svg                             | XML        |          7 |          0 |          0 |          7 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\monitor.svg                           | XML        |          7 |          0 |          0 |          7 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\setting.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\system.svg                            | XML        |          9 |          0 |          0 |          9 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\svg\tool.svg                              | XML        |          6 |          0 |          0 |          6 |
+| d:\前端学习\08.project\10.vue3-auth\src\assets\vue.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\前端学习\08.project\10.vue3-auth\src\components\CommonTable.vue                       | vue        |        151 |          0 |          6 |        157 |
+| d:\前端学习\08.project\10.vue3-auth\src\components\Icon.vue                              | vue        |         38 |          0 |          4 |         42 |
+| d:\前端学习\08.project\10.vue3-auth\src\components\Pagination.vue                        | vue        |         51 |          0 |          5 |         56 |
+| d:\前端学习\08.project\10.vue3-auth\src\index.css                                        | CSS        |         13 |          0 |          2 |         15 |
+| d:\前端学习\08.project\10.vue3-auth\src\main.ts                                          | TypeScript |         22 |          2 |          6 |         30 |
+| d:\前端学习\08.project\10.vue3-auth\src\router\index.ts                                  | TypeScript |        101 |         46 |          8 |        155 |
+| d:\前端学习\08.project\10.vue3-auth\src\store\config.ts                                  | TypeScript |         79 |         14 |          6 |         99 |
+| d:\前端学习\08.project\10.vue3-auth\src\store\index.ts                                   | TypeScript |         17 |          0 |          6 |         23 |
+| d:\前端学习\08.project\10.vue3-auth\src\store\permission.ts                              | TypeScript |         51 |          5 |          6 |         62 |
+| d:\前端学习\08.project\10.vue3-auth\src\store\user.ts                                    | TypeScript |         36 |          0 |          2 |         38 |
+| d:\前端学习\08.project\10.vue3-auth\src\style.scss                                       | SCSS       |         92 |          0 |          7 |         99 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\bus.ts                                     | TypeScript |         31 |          0 |          2 |         33 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\download.ts                                | TypeScript |         17 |          3 |          1 |         21 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\index.ts                                   | TypeScript |          7 |          0 |          1 |          8 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\jsencrypt.ts                               | TypeScript |         21 |          3 |          7 |         31 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\request.ts                                 | TypeScript |         72 |          4 |          3 |         79 |
+| d:\前端学习\08.project\10.vue3-auth\src\utils\token.ts                                   | TypeScript |         10 |          0 |          3 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\Home.vue                                   | vue        |          9 |          1 |          4 |         14 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\Login.vue                                  | vue        |        186 |          1 |         23 |        210 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\Register.vue                               | vue        |        176 |          1 |         18 |        195 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\Test.vue                                   | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\error\401.vue                              | vue        |         85 |          0 |         12 |         97 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\error\404.vue                              | vue        |        222 |          0 |         29 |        251 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\Dimension.vue                   | vue        |          8 |          0 |          5 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\Functional.vue                  | vue        |        237 |          0 |         11 |        248 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\Role.vue                        | vue        |        266 |          4 |         18 |        288 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\Source.vue                      | vue        |        191 |          0 |         13 |        204 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\function\FunctionConfig.vue     | vue        |        146 |          0 |         11 |        157 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\role\RoleConfig.vue             | vue        |        118 |          1 |          8 |        127 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\permission\source\SourceConfig.vue         | vue        |        147 |          0 |          9 |        156 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\Config.vue                          | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\Dept.vue                            | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\Dict.vue                            | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\Notice.vue                          | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\Post.vue                            | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\views\system\User.vue                            | vue        |          9 |          0 |          4 |         13 |
+| d:\前端学习\08.project\10.vue3-auth\src\vite-env.d.ts                                    | TypeScript |          0 |          1 |          1 |          2 |
+| Total                                                                                |            |      5,083 |        286 |        677 |      6,046 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
