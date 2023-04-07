@@ -31,7 +31,7 @@
                 </el-upload>
             </el-col>
         </el-row>
-        <el-table v-loading="props.isLoading" :data="props.tableList">
+        <el-table v-loading="props.isLoading" :data="props.tableList" >
             <el-table-column type="selection" width="55" align="center" />
             <template v-for="rows in props.tableHeaderConfig" :key="rows.label">
 
@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column :label="rows.label" :prop="rows.prop" :width="rows.width" v-else />
             </template>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="120">
                 <template #default="scope">
                     <el-button size="small" link type="primary" @click="handleEdit(scope.row)">
                         <icon icon="svg-icon:edit" />修改

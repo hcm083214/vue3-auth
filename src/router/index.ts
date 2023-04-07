@@ -58,6 +58,11 @@ const constantRoutes = [
         component: () => import('@/views/error/404.vue'),
     },
     {
+        path: '/test',
+        name: 'test',
+        component: () => import('@/views/Test.vue'),
+    },
+    {
         path: '/notFound',
         name: 'notFound',
         component: () => import('@/views/error/404.vue'),

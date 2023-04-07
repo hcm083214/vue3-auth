@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <el-form :model="loginForm" :rules="loginRules" class="login-form" ref="loginFormRef">
-            <h3 class="title">iauth 应用权限管理</h3>
+            <h3 class="title">auth 应用权限管理</h3>
             <el-form-item prop="userName">
                 <el-input v-model="loginForm.userName" type="text" auto-complete="off" placeholder="账号" :prefix-icon="User">
                 </el-input>

@@ -2,26 +2,24 @@
     <div>
         <el-form ref="functionFormRef" :model="functionForm" label-position="top" :inline="true" :rules="rules"
             label-width="120px">
-            <el-form-item label="功能权限中文名" prop="functionNameCn">
-                <el-input v-model="functionForm.functionNameCn" class="functional-name" />
+            <el-form-item label="功能权限中文名" prop="functionNameCn" class="functional-name">
+                <el-input v-model="functionForm.functionNameCn"  />
             </el-form-item>
-            <el-form-item label="功能权限英文名" prop="functionNameEn">
-                <el-input v-model="functionForm.functionNameEn" class="functional-name" />
+            <el-form-item label="功能权限英文名" prop="functionNameEn" class="functional-name">
+                <el-input v-model="functionForm.functionNameEn"  />
             </el-form-item>
-            <el-form-item label="功能权限中文描述" prop="functionDescriptionCn">
-                <el-input v-model="functionForm.functionDescriptionCn" maxlength="200" type="textarea"
-                    class="functional-desc" />
+            <el-form-item label="功能权限中文描述" prop="functionDescriptionCn" class="functional-desc">
+                <el-input v-model="functionForm.functionDescriptionCn" maxlength="200" type="textarea" />
             </el-form-item>
-            <el-form-item label="功能权限英文描述" prop="functionDescriptionEn">
-                <el-input v-model="functionForm.functionDescriptionEn" maxlength="200" type="textarea"
-                    class="functional-desc" />
+            <el-form-item label="功能权限英文描述" prop="functionDescriptionEn" class="functional-desc">
+                <el-input v-model="functionForm.functionDescriptionEn" maxlength="200" type="textarea" />
             </el-form-item>
-            <el-form-item label="权限字符" prop="functionKey">
-                <el-input v-model="functionForm.functionKey" class="functional-name" />
+            <el-form-item label="权限字符" prop="functionKey" class="functional-name">
+                <el-input v-model="functionForm.functionKey"  />
             </el-form-item>
         </el-form>
         <div class="tree">
-            <div class="el-form-item__label">对应的菜单列表</div>
+            <div class="el-form-item__label">对应的功能权限列表</div>
             <div class="tree-content">
                 <el-tree ref="treeRef" v-loading="treeData.isLoading" :data="treeData.allPermissionList" show-checkbox
                     node-key="resourceId" :default-expanded-keys="treeData.selectPermissionIdList" :check-strictly="true"
@@ -127,13 +125,12 @@ const handleClick = async (formEl: FormInstance | undefined, mode: string) => {
 
 <style scoped lang="scss">
 .functional-name {
-    width: 240px;
+    width: 30%;
     margin-right: 50px;
 }
 
 .functional-desc {
-    width: 650px;
-    height: 50px;
+    width: 80%;
 }
 
 .tree {

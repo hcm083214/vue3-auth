@@ -1,18 +1,16 @@
 <template>
     <el-form ref="roleFormRef" :model="roleForm" label-position="top" :inline="true" :rules="rules" label-width="120px">
-        <el-form-item label="角色中文名" prop="roleNameCn">
-            <el-input v-model="roleForm.roleNameCn" class="col2" />
+        <el-form-item label="角色中文名" prop="roleNameCn" class="col2">
+            <el-input v-model="roleForm.roleNameCn" />
         </el-form-item>
-        <el-form-item label="角色英文名" prop="roleNameEn">
-            <el-input v-model="roleForm.roleNameEn" class="col2" />
+        <el-form-item label="角色英文名" prop="roleNameEn" class="col2">
+            <el-input v-model="roleForm.roleNameEn" />
         </el-form-item>
-        <el-form-item label="角色中文描述" prop="roleDescriptionCn">
-            <el-input v-model="roleForm.roleDescriptionCn" maxlength="200" type="textarea" class="col1"
-                style="height: 50px;" />
+        <el-form-item label="角色中文描述" prop="roleDescriptionCn" class="col1">
+            <el-input v-model="roleForm.roleDescriptionCn" maxlength="200" type="textarea" style="height: 50px;" />
         </el-form-item>
-        <el-form-item label="角色英文描述" prop="roleDescriptionEn">
-            <el-input v-model="roleForm.roleDescriptionEn" maxlength="200" type="textarea" class="col1"
-                style="height: 50px;" />
+        <el-form-item label="角色英文描述" prop="roleDescriptionEn" class="col1">
+            <el-input v-model="roleForm.roleDescriptionEn" maxlength="200" type="textarea" style="height: 50px;" />
         </el-form-item>
         <el-form-item label="功能权限列表" class="col1">
             <el-transfer v-model="selectFunctionList" :props="transferProps" :data="functionListData" filterable
@@ -49,7 +47,7 @@ const props = defineProps({
             roleNameEn: '',
             roleDescriptionCn: '',
             roleDescriptionEn: '',
-            functionList:[] as FunctionList[]
+            functionList: [] as FunctionList[]
         })
     },
     mode: String
@@ -77,9 +75,9 @@ const getFunctionList = async () => {
         functionListData.value = result.data.list;
     }
 }
-const setSelectFunctionList = ()=>{
-    if(props.mode === 'Edit' && Array.isArray(props.roleConfigData.functionList)){
-        selectFunctionList.value = props.roleConfigData.functionList.map(functions=>functions.functionId);
+const setSelectFunctionList = () => {
+    if (props.mode === 'Edit' && Array.isArray(props.roleConfigData.functionList)) {
+        selectFunctionList.value = props.roleConfigData.functionList.map(functions => functions.functionId);
     }
 }
 
@@ -90,7 +88,7 @@ const handleClick = async (formEl: FormInstance | undefined, mode: string) => {
             return true;
         }
     })
-    
+
     if (!isValidPass) return;
     let result;
     if (mode === "Add") {

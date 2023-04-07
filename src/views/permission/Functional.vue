@@ -134,7 +134,7 @@ const tableData = reactive({
         {
             label: '权限字符',
             prop: 'functionKey',
-            width: 100,
+            width: 150,
         },
         {
             label: '权限描述',
