@@ -31,7 +31,7 @@
                 </el-upload>
             </el-col>
         </el-row>
-        <el-table v-loading="props.isLoading" :data="props.tableList" >
+        <el-table v-loading="props.isLoading" :data="props.tableList">
             <el-table-column type="selection" width="55" align="center" />
             <template v-for="rows in props.tableHeaderConfig" :key="rows.label">
 
@@ -46,7 +46,8 @@
                         <span>{{ getFunctionListString(scope.row) }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="rows.label" align="center" prop="createTime" :width="rows.width" v-else-if="rows.label == '创建时间'">
+                <el-table-column :label="rows.label" align="center" prop="createTime" :width="rows.width"
+                    v-else-if="rows.label == '创建时间'">
                     <template #default="scope">
                         <span>{{ dataFormat(scope.row.createTime, "YYYY/MM/DD HH:mm:ss") }}</span>
                     </template>
@@ -75,6 +76,8 @@ import { ElMessage } from 'element-plus';
 import { dataFormat } from "@/utils/index";
 import Icon from "@/components/Icon.vue";
 import { FunctionList, RoleList } from "@/api/types";
+import { TableOperation } from "@/components/CommonTable";
+
 const props = defineProps({
     isLoading: {
         type: Boolean,
@@ -105,11 +108,11 @@ const props = defineProps({
 const fileList = ref<UploadUserFile[]>();
 const emit = defineEmits(["handleEvent"])
 const handleAdd = () => {
-    emit("handleEvent", { mode: "Add" })
+    emit("handleEvent", { mode: TableOperation.Add })
 }
 const handleExport = (exportType: 'template' | undefined) => {
     emit("handleEvent", {
-        mode: "Export",
+        mode: TableOperation.Export,
         option: {
             exportType
         }
@@ -143,9 +146,8 @@ const handleUploadError = (error: Error) => {
 }
 
 const handleEdit = (row: any, isEditStatus = false) => {
-    console.log("🚀 ~ file: CommonTable.vue:132 ~ handleEdit ~ row:", row)
     emit("handleEvent", {
-        mode: "Edit",
+        mode: TableOperation.Edit,
         option: {
             rowData: row,
             isEditStatus

@@ -46,6 +46,7 @@ import type { FormInstance } from 'element-plus';
 
 import Pagination from "@/components/Pagination.vue";
 import CommonTable from "@/components/CommonTable.vue";
+import { TableOperation } from "@/components/CommonTable";
 import FunctionConfig from "@/views/permission/function/FunctionConfig.vue";
 import { getFunctionListApi, FunctionListApiQuery, getExportDataApi, getExportTemplateApi, editFunctionInfoApi, getFunctionSearchListApi } from "@/api/function";
 import type { FunctionList } from "@/api/types";
@@ -107,7 +108,7 @@ const handleQuery = () => {
 
 // 表格相关逻辑
 interface TableHandlerOption {
-    mode: "Add" | "Export" | "Edit" | "Delete",
+    mode: keyof typeof TableOperation,
     option?: {
         // 'template' | undefined
         exportType?: string,
@@ -164,7 +165,7 @@ const tableHandleEventObj = {
     handleAdd() {
         dialogConfig.isVisible = true;
         dialogConfig.title = "功能权限新增";
-        dialogConfig.mode = "Add";
+        dialogConfig.mode = TableOperation.Add;
         dialogData.value = initDialogData;
     },
     async handleEdit(option: TableHandlerOption) {
@@ -175,7 +176,7 @@ const tableHandleEventObj = {
         } else {
             dialogConfig.isVisible = true;
             dialogConfig.title = `功能权限编辑(${functions.functionNameCn})`;
-            dialogConfig.mode = "Edit";
+            dialogConfig.mode = TableOperation.Edit;
             dialogData.value = functions;
         }
     },
@@ -198,7 +199,6 @@ const tableHandleEventObj = {
     }
 }
 const tableHandler = (option: TableHandlerOption) => {
-    console.log(option)
     tableHandleEventObj[`handle${option.mode}`](option);
 }
 

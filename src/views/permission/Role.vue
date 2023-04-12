@@ -60,6 +60,7 @@ import { getToken } from "@/utils/token";
 import RoleConfig from "@/views/permission/role/RoleConfig.vue";
 import Pagination from "@/components/Pagination.vue";
 import CommonTable from "@/components/CommonTable.vue";
+import { TableOperation } from "@/components/CommonTable";
 
 onMounted(async () => {
     await getRoleList({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
@@ -133,7 +134,7 @@ const dialogConfig = reactive({
 
 // 表格相关逻辑
 interface TableHandlerOption {
-    mode: "Add" | "Export" | "Edit" | "Delete",
+    mode: keyof typeof TableOperation,
     option?: {
         type?: string,
         rowData?: RoleList,
@@ -145,7 +146,7 @@ const tableHandleEventObj = {
         dialogConfig.isVisible = true;
         dialogConfig.title = "新增角色";
         roleConfigData.data = initRoleConfigData;
-        roleConfigData.mode = 'Add';
+        roleConfigData.mode = TableOperation.Add;
     },
     async handleEdit(option: TableHandlerOption) {
         const role = option.option?.rowData as RoleList;
@@ -156,7 +157,7 @@ const tableHandleEventObj = {
             dialogConfig.isVisible = true;
             dialogConfig.title = `编辑角色（${role.roleId}）`;
             roleConfigData.data = role;
-            roleConfigData.mode = 'Edit';
+            roleConfigData.mode = TableOperation.Edit;
         }
     },
     handleDelete() {

@@ -75,3 +75,19 @@ export async function getUserInfoApi() {
 export async function logoutApi() {
     return await service.post<UserInfo>("/logout", {});
 }
+
+/**
+ * @description: 第三方登录
+ * @param {string} source 第三方
+ * @return {*}
+ */
+export async function preLoginByThirdPartyApi(source: string) {
+    return await service.get<UserInfo>("/login-third-party", {
+        params: {
+            source
+        },
+        headers: {
+            isNotSetToken: true
+        }
+    });
+}

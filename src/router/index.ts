@@ -68,6 +68,11 @@ const constantRoutes = [
         component: () => import('@/views/error/404.vue'),
     },
     {
+        path:'/3th-auth',
+        name: '3th-auth',
+        component:()=> import('@/views/LoginAuth.vue'),
+    },
+    {
         path: '/:w+',
         hidden: true,
         redirect: '/404',
@@ -91,7 +96,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes: constantRoutes,
 });
-const whiteList = ["/login", "/register"];
+const whiteList = ["/login", "/register","/3th-auth"];
 NProgress.configure({ showSpinner: false });
 router.beforeEach(async (to, from, next) => {
     const { usePermissionState, generateMenusAction } = appStore.permissionStore;

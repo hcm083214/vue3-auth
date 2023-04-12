@@ -30,6 +30,11 @@
                     <router-link class="link-type" :to="'/register'">立即注册</router-link>
                 </div>
             </el-form-item>
+            <el-form-item>
+                <div class="img">
+                    <icon icon="svg-icon:gitee" :size="35" @click="giteeLogin" class="pointer"/>
+                </div>
+            </el-form-item>
         </el-form>
         <!--  底部  -->
         <div class="el-login-footer">
@@ -48,15 +53,14 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { encrypt, decrypt } from '@/utils/jsencrypt';
 import { setToken } from '@/utils/token';
 import { REDIRECT_KEY } from "@/router/index";
-import { getCodeApi, loginApi } from "@/api/login";
-
+import { getCodeApi, loginApi, preLoginByThirdPartyApi } from "@/api/login";
+import Icon from "@/components/Icon.vue";
 
 const router = useRouter();
 const route = useRoute();
 
-
 const STORAGE_USER = "storageUser";
-const redirectPath = route.query[REDIRECT_KEY] as string || "/" ;
+const redirectPath = route.query[REDIRECT_KEY] as string || "/";
 
 onMounted(() => {
     getCode();
@@ -132,6 +136,10 @@ const getCode = async () => {
     loginForm.codeUrl = `data:image/png;base64,${result.data.base64Url}`;
     loginForm.uuid = result.data.uuid;
 };
+
+const giteeLogin = async () => {
+    const result = await preLoginByThirdPartyApi('gitee');
+}
 </script>
 
 <style lang="scss" scoped>
