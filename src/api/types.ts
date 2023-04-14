@@ -5,12 +5,14 @@ export interface Captcha {
 }
 
 export interface UserInfo {
+    uuid: string,
     roleId: number,
     userName: string,
     userType: string,
     avatar: string,
     token: string,
     roleIds: number[],
+    authorizeUrl: Location,
     permissions: number[],
 }
 

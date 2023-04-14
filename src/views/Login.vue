@@ -32,7 +32,7 @@
             </el-form-item>
             <el-form-item>
                 <div class="img">
-                    <icon icon="svg-icon:gitee" :size="35" @click="giteeLogin" class="pointer"/>
+                    <icon icon="svg-icon:gitee" :size="35" @click="giteeLogin" class="pointer" />
                 </div>
             </el-form-item>
         </el-form>
@@ -139,6 +139,11 @@ const getCode = async () => {
 
 const giteeLogin = async () => {
     const result = await preLoginByThirdPartyApi('gitee');
+    if (result.code === 200) {
+        window.location = result.data.authorizeUrl;
+        localStorage.setItem("giteeUuid", result.data.uuid);
+        localStorage.setItem("thirdPartySource","gitee")
+    }
 }
 </script>
 

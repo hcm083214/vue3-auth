@@ -2,14 +2,17 @@ import service from "../utils/request";
 import { UserInfo, Captcha } from "@/api/types"
 
 interface LoginRequestData {
-    userName: string,
-    password: string,
+    userName?: string,
+    password?: string,
+    // 验证码或者第三方登录返回的code
     code: string,
     // 验证码开关
-    captchaEnabled: boolean,
+    captchaEnabled?: boolean,
     // 验证码图片地址
-    codeUrl: string,
+    codeUrl?: string,
     uuid: string,
+    // 第三方登录源
+    source?: string,
 }
 
 /**
@@ -77,7 +80,7 @@ export async function logoutApi() {
 }
 
 /**
- * @description: 第三方登录
+ * @description: 第三方登录,获取授权页面
  * @param {string} source 第三方
  * @return {*}
  */
@@ -89,5 +92,19 @@ export async function preLoginByThirdPartyApi(source: string) {
         headers: {
             isNotSetToken: true
         }
+    });
+}
+
+/**
+ * @description: 第三方登录,获取授权页面
+ * @param {string} source 第三方
+ * @return {*}
+ */
+export async function loginByThirdPartyApi(data: LoginRequestData) {
+    return await service.post<UserInfo>("/login-third-party", {
+        headers: {
+            isNotSetToken: true
+        },
+        data
     });
 }
