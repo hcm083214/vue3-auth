@@ -20,7 +20,7 @@ interface LoginRequestData {
  * @param {*} type string | math
  * @return {*}
  */
-export async function getCodeApi(type = "string") {
+export async function getCodeApi(type = "math") {
     let result = await service.get<Captcha>("/captcha/image", {
         params: {
             type

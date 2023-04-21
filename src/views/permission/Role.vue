@@ -76,20 +76,6 @@ const getRoleList = async (params: roleListApiQuery) => {
     }
     tableData.isLoading = false;
 }
-type searchKey = 'role_name_cn' | 'role_name_en' | 'function_key';
-const getSearchList = async (searchKey: searchKey, searchVal: string) => {
-    searchData.isRoleLoading = true;
-    let result = await getRoleSearchListApi({ searchParams: searchKey, [searchKey]: searchVal });
-    if (result.code === 200) {
-        if (searchKey === "function_key") {
-            searchData.searchRoleKeyList = result.data;
-        } else {
-            searchData.searchRoleList = result.data;
-        }
-
-    }
-    searchData.isRoleLoading = false;
-}
 
 // 搜索栏相关逻辑
 const queryForm = ref();
@@ -116,10 +102,20 @@ const searchData = reactive({
     isRoleKeyLoading: false,
 })
 const handleRoleSearch = async (query: string) => {
-    getSearchList("role_name_cn", query);
+    searchData.isRoleLoading = true;
+    let result = await getRoleSearchListApi({ searchParams: "role_name_cn", roleNameCn: query });
+    if (result.code === 200) {
+        searchData.searchRoleList = result.data;
+    }
+    searchData.isRoleLoading = false;
 }
 const handleRoleKeySearch = async (query: string) => {
-    getSearchList("function_key", query);
+    searchData.isRoleLoading = true;
+    let result = await getRoleSearchListApi({ searchParams: "function_key", functionKey: query });
+    if (result.code === 200) {
+        searchData.searchRoleKeyList = result.data;
+    }
+    searchData.isRoleLoading = false;
 }
 const resetQuery = (formEl: FormInstance | undefined) => {
     if (!formEl) return
