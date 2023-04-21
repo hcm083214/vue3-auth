@@ -1,33 +1,36 @@
 <template>
     <div class="login">
         <el-form :model="loginForm" :rules="loginRules" class="login-form" ref="loginFormRef">
-            <h3 class="title">auth 应用权限管理</h3>
+            <h3 class="title">auth {{ $t("common.appName") }}</h3>
             <el-form-item prop="userName">
-                <el-input v-model="loginForm.userName" type="text" auto-complete="off" placeholder="账号" :prefix-icon="User">
+                <el-input v-model="loginForm.userName" type="text" auto-complete="off"
+                    :placeholder="$t('login.usernamePlaceholder')" :prefix-icon="User">
                 </el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码"
-                    :prefix-icon="Lock" @keyup.enter="handleLogin(loginFormRef)">
+                <el-input v-model="loginForm.password" type="password" auto-complete="off"
+                    :placeholder="$t('login.passwordPlaceholder')" :prefix-icon="Lock"
+                    @keyup.enter="handleLogin(loginFormRef)">
                 </el-input>
             </el-form-item>
             <el-form-item prop="code" v-if="loginForm.captchaEnabled" class="login-form-item-code">
-                <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%"
-                    :prefix-icon="Key" @keyup.enter="handleLogin(loginFormRef)">
+                <el-input v-model="loginForm.code" auto-complete="off" :placeholder="$t('login.codePlaceholder')"
+                    style="width: 63%" :prefix-icon="Key" @keyup.enter="handleLogin(loginFormRef)">
                 </el-input>
                 <div class="login-code">
                     <img :src="loginForm.codeUrl" @click="getCode" class="login-code-img" />
                 </div>
             </el-form-item>
-            <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+            <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">{{ $t('login.remember')
+            }}</el-checkbox>
             <el-form-item style="width:100%;">
                 <el-button :loading="loginForm.loading" type="primary" style="width:100%;"
                     @click.prevent="handleLogin(loginFormRef)">
-                    <span v-if="!loginForm.loading">登 录</span>
-                    <span v-else>登 录 中...</span>
+                    <span v-if="!loginForm.loading">{{ $t('common.login') }}</span>
+                    <span v-else>{{ $t('common.login') }}...</span>
                 </el-button>
                 <div style="float: right;" v-if="loginForm.register">
-                    <router-link class="link-type" :to="'/register'">立即注册</router-link>
+                    <router-link class="link-type" :to="'/register'">{{ $t('login.register') }}</router-link>
                 </div>
             </el-form-item>
             <el-form-item>
@@ -55,6 +58,7 @@ import { setToken } from '@/utils/token';
 import { REDIRECT_KEY } from "@/router/index";
 import { getCodeApi, loginApi, preLoginByThirdPartyApi } from "@/api/login";
 import Icon from "@/components/Icon.vue";
+import { $t } from "@/utils/i18n";
 
 const router = useRouter();
 const route = useRoute();
@@ -88,12 +92,12 @@ const loginForm = reactive({
 const loginFormRef = ref<FormInstance>();
 const loginRules = reactive<FormRules>({
     userName: [
-        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { required: true, message: $t('login.usernamePlaceholder'), trigger: 'blur' },
     ],
     password: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
+        { required: true, message: $t('login.passwordPlaceholder'), trigger: 'blur' },
     ],
-    code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+    code: [{ required: true, trigger: "change", message: $t('login.codePlaceholder') }]
 });
 
 const saveUserToStorage = (isRememberMe: boolean) => {
@@ -142,7 +146,7 @@ const giteeLogin = async () => {
     if (result.code === 200) {
         window.location = result.data.authorizeUrl;
         localStorage.setItem("giteeUuid", result.data.uuid);
-        localStorage.setItem("thirdPartySource","gitee")
+        localStorage.setItem("thirdPartySource", "gitee")
     }
 }
 </script>

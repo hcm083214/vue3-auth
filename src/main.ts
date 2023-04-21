@@ -9,6 +9,7 @@ import "@/style.scss"
 import '@/assets/styles/element-variables.scss'
 import '@/assets/styles/index.scss'
 // import '@/assets/styles/ruoyi.scss'
+import i18n from "@/utils/i18n";
 
 
 import App from '@/App.vue'
@@ -27,4 +28,5 @@ app.config.globalProperties.$bus = bus;
 app.use(pinia)
     .use(router)
     .use(ElementPlus)
+    .use(i18n)
     .mount('#app');

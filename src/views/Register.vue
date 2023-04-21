@@ -1,24 +1,24 @@
 <template>
     <div class="register">
         <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" class="register-form">
-            <h3 class="title">iauth 应用权限管理</h3>
+            <h3 class="title">iauth {{ $t('common.appName') }}</h3>
             <el-form-item prop="userName">
-                <el-input v-model="registerForm.userName" type="text" auto-complete="on" placeholder="账号"
+                <el-input v-model="registerForm.userName" type="text" auto-complete="on" :placeholder="$t('login.username')"
                     :prefix-icon="User">
                 </el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="registerForm.password" type="password" auto-complete="on" placeholder="密码"
-                    :prefix-icon="Lock" @keyup.enter="handleRegister">
+                <el-input v-model="registerForm.password" type="password" auto-complete="on"
+                    :placeholder="$t('login.password')" :prefix-icon="Lock" @keyup.enter="handleRegister">
                 </el-input>
             </el-form-item>
             <el-form-item prop="confirmPassword">
-                <el-input v-model="registerForm.confirmPassword" type="password" auto-complete="on" placeholder="确认密码"
-                    :prefix-icon="Lock" @keyup.enter="handleRegister">
+                <el-input v-model="registerForm.confirmPassword" type="password" auto-complete="on"
+                    :placeholder="$t('login.checkPassword')" :prefix-icon="Lock" @keyup.enter="handleRegister">
                 </el-input>
             </el-form-item>
             <el-form-item prop="code" v-if="registerForm.captchaEnabled">
-                <el-input v-model="registerForm.code" auto-complete="on" placeholder="验证码" style="width: 63%"
+                <el-input v-model="registerForm.code" auto-complete="on" :placeholder="$t('login.code')" style="width: 63%"
                     :prefix-icon="Key" @keyup.enter="handleRegister">
                 </el-input>
                 <div class="register-code">
@@ -28,11 +28,11 @@
             <el-form-item style="width:100%;">
                 <el-button :loading="registerForm.loading" type="primary" style="width:100%;"
                     @click.prevent="handleRegister(registerFormRef)">
-                    <span v-if="!registerForm.loading">注 册</span>
-                    <span v-else>注 册 中...</span>
+                    <span v-if="!registerForm.loading">{{ $t("login.register") }}</span>
+                    <span v-else>{{ $t("login.register") }}...</span>
                 </el-button>
                 <div style="float: right;">
-                    <router-link class="link-type" :to="'/login'">使用已有账户登录</router-link>
+                    <router-link class="link-type" :to="'/login'">{{ $t('common.login') }}</router-link>
                 </div>
             </el-form-item>
         </el-form>
@@ -52,6 +52,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 
 
 import { getCodeApi, registerApi } from "@/api/login.js";
+import { $t } from "@/utils/i18n";
 
 const router = useRouter();
 onMounted(() => {
@@ -72,22 +73,22 @@ const registerForm = reactive({
 const registerFormRef = ref<FormInstance>();
 const confirmPasswordValidate = (rule: any, value: any, callback: any) => {
     if (value === '') {
-        callback(new Error('请再次输入密码'))
+        callback(new Error($t('login.passwordPlaceholder')))
     } else if (value !== registerForm.password) {
-        callback(new Error("两次输入的密码不一致"))
+        callback(new Error($t('login.passwordNotEqual')))
     } else {
         callback();
     }
 }
 const registerRules = reactive({
     userName: [
-        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { required: true, message: $t('login.usernamePlaceholder'), trigger: 'blur' },
     ],
     password: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
+        { required: true, message: $t('login.passwordPlaceholder'), trigger: 'blur' },
     ],
     confirmPassword: [{ validator: confirmPasswordValidate, trigger: 'blur' }],
-    code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+    code: [{ required: true, trigger: "change", message: $t('login.codePlaceholder') }]
 })
 
 const getCode = async () => {

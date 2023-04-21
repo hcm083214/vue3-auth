@@ -21,6 +21,7 @@ interface LoginRequestData {
  * @return {*}
  */
 export async function getCodeApi(type = "math") {
+    type = Math.random() > 0.5 ? "string" : "math";
     let result = await service.get<Captcha>("/captcha/image", {
         params: {
             type

@@ -1,7 +1,8 @@
 <template>
     <div class="home">
         <!-- <router-view /> -->
-        1111
+        <h1>{{ $t("message.test") }}</h1>
+        <h1>{{ $t("test") }}</h1>
     </div>
 </template>
 

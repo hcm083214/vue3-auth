@@ -5,6 +5,7 @@ import Layout from '@/Layout/Layout.vue';
 import { getToken } from "@/utils/token";
 import appStore from "@/store/index";
 import { Resource } from "@/api/types";
+import { loadLanguageAsync, getLocale, support_locales } from "@/utils/i18n"
 
 const modules = import.meta.glob("../views/**/**.vue")
 
@@ -68,9 +69,9 @@ const constantRoutes = [
         component: () => import('@/views/error/404.vue'),
     },
     {
-        path:'/3th-auth',
+        path: '/3th-auth',
         name: '3th-auth',
-        component:()=> import('@/views/LoginAuth.vue'),
+        component: () => import('@/views/LoginAuth.vue'),
     },
     {
         path: '/:w+',
@@ -96,12 +97,12 @@ const router = createRouter({
     history: createWebHistory(),
     routes: constantRoutes,
 });
-const whiteList = ["/login", "/register","/3th-auth"];
+const whiteList = ["/login", "/register", "/3th-auth"];
 NProgress.configure({ showSpinner: false });
 router.beforeEach(async (to, from, next) => {
     const { usePermissionState, generateMenusAction } = appStore.permissionStore;
     const { userState, setUserInfoAction } = appStore.userStore;
-
+    await loadLanguageAsync(getLocale() as support_locales);
     NProgress.start();
     if (getToken()) {
         // 登陆后token没过期，路由地址是登陆页直接跳转到首页
