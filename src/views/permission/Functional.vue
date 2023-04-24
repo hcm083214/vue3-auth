@@ -1,43 +1,41 @@
 <template>
-    <div class="app-container">
-        <div class="search">
-            <el-form ref="menuFormRef" :model="menuForm" label-position="right" :inline="true" label-width="80px">
-                <el-form-item label="权限名称" prop="functionNameCn">
-                    <el-select v-model="menuForm.functionNameCn" placeholder="请输入权限名称" filterable remote clearable
-                        :remote-method="handleFunctionSearch" style="width: 200px" @keyup.enter.native="handleQuery">
-                        <el-option v-for="(item, index) in searchData.searchFunctionList" :key="item + index" :label="item"
-                            :value="item" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="权限字符" prop="functionKey">
-                    <el-select v-model="menuForm.functionKey" placeholder="请输入权限字符" filterable remote clearable
-                        :remote-method="handleFunctionKeySearch" style="width: 200px" @keyup.enter.native="handleQuery">
-                        <el-option v-for="(item, index) in searchData.searchFunctionKeyList" :key="item + index"
-                            :label="item" :value="item" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="状态" prop="status">
-                    <el-select v-model="menuForm.status" placeholder="状态" clearable style="width: 200px">
-                        <el-option v-for="(status, index) in searchData.functionStatus" :key="index" :label="status.label"
-                            :value="status.value" />
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <div class="search-btn">
-                <el-button type="primary" @click="handleQuery">搜索</el-button>
-                <el-button @click="resetQuery(menuFormRef)">重置</el-button>
-            </div>
+    <div class="search">
+        <el-form ref="menuFormRef" :model="menuForm" label-position="right" :inline="true" label-width="80px">
+            <el-form-item label="权限名称" prop="functionNameCn">
+                <el-select v-model="menuForm.functionNameCn" placeholder="请输入权限名称" filterable remote clearable
+                    :remote-method="handleFunctionSearch" style="width: 200px" @keyup.enter.native="handleQuery">
+                    <el-option v-for="(item, index) in searchData.searchFunctionList" :key="item + index" :label="item"
+                        :value="item" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="权限字符" prop="functionKey">
+                <el-select v-model="menuForm.functionKey" placeholder="请输入权限字符" filterable remote clearable
+                    :remote-method="handleFunctionKeySearch" style="width: 200px" @keyup.enter.native="handleQuery">
+                    <el-option v-for="(item, index) in searchData.searchFunctionKeyList" :key="item + index" :label="item"
+                        :value="item" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="状态" prop="status">
+                <el-select v-model="menuForm.status" placeholder="状态" clearable style="width: 200px">
+                    <el-option v-for="(status, index) in searchData.functionStatus" :key="index" :label="status.label"
+                        :value="status.value" />
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div class="search-btn">
+            <el-button type="primary" @click="handleQuery">搜索</el-button>
+            <el-button @click="resetQuery(menuFormRef)">重置</el-button>
         </div>
-        <common-table :tableList="tableData.functionList" :isLoading="tableData.isLoading"
-            :uploadRequestConfig="tableData.uploadRequestConfig" :tableHeaderConfig="tableData.headerConfig"
-            @handleEvent="tableHandler" />
-        <Pagination :total="pagination.total" :pageSize="pagination.pageSize" :currentPage="pagination.currentPage"
-            @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" />
-        <el-dialog v-model="dialogConfig.isVisible" :title="dialogConfig.title" width="50%" top="100px"
-            :close-on-click-modal="false" destroy-on-close draggable>
-            <function-config :configData="dialogData" :mode="dialogConfig.mode" @handleConfig="handleConfig" />
-        </el-dialog>
     </div>
+    <common-table :tableList="tableData.functionList" :isLoading="tableData.isLoading"
+        :uploadRequestConfig="tableData.uploadRequestConfig" :tableHeaderConfig="tableData.headerConfig"
+        @handleEvent="tableHandler" />
+    <Pagination :total="pagination.total" :pageSize="pagination.pageSize" :currentPage="pagination.currentPage"
+        @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" />
+    <el-dialog v-model="dialogConfig.isVisible" :title="dialogConfig.title" width="50%" top="100px"
+        :close-on-click-modal="false" destroy-on-close draggable>
+        <function-config :configData="dialogData" :mode="dialogConfig.mode" @handleConfig="handleConfig" />
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +44,7 @@ import type { FormInstance } from 'element-plus';
 
 import Pagination from "@/components/Pagination.vue";
 import CommonTable from "@/components/CommonTable.vue";
-import { TableOperation } from "@/components/CommonTable";
+import { TableOperation, TableHandlerOption } from "@/components/CommonTable";
 import FunctionConfig from "@/views/permission/function/FunctionConfig.vue";
 import { getFunctionListApi, FunctionListApiQuery, getExportDataApi, getExportTemplateApi, editFunctionInfoApi, getFunctionSearchListApi } from "@/api/function";
 import type { FunctionList } from "@/api/types";
@@ -107,17 +105,7 @@ const handleQuery = () => {
 }
 
 // 表格相关逻辑
-interface TableHandlerOption {
-    mode: keyof typeof TableOperation,
-    option?: {
-        // 'template' | undefined
-        exportType?: string,
-        // 点击行的表格数据
-        rowData?: any,
-        // 是否修改角色状态
-        isEditStatus?: boolean,
-    }
-}
+
 const tableData = reactive({
     isLoading: false,
     functionList: [] as FunctionList[],
@@ -168,7 +156,7 @@ const tableHandleEventObj = {
         dialogConfig.mode = TableOperation.Add;
         dialogData.value = initDialogData;
     },
-    async handleEdit(option: TableHandlerOption) {
+    async handleEdit(option: TableHandlerOption<FunctionList>) {
         const functions = option.option?.rowData as FunctionList;
         const isEditStatus = option.option?.isEditStatus;
         if (isEditStatus) {
@@ -180,10 +168,10 @@ const tableHandleEventObj = {
             dialogData.value = functions;
         }
     },
-    handleDelete(){
+    handleDelete() {
 
     },
-    async handleExport(option: TableHandlerOption) {
+    async handleExport(option: TableHandlerOption<FunctionList>) {
         let result;
         let fileName = ''
         if (option.option?.exportType === 'template') {
@@ -198,7 +186,7 @@ const tableHandleEventObj = {
         }
     }
 }
-const tableHandler = (option: TableHandlerOption) => {
+const tableHandler = (option: TableHandlerOption<FunctionList>) => {
     tableHandleEventObj[`handle${option.mode}`](option);
 }
 

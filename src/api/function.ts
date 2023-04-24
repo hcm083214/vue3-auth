@@ -1,5 +1,5 @@
 import service from "../utils/request";
-import { FunctionResult } from "@/api/types";
+import { FunctionList,Page } from "@/api/types";
 
 export interface FunctionListApiQuery {
     functionId?: number,
@@ -18,7 +18,7 @@ export interface FunctionListApiQuery {
  * @return {*}
  */
 export async function getFunctionListApi(params: FunctionListApiQuery) {
-    let result = await service.get<FunctionResult>("/functions", {
+    let result = await service.get<Page<FunctionList>>("/functions", {
         params
     });
     return result;

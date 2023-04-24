@@ -3,6 +3,10 @@ export function setCssVar(key: string, value: any, dom = document.documentElemen
     dom.style.setProperty(key, value)
 }
 
-export function dataFormat(date: string,formatStr:string){
+export function dataFormat(date: string, formatStr: string) {
     return dayjs(date).format(formatStr)
+}
+
+export function isEmptyObj(obj: Object) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object
 }

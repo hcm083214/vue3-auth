@@ -44,11 +44,11 @@ import { ref, reactive } from "vue";
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
-import { getMenuListApi, editMenuListApi, addMenuListApi } from "@/api/menu";
+import { getMenuListApi, editMenuListApi, addMenuListApi, getResourceApi } from "@/api/menu";
 import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 
-getMenuListApi().then(res => {
+getResourceApi().then(res => {
     if (res.code === 200) {
         let result = [] as Resource[];
         tree2List(res.data, result);
@@ -110,6 +110,8 @@ const componentValidate = (rule: any, value: any, callback: any) => {
     if (sourceForm.resourceType === "C") {
         if (value === '') {
             callback(new Error('资源类型选菜单组件必须填写'));
+        } else {
+            callback();
         }
     } else {
         callback();
@@ -131,9 +133,10 @@ const handleClick = async (formEl: FormInstance | undefined, mode: string) => {
         }
     })
     if (!isValidPass) return;
-
+    console.log(111)
     let result;
     if (mode === "Add") {
+        console.log("🚀 ~ file: SourceConfig.vue:138 ~ handleClick ~ mode:", mode)
         result = await addMenuListApi({ ...sourceForm })
     } else if (mode === "Edit") {
         result = await editMenuListApi({ ...sourceForm })

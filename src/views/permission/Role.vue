@@ -1,51 +1,50 @@
 <template>
-    <div class="app-container">
-        <div class="search">
-            <el-form :model="queryParams" ref="queryForm" :inline="true">
-                <el-form-item label="角色名称" prop="roleNameCn">
-                    <el-select v-model="queryParams.roleNameCn" placeholder="请输入角色名称" filterable remote clearable
-                        :remote-method="handleRoleSearch" :loading="searchData.isRoleLoading" style="width: 200px"
-                        @keyup.enter.native="handleQuery">
-                        <el-option v-for="(item, index) in searchData.searchRoleList" :key="item + index" :label="item"
-                            :value="item" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="权限字符" prop="functionKey">
-                    <el-select v-model="queryParams.functionKey" placeholder="请输入权限字符" filterable remote clearable
-                        :remote-method="handleRoleKeySearch" :loading="searchData.isRoleKeyLoading" style="width: 200px"
-                        @keyup.enter.native="handleQuery">
-                        <el-option v-for="(item, index) in searchData.searchRoleKeyList" :key="item + index" :label="item"
-                            :value="item" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="状态" prop="status">
-                    <el-select v-model="queryParams.status" placeholder="角色状态" clearable style="width: 200px">
-                        <el-option v-for="(status, index) in searchData.roleStatus" :key="index" :label="status.label"
-                            :value="status.value" />
-                    </el-select>
-                </el-form-item>
-                <!-- <el-form-item label="创建时间">
+    <div class="search">
+        <el-form :model="queryParams" ref="queryForm" :inline="true">
+            <el-form-item :label="$t('permission.roleName')" prop="roleNameCn">
+                <el-select v-model="queryParams.roleNameCn" :placeholder="$t('permission.roleNamePlaceholder')" filterable
+                    remote clearable :remote-method="handleRoleSearch" :loading="searchData.isRoleLoading"
+                    style="width: 200px" @keyup.enter.native="handleQuery">
+                    <el-option v-for="(item, index) in searchData.searchRoleList" :key="item + index" :label="item"
+                        :value="item" />
+                </el-select>
+            </el-form-item>
+
+            <el-form-item :label="$t('permission.functionKey')" prop="functionKey">
+                <el-select v-model="queryParams.functionKey" :placeholder="$t('permission.functionKeyPlaceholder')"
+                    filterable remote clearable :remote-method="handleRoleKeySearch" :loading="searchData.isRoleKeyLoading"
+                    style="width: 200px" @keyup.enter.native="handleQuery">
+                    <el-option v-for="(item, index) in searchData.searchRoleKeyList" :key="item + index" :label="item"
+                        :value="item" />
+                </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('common.status')" prop="status">
+                <el-select v-model="queryParams.status" :placeholder="$t('common.status')" clearable style="width: 200px">
+                    <el-option v-for="(status, index) in searchData.roleStatus" :key="index" :label="status.label"
+                        :value="status.value" />
+                </el-select>
+            </el-form-item>
+            <!-- <el-form-item label="创建时间">
                     <el-date-picker v-model="queryParams.dateRange" style="width: 200px" value-format="YYYY/MM/DD"
                         type="daterange" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                 </el-form-item> -->
-            </el-form>
-            <div class="search-btn">
-                <el-button type="primary" @click="handleQuery">搜索</el-button>
-                <el-button @click="resetQuery(queryForm)">重置</el-button>
-            </div>
+        </el-form>
+        <div class="search-btn">
+            <el-button type="primary" @click="handleQuery">{{ $t('common.search') }}</el-button>
+            <el-button @click="resetQuery(queryForm)">{{ $t('common.reset') }}</el-button>
         </div>
-
-        <common-table :tableList="tableData.roleList" :isLoading="tableData.isLoading"
-            :tableHeaderConfig="tableData.headerConfig" :uploadRequestConfig="tableData.uploadRequestConfig"
-            @handleEvent="tableHandler" />
-        <Pagination :total="pagination.total" :pageSize="pagination.pageSize" :currentPage="pagination.currentPage"
-            @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" />
-
-        <el-dialog v-model="dialogConfig.isVisible" :title="dialogConfig.title" width="50%" top="100px"
-            :close-on-click-modal="false" destroy-on-close draggable>
-            <role-config :roleConfigData="roleConfigData.data" :mode="roleConfigData.mode" @handleConfig="handleConfig" />
-        </el-dialog>
     </div>
+
+    <common-table :tableList="tableData.roleList" :isLoading="tableData.isLoading"
+        :tableHeaderConfig="tableData.headerConfig" :uploadRequestConfig="tableData.uploadRequestConfig"
+        @handleEvent="tableHandler" />
+    <Pagination :total="pagination.total" :pageSize="pagination.pageSize" :currentPage="pagination.currentPage"
+        @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" />
+
+    <el-dialog v-model="dialogConfig.isVisible" :title="dialogConfig.title" width="50%" top="100px"
+        :close-on-click-modal="false" destroy-on-close draggable>
+        <role-config :roleConfigData="roleConfigData.data" :mode="roleConfigData.mode" @handleConfig="handleConfig" />
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -60,7 +59,8 @@ import { getToken } from "@/utils/token";
 import RoleConfig from "@/views/permission/role/RoleConfig.vue";
 import Pagination from "@/components/Pagination.vue";
 import CommonTable from "@/components/CommonTable.vue";
-import { TableOperation } from "@/components/CommonTable";
+import { TableOperation, TableHandlerOption } from "@/components/CommonTable";
+import { $t } from "@/utils/i18n";
 
 onMounted(async () => {
     await getRoleList({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
@@ -89,11 +89,11 @@ const searchData = reactive({
     roleStatus: [
         {
             value: 0,
-            label: "无效"
+            label: $t('common.ineffective')
         },
         {
             value: 1,
-            label: "有效"
+            label: $t('common.effectivity')
         }
     ],
     searchRoleList: [] as string[],
@@ -128,30 +128,22 @@ const dialogConfig = reactive({
     title: '',
 });
 
-// 表格相关逻辑
-interface TableHandlerOption {
-    mode: keyof typeof TableOperation,
-    option?: {
-        type?: string,
-        rowData?: RoleList,
-        isEditStatus?: boolean,
-    }
-}
+
 const tableHandleEventObj = {
     handleAdd() {
         dialogConfig.isVisible = true;
-        dialogConfig.title = "新增角色";
+        dialogConfig.title = $t('permission.addRole');
         roleConfigData.data = initRoleConfigData;
         roleConfigData.mode = TableOperation.Add;
     },
-    async handleEdit(option: TableHandlerOption) {
+    async handleEdit(option: TableHandlerOption<RoleList>) {
         const role = option.option?.rowData as RoleList;
         const isEditStatus = option.option?.isEditStatus;
         if (isEditStatus) {
             await editRoleInfoApi(role);
         } else {
             dialogConfig.isVisible = true;
-            dialogConfig.title = `编辑角色（${role.roleId}）`;
+            dialogConfig.title = $t('permission.editRole') + `（${role.roleId}）`;
             roleConfigData.data = role;
             roleConfigData.mode = TableOperation.Edit;
         }
@@ -159,9 +151,9 @@ const tableHandleEventObj = {
     handleDelete() {
 
     },
-    async handleExport(config: TableHandlerOption) {
+    async handleExport(config: TableHandlerOption<RoleList>) {
         let result;
-        if (config.option?.type == 'template') {
+        if (config.option?.exportType == 'template') {
             result = await importTemplateApi();
         } else {
             result = await exportRoleListApi({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
@@ -174,32 +166,32 @@ const tableData = reactive({
     isLoading: false,
     headerConfig: [
         {
-            label: '角色编号',
+            label: $t('permission.roleId'),
             prop: 'roleId',
             width: 80,
         },
         {
-            label: '角色名称',
+            label: $t('permission.roleName'),
             prop: 'roleNameCn',
             width: 150,
         },
         {
-            label: '权限列表',
+            label: $t('permission.functionList'),
             prop: 'functionList',
             width: 150,
         },
         {
-            label: '角色描述',
+            label: $t('permission.roleDescription'),
             prop: 'roleDescriptionCn',
             width: 220,
         },
         {
-            label: '状态',
+            label: $t('common.status'),
             prop: 'status',
             width: 120,
         },
         {
-            label: '创建时间',
+            label: $t('common.createTime'),
             prop: 'createTime',
             width: 160,
         },
@@ -212,7 +204,7 @@ const tableData = reactive({
         }
     }
 })
-const tableHandler = (option: TableHandlerOption) => {
+const tableHandler = (option: TableHandlerOption<RoleList>) => {
     tableHandleEventObj[`handle${option.mode}`](option);
 }
 const handleQuery = () => {

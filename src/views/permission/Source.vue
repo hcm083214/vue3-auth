@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div>
         <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">功能权限关系快速编辑</el-button>
         <el-button type="success" class="mb10" @click="handleAdd">新增菜单权限</el-button>
         <el-button type="success" class="mb10" @click="handleSyncResource">资源同步</el-button>

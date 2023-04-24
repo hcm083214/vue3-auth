@@ -4,19 +4,19 @@
             <el-col :span="1.5">
                 <el-button type="primary" plain @click="handleAdd">
                     <icon icon="svg-icon:add" />
-                    新增
+                    {{ $t('common.add') }}
                 </el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="warning" plain @click="handleExport">
                     <icon icon="svg-icon:export" />
-                    导出
+                    {{ $t('common.export') }}
                 </el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="warning" plain @click="handleExport('template')">
                     <icon icon="svg-icon:export" />
-                    导入模板下载
+                    {{ $t('common.importTemplate') }}
                 </el-button>
             </el-col>
 
@@ -26,7 +26,7 @@
                     :headers="uploadRequestConfig.headers">
                     <el-button type="success" plain>
                         <icon icon="svg-icon:import" />
-                        导入
+                        {{ $t('common.import') }}
                     </el-button>
                 </el-upload>
             </el-col>
@@ -35,32 +35,32 @@
             <el-table-column type="selection" width="55" align="center" />
             <template v-for="rows in props.tableHeaderConfig" :key="rows.label">
 
-                <el-table-column :label="rows.label" align="center" :width="rows.width" v-if="rows.label == '状态'">
+                <el-table-column :label="rows.label" align="center" :width="rows.width" v-if="rows.label == $t('common.status')">
                     <template #default="scope">
                         <el-switch active-value="1" inactive-value="0" v-model="scope.row.status"
                             @change="handleEdit(scope.row, true)"></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column :label="rows.label" align="center" :width="rows.width" v-else-if="rows.label == '权限列表'">
+                <el-table-column :label="rows.label" align="center" :width="rows.width" v-else-if="rows.label === $t('permission.functionList')">
                     <template #default="scope">
                         <span>{{ getFunctionListString(scope.row) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column :label="rows.label" align="center" prop="createTime" :width="rows.width"
-                    v-else-if="rows.label == '创建时间'">
+                    v-else-if="rows.label === $t('common.createTime')">
                     <template #default="scope">
                         <span>{{ dataFormat(scope.row.createTime, "YYYY/MM/DD HH:mm:ss") }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column :label="rows.label" :prop="rows.prop" :width="rows.width" v-else />
             </template>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" min-width="120">
+            <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" fixed="right" min-width="120">
                 <template #default="scope">
                     <el-button size="small" link type="primary" @click="handleEdit(scope.row)">
-                        <icon icon="svg-icon:edit" />修改
+                        <icon icon="svg-icon:edit" />{{ $t('common.edit') }}
                     </el-button>
                     <el-button size="small" link type="primary">
-                        <icon icon="svg-icon:delete" />删除
+                        <icon icon="svg-icon:delete" />{{ $t('common.delete') }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -77,6 +77,7 @@ import { dataFormat } from "@/utils/index";
 import Icon from "@/components/Icon.vue";
 import { FunctionList, RoleList } from "@/api/types";
 import { TableOperation } from "@/components/CommonTable";
+import { $t } from "@/utils/i18n";
 
 const props = defineProps({
     isLoading: {
@@ -141,7 +142,7 @@ const handleUploadSuccess = (response: any) => {
 const handleUploadError = (error: Error) => {
     ElMessage({
         type: 'error',
-        message: "上传失败"
+        message: $t('common.operationFail')
     })
 }
 

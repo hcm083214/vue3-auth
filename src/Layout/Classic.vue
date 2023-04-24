@@ -10,7 +10,9 @@
                 <!-- <tags-view></tags-view> -->
             </div>
             <div class="app-main">
-                <router-view />
+                <div class="app-container">
+                    <router-view />
+                </div>
             </div>
         </div>
         <settings />
@@ -62,6 +64,7 @@ setThemeAction({
             }
         }
     }
+
     .sidebar-container {
         max-width: 200px;
         width: 200px;

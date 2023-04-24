@@ -1,5 +1,5 @@
 import service from "../utils/request";
-import { Role } from "@/api/types";
+import { RoleList,Page } from "@/api/types";
 
 export interface roleListApiQuery {
     roleId?: number,
@@ -18,7 +18,7 @@ export interface roleListApiQuery {
  * @return {*}
  */
 export async function getRoleListApi(params: roleListApiQuery) {
-    let result = await service.get<Role>("/roles", {
+    let result = await service.get<Page<RoleList>>("/roles", {
         params
     });
     return result;
@@ -30,7 +30,7 @@ export async function getRoleListApi(params: roleListApiQuery) {
  * @return {*}
  */
 export async function editRoleInfoApi(params: roleListApiQuery) {
-    return await service.post<Role>(`/roles/role_id/${params.roleId}`, {
+    return await service.post(`/roles/role_id/${params.roleId}`, {
         data: params
     });
 }
@@ -41,7 +41,7 @@ export async function editRoleInfoApi(params: roleListApiQuery) {
  * @return {*}
  */
 export async function addRoleInfoApi(params: roleListApiQuery) {
-    return await service.post<Role>(`/roles`, {
+    return await service.post(`/roles`, {
         data: params
     });
 }

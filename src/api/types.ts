@@ -28,6 +28,7 @@ export interface Resource {
     resourceType: string,
     children: Resource[]
 }
+
 export interface RoleList {
     roleId: number,
     roleNameCn: string,
@@ -40,13 +41,15 @@ export interface RoleList {
     status?: string,
     createTime?: Date
 }
-export interface Role {
+
+export interface Page<T> {
     total: number,
     pageNum: number,
     pageSize: number,
     pages: number,
-    list: RoleList[]
+    list: T[]
 }
+
 export interface FunctionList {
     functionId: number,
     functionNameCn: string,
@@ -61,10 +64,11 @@ export interface FunctionList {
     updateBy?: string,
 }
 
-export interface FunctionResult {
-    total: number,
-    pageNum: number,
-    pageSize: number,
-    pages: number,
-    list: FunctionList[]
+export interface I18nData {
+    i18nId:number,
+    locale:string,
+    i18nModule:string,
+    i18nKey:string,
+    i18nValue:string,
+    createTime?:Date,
 }
