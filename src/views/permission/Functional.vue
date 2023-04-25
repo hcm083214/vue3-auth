@@ -1,30 +1,32 @@
 <template>
     <div class="search">
         <el-form ref="menuFormRef" :model="menuForm" label-position="right" :inline="true" label-width="80px">
-            <el-form-item label="权限名称" prop="functionNameCn">
-                <el-select v-model="menuForm.functionNameCn" placeholder="请输入权限名称" filterable remote clearable
-                    :remote-method="handleFunctionSearch" style="width: 200px" @keyup.enter.native="handleQuery">
+            <el-form-item :label="$t('permission.functionName')" prop="functionNameCn">
+                <el-select v-model="menuForm.functionNameCn" :placeholder="$t('permission.functionDescriptionPlaceholder')"
+                    filterable remote clearable :remote-method="handleFunctionSearch" style="width: 200px"
+                    @keyup.enter.native="handleQuery">
                     <el-option v-for="(item, index) in searchData.searchFunctionList" :key="item + index" :label="item"
                         :value="item" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="权限字符" prop="functionKey">
-                <el-select v-model="menuForm.functionKey" placeholder="请输入权限字符" filterable remote clearable
-                    :remote-method="handleFunctionKeySearch" style="width: 200px" @keyup.enter.native="handleQuery">
+            <el-form-item :label="$t('permission.functionKey')" prop="functionKey">
+                <el-select v-model="menuForm.functionKey" :placeholder="$t('permission.functionKeyPlaceholder')" filterable
+                    remote clearable :remote-method="handleFunctionKeySearch" style="width: 200px"
+                    @keyup.enter.native="handleQuery">
                     <el-option v-for="(item, index) in searchData.searchFunctionKeyList" :key="item + index" :label="item"
                         :value="item" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-                <el-select v-model="menuForm.status" placeholder="状态" clearable style="width: 200px">
+            <el-form-item :label="$t('common.status')" prop="status">
+                <el-select v-model="menuForm.status" :placeholder="$t('common.status')" clearable style="width: 200px">
                     <el-option v-for="(status, index) in searchData.functionStatus" :key="index" :label="status.label"
                         :value="status.value" />
                 </el-select>
             </el-form-item>
         </el-form>
         <div class="search-btn">
-            <el-button type="primary" @click="handleQuery">搜索</el-button>
-            <el-button @click="resetQuery(menuFormRef)">重置</el-button>
+            <el-button type="primary" @click="handleQuery">{{ $t('common.search') }}</el-button>
+            <el-button @click="resetQuery(menuFormRef)">{{ $t('common.reset') }}</el-button>
         </div>
     </div>
     <common-table :tableList="tableData.functionList" :isLoading="tableData.isLoading"
@@ -50,6 +52,7 @@ import { getFunctionListApi, FunctionListApiQuery, getExportDataApi, getExportTe
 import type { FunctionList } from "@/api/types";
 import { excel } from "@/utils/download";
 import { getToken } from "@/utils/token";
+import { $t } from '@/utils/i18n';
 
 const getTableData = async (params: FunctionListApiQuery) => {
     tableData.isLoading = true;
@@ -73,11 +76,11 @@ const searchData = reactive({
     functionStatus: [
         {
             value: 0,
-            label: "无效"
+            label: $t('common.ineffective')
         },
         {
             value: 1,
-            label: "有效"
+            label: $t('common.effectivity')
         }
     ],
     searchFunctionList: [] as string[],
@@ -111,32 +114,32 @@ const tableData = reactive({
     functionList: [] as FunctionList[],
     headerConfig: [
         {
-            label: '功能权限编号',
+            label: $t('permission.functionId'),
             prop: 'functionId',
             width: 120,
         },
         {
-            label: '权限名称',
+            label: $t('permission.functionName'),
             prop: 'functionNameCn',
             width: 150,
         },
         {
-            label: '权限字符',
+            label: $t('permission.functionKey'),
             prop: 'functionKey',
             width: 150,
         },
         {
-            label: '权限描述',
+            label: $t('permission.functionDescription'),
             prop: 'functionDescriptionCn',
             width: 200,
         },
         {
-            label: '状态',
+            label: $t('common.status'),
             prop: 'status',
             width: 120,
         },
         {
-            label: '创建时间',
+            label: $t('common.createTime'),
             prop: 'createTime',
             width: 180,
         },
@@ -152,7 +155,7 @@ const tableData = reactive({
 const tableHandleEventObj = {
     handleAdd() {
         dialogConfig.isVisible = true;
-        dialogConfig.title = "功能权限新增";
+        dialogConfig.title = $t('common.add');
         dialogConfig.mode = TableOperation.Add;
         dialogData.value = initDialogData;
     },
@@ -163,7 +166,7 @@ const tableHandleEventObj = {
             await editFunctionInfoApi(functions);
         } else {
             dialogConfig.isVisible = true;
-            dialogConfig.title = `功能权限编辑(${functions.functionNameCn})`;
+            dialogConfig.title = $t('common.edit') + `(${functions.functionNameCn})`;
             dialogConfig.mode = TableOperation.Edit;
             dialogData.value = functions;
         }

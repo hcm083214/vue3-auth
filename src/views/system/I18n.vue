@@ -1,5 +1,22 @@
 <template>
     <div>
+        <el-form :model="queryParams" ref="queryForm" :inline="true">
+            <el-form-item :label="$t('system.locale')" prop="locale" class="col2">
+                <el-select v-model="queryParams.locale" class="m-2" placeholder="Select">
+                    <el-option v-for="item in locales" :key="item" :label="item" :value="item" />
+                </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('system.i18nModule')" prop="i18nModule" class="col2">
+                <el-input v-model="queryParams.i18nModule" />
+            </el-form-item>
+            <el-form-item :label="$t('system.i18nKey')" prop="i18nKey" class="col2">
+                <el-input v-model="queryParams.i18nKey" />
+            </el-form-item>
+        </el-form>
+        <div class="search-btn">
+            <el-button type="primary" @click="handleQuery">{{ $t('common.search') }}</el-button>
+            <el-button @click="resetQuery(queryForm)">{{ $t('common.reset') }}</el-button>
+        </div>
         <common-table :tableList="tableData.i18nList" :isLoading="tableData.isLoading"
             :tableHeaderConfig="tableData.headerConfig" :uploadRequestConfig="tableData.uploadRequestConfig"
             @handleEvent="tableHandler" />
@@ -14,53 +31,69 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
+import type { FormInstance } from 'element-plus'
 
 import CommonTable from "@/components/CommonTable.vue";
 import { TableOperation, TableHandlerOption } from "@/components/CommonTable";
 import Pagination from "@/components/Pagination.vue";
 import { I18nData } from "@/api/types";
-import { getIl8nListApi } from "@/api/config";
-import { $t } from "@/utils/i18n";
+import { getIl8nListApi, i18nParams } from "@/api/config";
+import { $t, SUPPORT_LOCALES as locales } from "@/utils/i18n";
 import { getToken } from "@/utils/token";
 import I18nConfig from "@/views/system/i18n/I18nConfig.vue";
 
-async function getI18nData() {
+async function getI18nData(params: i18nParams) {
     tableData.isLoading = true;
-    const result = await getIl8nListApi({ pageNum: pagination.currentPage, pageSize: pagination.pageSize, });
+    const result = await getIl8nListApi(params);
     if (result.code === 200) {
         tableData.i18nList = result.data.list;
         pagination.total = result.data.total;
     }
     tableData.isLoading = false;
 }
-onMounted(() => getI18nData());
+onMounted(() => getI18nData({ pageNum: pagination.currentPage, pageSize: pagination.pageSize }));
+
+const queryParams = reactive({
+    locale: '',
+    i18nModule: '',
+    i18nKey: "",
+})
+const queryForm = ref();
+function handleQuery() {
+    getI18nData({ pageNum: pagination.currentPage, pageSize: pagination.pageSize, ...queryParams });
+}
+function resetQuery(formEl: FormInstance | undefined) {
+    if (!formEl) return
+    formEl.resetFields();
+    getI18nData({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
+}
 
 const tableData = reactive({
     i18nList: [] as I18nData[],
     isLoading: false,
     headerConfig: [
         {
-            label: $t('permission.roleId'),
+            label: $t('system.i18nId'),
             prop: 'i18nId',
             width: 80,
         },
         {
-            label: $t('permission.roleId'),
+            label: $t('system.locale'),
             prop: 'locale',
             width: 100,
         },
         {
-            label: $t('permission.roleId'),
+            label: $t('system.i18nModule'),
             prop: 'i18nModule',
             width: 180,
         },
         {
-            label: $t('permission.roleId'),
+            label: $t('system.i18nKey'),
             prop: 'i18nKey',
             width: 200,
         },
         {
-            label: $t('permission.roleId'),
+            label: $t('system.i18nValue'),
             prop: 'i18nValue',
             width: 250,
         },
@@ -114,7 +147,7 @@ const dialogConfig = reactive({
 
 const handleConfig = () => {
     dialogConfig.isVisible = false;
-    getI18nData();
+    getI18nData({ pageNum: pagination.currentPage, pageSize: pagination.pageSize });
 }
 
 const pagination = reactive({
@@ -126,11 +159,20 @@ const pagination = reactive({
 
 function pageSizeChange(pageSize: number) {
     pagination.pageSize = pageSize;
+    getI18nData({ pageNum: pagination.currentPage, pageSize });
 }
 
 function currentPageChange(pageNum: number) {
     pagination.currentPage = pageNum;
+    getI18nData({ pageNum, pageSize: pagination.pageSize });
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.search-btn {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    margin-right: 50px;
+}
+</style>

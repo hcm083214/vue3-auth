@@ -1,27 +1,27 @@
 <template>
     <div>
-        <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">功能权限关系快速编辑</el-button>
-        <el-button type="success" class="mb10" @click="handleAdd">新增菜单权限</el-button>
-        <el-button type="success" class="mb10" @click="handleSyncResource">资源同步</el-button>
+        <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">{{ $t('common.quickEdit') }}</el-button>
+        <el-button type="success" class="mb10" @click="handleAdd">{{ $t('common.add') }}</el-button>
+        <el-button type="success" class="mb10" @click="handleSyncResource">{{ $t('common.sync') }}</el-button>
         <el-table :data="menuData.menuList" v-loading="menuData.isLoading" style="width: 100%; margin-bottom: 20px"
             row-key="resourceId" border header-row-class-name="table-header" class="table-header">
-            <el-table-column prop="resourceId" label="资源id" sortable />
-            <el-table-column prop="resourceName" label="资源名称" sortable />
-            <el-table-column label="资源类型" sortable>
+            <el-table-column prop="resourceId" :label="$t('permission.parentId')" sortable />
+            <el-table-column prop="resourceName" :label="$t('permission.resourceName')" sortable />
+            <el-table-column :label="$t('permission.resourceType')" sortable>
                 <template #default="scope">
                     {{ typeConvert(scope.row.resourceType) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="description" label="资源描述" sortable />
-            <el-table-column prop="perms" label="权限标识" sortable />
-            <el-table-column align="center" label="操作">
+            <el-table-column prop="description" :label="$t('permission.resourceDesc')" sortable />
+            <el-table-column prop="perms" :label="$t('permission.perms')" sortable />
+            <el-table-column align="center" :label="$t('common.operation')">
                 <template #default="scope">
                     <el-button v-if="scope.row.resourceType !== 'F'" size="small" link type="primary"
                         @click="handleEdit(scope.row)">
-                        <icon icon="svg-icon:edit" />修改
+                        <icon icon="svg-icon:edit" />{{ $t('common.edit') }}
                     </el-button>
                     <el-button size="small" link type="primary" @click="handleDelete(scope.row)">
-                        <icon icon="svg-icon:delete" />删除
+                        <icon icon="svg-icon:delete" />{{ $t('common.delete') }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -30,16 +30,17 @@
             :close-on-click-modal="false" :destroy-on-close="true" draggable>
             <source-config :resourceConfig="configData.resource" :mode="configData.mode" @handleConfig="handleConfig" />
         </el-dialog>
-        <el-dialog v-model="isShowParentSetDialog" title="功能权限关系快速编辑" width="30%" :close-on-click-modal="false">
+        <el-dialog v-model="isShowParentSetDialog" :title="$t('common.quickEdit')" width="30%"
+            :close-on-click-modal="false">
             <div class="dialog-content">
                 <div class="tree-content">
                     <el-tree :data="menuData.menuList" :props="menuDataDefaultProps" draggable default-expand-all
                         node-key="resourceId" />
                 </div>
                 <div class="control">
-                    <el-button type="primary" class="btn" @click="handleEditParentId">修改</el-button>
+                    <el-button type="primary" class="btn" @click="handleEditParentId">{{ $t('common.edit') }}</el-button>
                     <span></span>
-                    <el-button class="btn" @click="resetParentId">重置</el-button>
+                    <el-button class="btn" @click="resetParentId">{{ $t('common.reset') }}</el-button>
                 </div>
             </div>
         </el-dialog>
@@ -54,6 +55,8 @@ import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import SourceConfig from "@/views/permission/source/SourceConfig.vue"
+import { typeConvert } from "@/views/permission/source/source"
+import { $t } from "@/utils/i18n";
 
 onMounted(() => {
     getResourceData();
@@ -82,19 +85,12 @@ const handleSyncResource = async () => {
     await syncApiList();
     await getResourceData();
 }
-const typeConvert = (type: "M" | "C" | "F") => {
-    const map = {
-        M: "目录",
-        C: "菜单",
-        F: "按钮",
-    }
-    return map[type];
-}
+
 const handleEdit = (menu: Resource) => {
     // 菜单和目录才可编辑
     isShowConfigDialog.value = true;
     configData.resource = menu;
-    configData.title = "菜单编辑";
+    configData.title = $t('common.edit');
     configData.mode = "Edit";
 }
 const deleteResourceFn = (list: Resource[], deleteResource: Resource) => {
@@ -110,11 +106,11 @@ const deleteResourceFn = (list: Resource[], deleteResource: Resource) => {
 }
 const handleDelete = async (resource: Resource) => {
     await ElMessageBox.confirm(
-        `确认删除`,
-        '系统提示',
+        $t('common.confirmDelete'),
+        $t('common.systemPrompt'),
         {
-            confirmButtonText: `确认`,
-            cancelButtonText: '取消',
+            confirmButtonText: $t('common.confirm'),
+            cancelButtonText: $t('common.cancel'),
             type: 'warning',
         }
     )
@@ -161,7 +157,7 @@ const configData = reactive({
 const isShowConfigDialog = ref(false);
 const handleAdd = () => {
     isShowConfigDialog.value = true;
-    configData.title = "菜单新增";
+    configData.title = $t('common.add');
     configData.resource = initConfigSource;
     configData.mode = "Add";
 }

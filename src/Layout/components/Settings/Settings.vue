@@ -5,12 +5,12 @@
         </el-icon>
     </div>
     <el-drawer v-model="isShow" title="项目配置">
-        <el-divider>主题</el-divider>
+        <el-divider>{{ $t('common.theme') }}</el-divider>
         <el-switch v-model="isNight" class="mt-2" style="margin-left: 24px" inline-prompt :active-icon="IconLight"
             :inactive-icon="IconDark" @change="nightModeHandler" />
-        <el-divider>布局</el-divider>
+        <el-divider>{{ $t('common.layout') }}</el-divider>
         <layout-radio-picker />
-        <el-divider>头部主题</el-divider>
+        <el-divider>{{ $t('common.headerTheme') }}</el-divider>
         <color-radio-picker :schemaArr="[
             { backgroundColor: '#fff', textColor: '#000' },
             { backgroundColor: '#009688', textColor: '#fff' },
@@ -20,7 +20,7 @@
             { backgroundColor: '#9c27b0', textColor: '#fff' },
             { backgroundColor: '#ff9800', textColor: '#fff' },
         ]" @themeChange="topicThemeChange" />
-        <el-divider>菜单主题</el-divider>
+        <el-divider>{{ $t('common.menuTheme') }}</el-divider>
         <color-radio-picker :schemaArr="[
             { backgroundColor: '#2b2f3a', textColor: '#fff' },
             { backgroundColor: '#fff', textColor: '#000' },
@@ -45,6 +45,7 @@ import appStore from "@/store/index";
 import { Schema } from "@/store/config";
 import { ElMessage } from 'element-plus';
 const { configState, setConfigAction, setThemeAction } = appStore.configStore;
+import { $t } from "@/utils/i18n";
 
 const isShow = ref(false);
 

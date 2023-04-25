@@ -13,8 +13,8 @@ export function getLocale() {
     return localStorage.getItem(LOCALE) || "zh";
 }
 
-export function setLocale(token: string) {
-    return localStorage.setItem(LOCALE, token)
+export function setLocale(locale: support_locales) {
+    return localStorage.setItem(LOCALE, locale)
 }
 
 export function removeLocale() {
@@ -23,7 +23,6 @@ export function removeLocale() {
 
 function getLocalePackage() {
     const localePackage = localStorage.getItem(LOCALE_PACKAGE);
-    console.log("🚀 ~ file: i18n.ts:26 ~ getLocalePackage ~ localePackage:", localePackage)
     return !!localePackage && JSON.parse(localePackage);
 }
 
@@ -64,26 +63,30 @@ function formatLocalePackage(i18nData: I18nData[]) {
     })
     return localePackage;
 }
-
+function isChangeLocale(locale: support_locales){
+    return locale !== getLocale() || !getLocalePackage();
+}
 /**
  * @description: 异步加载语言包
  * @param {support_locales} locale 
  * @return {*}
  */
 export async function loadLanguageAsync(locale: support_locales) {
-    if (!getLocalePackage()) {
+    if (isChangeLocale(locale)) {
         const result = await getIl8nPackageApi({ locale });
         if (result.code === 200) {
-            console.log(result.data)
             const localePackage = formatLocalePackage(result.data)
             i18n.global.setLocaleMessage(locale, localePackage);
             setLocalePackage(JSON.stringify(localePackage));
+            setLocale(locale);
+            location.reload();
         }
     } else {
         i18n.global.setLocaleMessage(locale, JSON.parse(getLocalePackage()));
     }
     i18n.global.locale.value = locale;
-    (document.querySelector('html') as HTMLHtmlElement).setAttribute('lang', locale)
+    (document.querySelector('html') as HTMLHtmlElement).setAttribute('lang', locale);
+    
     return nextTick();
 }
 

@@ -9,10 +9,10 @@
         </div>
         <div class="color-choice">
             <el-form :model="themeForm" size="small" :inline="true">
-                <el-form-item label="背景色">
+                <el-form-item :label="$t('common.backgroundColor')">
                     <el-color-picker v-model="themeForm.backgroundColor" @change="bgHandler" />
                 </el-form-item>
-                <el-form-item label="字体色">
+                <el-form-item :label="$t('common.textColor')">
                     <el-color-picker v-model="themeForm.textColor" @change="bgHandler" />
                 </el-form-item>
             </el-form>
@@ -25,6 +25,7 @@ import { PropType, reactive, ref } from 'vue';
 
 import appStore from "@/store/index";
 import { Schema } from "@/store/config";
+import { $t } from "@/utils/i18n";
 
 const { configState, setThemeAction } = appStore.configStore;
 

@@ -22,7 +22,7 @@
         <el-button type="primary" @click="handleClick(i18nFormRef, mode as string)">
             {{ mode === "Add" ? $t('common.add') : $t('common.edit') }}
         </el-button>
-        <el-button @click="resetQuery(i18nFormRef)">重置</el-button>
+        <el-button @click="resetQuery(i18nFormRef)">{{$t('common.reset')}}</el-button>
     </div>
 </template>
 

@@ -70,7 +70,7 @@ setThemeAction({
         width: 200px;
         height: calc(100% - $base-header-height);
         position: fixed;
-        z-index: 2023;
+        z-index: 10;
     }
 
     .main-container {
@@ -79,7 +79,7 @@ setThemeAction({
 
         .app-header {
             position: fixed;
-            z-index: 2023;
+            z-index: 10;
             width: calc(100% - $base-sidebar-width);
         }
 

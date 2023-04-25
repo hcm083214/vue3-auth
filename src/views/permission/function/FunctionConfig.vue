@@ -2,24 +2,24 @@
     <div>
         <el-form ref="functionFormRef" :model="functionForm" label-position="top" :inline="true" :rules="rules"
             label-width="120px">
-            <el-form-item label="功能权限中文名" prop="functionNameCn" class="functional-name">
+            <el-form-item :label="$t('permission.functionNameCn')" prop="functionNameCn" class="functional-name">
                 <el-input v-model="functionForm.functionNameCn"  />
             </el-form-item>
-            <el-form-item label="功能权限英文名" prop="functionNameEn" class="functional-name">
+            <el-form-item :label="$t('permission.functionNameEn')" prop="functionNameEn" class="functional-name">
                 <el-input v-model="functionForm.functionNameEn"  />
             </el-form-item>
-            <el-form-item label="功能权限中文描述" prop="functionDescriptionCn" class="functional-desc">
+            <el-form-item :label="$t('permission.functionDescriptionCn')" prop="functionDescriptionCn" class="functional-desc">
                 <el-input v-model="functionForm.functionDescriptionCn" maxlength="200" type="textarea" />
             </el-form-item>
-            <el-form-item label="功能权限英文描述" prop="functionDescriptionEn" class="functional-desc">
+            <el-form-item :label="$t('permission.functionDescriptionEn')" prop="functionDescriptionEn" class="functional-desc">
                 <el-input v-model="functionForm.functionDescriptionEn" maxlength="200" type="textarea" />
             </el-form-item>
-            <el-form-item label="权限字符" prop="functionKey" class="functional-name">
+            <el-form-item :label="$t('permission.functionKey')" prop="functionKey" class="functional-name">
                 <el-input v-model="functionForm.functionKey"  />
             </el-form-item>
         </el-form>
         <div class="tree">
-            <div class="el-form-item__label">对应的功能权限列表</div>
+            <div class="el-form-item__label">{{$t('permission.functionList')}}</div>
             <div class="tree-content">
                 <el-tree ref="treeRef" v-loading="treeData.isLoading" :data="treeData.allPermissionList" show-checkbox
                     node-key="resourceId" :default-expanded-keys="treeData.selectPermissionIdList" :check-strictly="true"
@@ -29,7 +29,7 @@
         <div class="control">
             <el-button type="primary" @click="handleClick(functionFormRef, mode as string)">{{ mode == "Add" ? "新增" : "修改"
             }}</el-button>
-            <el-button @click="resetQuery(functionFormRef)">重置</el-button>
+            <el-button @click="resetQuery(functionFormRef)">{{ $t('common.reset') }}</el-button>
         </div>
     </div>
 </template>
@@ -42,6 +42,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { getResourceApi } from "@/api/menu";
 import { getPermissionIdListApi, editFunctionInfoApi, addFunctionInfoApi } from "@/api/function";
 import { Resource } from "@/api/types";
+import { $t } from "@/utils/i18n";
 
 const emit = defineEmits(["handleConfig"]);
 const props = defineProps({
@@ -60,10 +61,10 @@ const props = defineProps({
 const functionFormRef = ref<FormInstance>();
 const functionForm = reactive(props.configData);
 const rules = reactive<FormRules>({
-    functionNameCn: { required: true, message: '请输入功能权限中文名称', trigger: 'blur' },
-    functionNameEn: { required: true, message: '请输入功能权限英文名称', trigger: 'blur' },
-    functionDescriptionCn: { required: true, message: '请输入功能权限中文描述', trigger: 'blur' },
-    functionDescriptionEn: { required: true, message: '请输入功能权限英文描述', trigger: 'blur' },
+    functionNameCn: { required: true, message: $t('permission.functionNamePlaceholder'), trigger: 'blur' },
+    functionNameEn: { required: true, message: $t('permission.functionNamePlaceholder'), trigger: 'blur' },
+    functionDescriptionCn: { required: true, message: $t('permission.functionDescriptionPlaceholder'), trigger: 'blur' },
+    functionDescriptionEn: { required: true, message: $t('permission.functionDescriptionPlaceholder'), trigger: 'blur' },
 })
 const resetQuery = (formEl: FormInstance | undefined) => {
     if (!formEl) return

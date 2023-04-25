@@ -1,28 +1,28 @@
 <template>
     <el-form ref="roleFormRef" :model="roleForm" label-position="top" :inline="true" :rules="rules" label-width="120px">
-        <el-form-item label="角色中文名" prop="roleNameCn" class="col2">
+        <el-form-item :label="$t('permission.roleNameCn')" prop="roleNameCn" class="col2">
             <el-input v-model="roleForm.roleNameCn" />
         </el-form-item>
-        <el-form-item label="角色英文名" prop="roleNameEn" class="col2">
+        <el-form-item :label="$t('permission.roleNameEn')" prop="roleNameEn" class="col2">
             <el-input v-model="roleForm.roleNameEn" />
         </el-form-item>
-        <el-form-item label="角色中文描述" prop="roleDescriptionCn" class="col1">
+        <el-form-item :label="$t('permission.roleDescriptionCn')" prop="roleDescriptionCn" class="col1">
             <el-input v-model="roleForm.roleDescriptionCn" maxlength="200" type="textarea" style="height: 50px;" />
         </el-form-item>
-        <el-form-item label="角色英文描述" prop="roleDescriptionEn" class="col1">
+        <el-form-item :label="$t('permission.roleDescriptionEn')" prop="roleDescriptionEn" class="col1">
             <el-input v-model="roleForm.roleDescriptionEn" maxlength="200" type="textarea" style="height: 50px;" />
         </el-form-item>
-        <el-form-item label="功能权限列表" class="col1">
+        <el-form-item :label="$t('permission.functionList')" class="col1">
             <el-transfer v-model="selectFunctionList" :props="transferProps" :data="functionListData" filterable
-                filter-placeholder="请输入需要查询的功能列表" />
+                :filter-placeholder="$t('permission.functionListPlaceholder')" />
         </el-form-item>
         <!-- <el-form-item label="数据维度列表" class="col2"></el-form-item> -->
     </el-form>
     <div class="control">
         <el-button type="primary" @click="handleClick(roleFormRef, mode as string)">
-            {{ mode == "Add" ? "新增" : "修改" }}
+            {{ mode == "Add" ? $t('common.add') : $t('common.edit') }}
         </el-button>
-        <el-button @click="resetQuery(roleFormRef)">重置</el-button>
+        <el-button @click="resetQuery(roleFormRef)">{{ $t('common.reset') }}</el-button>
     </div>
 </template>
 
@@ -34,6 +34,7 @@ import { ElMessage } from "element-plus";
 import { addRoleInfoApi, editRoleInfoApi } from '@/api/role'
 import { getFunctionListApi } from "@/api/function";
 import { FunctionList } from '@/api/types';
+import { $t } from "@/utils/i18n";
 
 onMounted(async () => {
     await getFunctionList();
@@ -56,10 +57,10 @@ const emit = defineEmits(['handleConfig']);
 const roleForm = reactive({ ...props.roleConfigData });
 const roleFormRef = ref();
 const rules = reactive<FormRules>({
-    roleNameCn: { required: true, message: '请输入角色中文名称', trigger: 'blur' },
-    roleNameEn: { required: true, message: '请输入角色英文名称', trigger: 'blur' },
-    roleDescriptionCn: { required: true, message: '请输入角色中文描述名称', trigger: 'blur' },
-    roleDescriptionEn: { required: true, message: '请输入角色英文描述名称', trigger: 'blur' },
+    roleNameCn: { required: true, message: $t('permission.roleNamePlaceholder'), trigger: 'blur' },
+    roleNameEn: { required: true, message: $t('permission.roleNamePlaceholder'), trigger: 'blur' },
+    roleDescriptionCn: { required: true, message: $t('permission.roleDescriptionPlaceholder'), trigger: 'blur' },
+    roleDescriptionEn: { required: true, message: $t('permission.roleDescriptionPlaceholder'), trigger: 'blur' },
 })
 
 // 功能权限穿梭框

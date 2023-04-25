@@ -8,9 +8,9 @@
                 <icon icon="svg-icon:hamburger" :size="20"></icon>
             </div>
             <el-breadcrumb separator="/" v-if="isShowBreadCrumb" ref="breadCrumb" :style="{
-                '--el-text-color-regular': configStore.configState.theme['--base-navbar-text-color'],
-                '--el-text-color-primary': configStore.configState.theme['--base-navbar-text-color']
-            }">
+                    '--el-text-color-regular': configStore.configState.theme['--base-navbar-text-color'],
+                    '--el-text-color-primary': configStore.configState.theme['--base-navbar-text-color']
+                }">
                 <template v-for="(menu, index) in     data.breadcrumbArr" :key="menu.id">
                     <el-breadcrumb-item v-if="index">
                         <span>{{ menu.resourceName }}</span>
@@ -22,6 +22,7 @@
             </el-breadcrumb>
         </div>
         <div class="right-menu">
+            <locale />
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
                     <img :src="avatar" class="user-avatar">
@@ -56,6 +57,7 @@ import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
 import { logoutApi } from "@/api/login";
 import { removeToken } from "@/utils/token";
+import Locale from "@/components/Locale.vue";
 
 const props = defineProps({
     isShowBreadCrumb: {

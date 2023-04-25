@@ -1,6 +1,5 @@
 import service from "@/utils/request";
 import { I18nData,Page } from "@/api/types";
-import { data } from "@/assets/i18n/data";
 import { getLocale } from "@/utils/i18n";
 
 export interface i18nParams {
@@ -8,6 +7,8 @@ export interface i18nParams {
     pageSize?: number,
     // 语言环境
     locale?:string,
+    i18nModule?: string,
+    i18nKey?: string,
     data?:I18nData[] | I18nData
 }
 

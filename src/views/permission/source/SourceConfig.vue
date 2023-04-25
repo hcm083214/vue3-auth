@@ -2,27 +2,27 @@
     <div>
         <el-form ref="sourceFormRef" :model="sourceForm" label-position="top" :inline="true" :rules="rules"
             label-width="120px">
-            <el-form-item label="父资源id" prop="parentId" :style="{ width: '260px' }">
+            <el-form-item :label="$t('permission.parentId')" prop="parentId" :style="{ width: '260px' }">
                 <el-select v-model="sourceForm.parentId" class="m-2" placeholder="请选择父资源id">
                     <el-option v-for="item in sourceForm.parentMenu" :key="item.resourceId" :label="item.resourceName"
                         :value="item.resourceId" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="资源名称" prop="resourceName" :style="{ width: '260px' }">
+            <el-form-item :label="$t('permission.resourceName')" prop="resourceName" :style="{ width: '260px' }">
                 <el-input v-model="sourceForm.resourceName" />
             </el-form-item>
-            <el-form-item label="资源类型" prop="resourceType" :style="{ width: '260px' }">
+            <el-form-item :label="$t('permission.resourceType')" prop="resourceType" :style="{ width: '260px' }">
                 <el-select v-model="sourceForm.resourceType" class="m-2" placeholder="请选择资源类型">
                     <el-option v-for="item in resourceType" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="资源路径" prop="path" :style="{ width: '260px' }">
+            <el-form-item :label="$t('permission.path')" prop="path" :style="{ width: '260px' }">
                 <el-input v-model="sourceForm.path" />
             </el-form-item>
-            <el-form-item label="资源组件" prop="component" :style="{ width: '260px' }">
+            <el-form-item :label="$t('permission.component')" prop="component" :style="{ width: '260px' }">
                 <el-input v-model="sourceForm.component" />
             </el-form-item>
-            <el-form-item label="资源图标" prop="icon" :style="{ width: '260px' }">
+            <el-form-item :label="$t('common.icon')" prop="icon" :style="{ width: '260px' }">
                 <el-input v-model="sourceForm.icon">
                     <template #prefix>
                         <Icon :icon="'svg-icon:' + sourceForm.icon" :size="12" color="#000"></Icon>
@@ -31,9 +31,9 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="handleClick(sourceFormRef, mode as string)">
-                    {{ mode == "Add" ? "新增" : "修改" }}
+                    {{ mode == "Add" ? $t('common.add') : $t('common.edit') }}
                 </el-button>
-                <el-button @click="resetQuery(sourceFormRef)">重置</el-button>
+                <el-button @click="resetQuery(sourceFormRef)">{{ $t('common.reset') }}</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -47,6 +47,8 @@ import { ElMessage } from 'element-plus'
 import { getMenuListApi, editMenuListApi, addMenuListApi, getResourceApi } from "@/api/menu";
 import { Resource } from "@/api/types";
 import Icon from "@/components/Icon.vue";
+import { $t } from "@/utils/i18n";
+import { resourceType,RESOURCETYPE } from "@/views/permission/source/source"
 
 getResourceApi().then(res => {
     if (res.code === 200) {
@@ -58,7 +60,7 @@ getResourceApi().then(res => {
 
 const tree2List = (tree: Resource[], list: Resource[]) => {
     tree.forEach(menu => {
-        if (menu.resourceType === "M" || menu.resourceType === "C") {
+        if (menu.resourceType === RESOURCETYPE.M|| menu.resourceType === RESOURCETYPE.C) {
             list.push(menu)
         }
         menu?.children.length > 0 && tree2List(menu?.children, list);
@@ -81,35 +83,22 @@ const props = defineProps({
 })
 const emit = defineEmits(['handleConfig'])
 
-const resourceType = [
-    {
-        label: "目录",
-        value: "M"
-    },
-    {
-        label: "菜单",
-        value: "C"
-    },
-    {
-        label: "按钮",
-        value: "F"
-    }
-]
+
 const sourceFormRef = ref();
 const sourceForm = reactive({
     ...props.resourceConfig,
     parentMenu: [
         {
-            resourceName: '主菜单',
+            resourceName: $t('common.mainMenu'),
             resourceId: 0,
         }
     ],
     children: [],
 });
 const componentValidate = (rule: any, value: any, callback: any) => {
-    if (sourceForm.resourceType === "C") {
+    if (sourceForm.resourceType === RESOURCETYPE.C) {
         if (value === '') {
-            callback(new Error('资源类型选菜单组件必须填写'));
+            callback(new Error($t('permission.resourceTypeMenuPlaceholder')));
         } else {
             callback();
         }
@@ -118,11 +107,11 @@ const componentValidate = (rule: any, value: any, callback: any) => {
     }
 }
 const rules = reactive({
-    parentId: { required: true, message: '请输入parentId', trigger: 'blur' },
-    resourceName: { required: true, message: '请输入资源名称', trigger: 'blur' },
-    resourceType: { required: true, message: '请输入资源类型 ', trigger: 'blur' },
+    parentId: { required: true, message: $t('permission.parentIdPlaceholder'), trigger: 'blur' },
+    resourceName: { required: true, message: $t('permission.resourceNamePlaceholder'), trigger: 'blur' },
+    resourceType: { required: true, message: $t('permission.resourceTypePlaceholder'), trigger: 'blur' },
     component: { validator: componentValidate, trigger: 'blur' },
-    path: { required: true, message: '请输入功能权限英文描述', trigger: 'blur' },
+    path: { required: true, message: $t('permission.pathPlaceholder'), trigger: 'blur' },
 });
 
 const handleClick = async (formEl: FormInstance | undefined, mode: string) => {
