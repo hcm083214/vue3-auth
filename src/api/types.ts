@@ -16,6 +16,10 @@ export interface UserInfo {
     permissions: number[],
 }
 
+export interface Count {
+    [att:string]: number;
+}
+
 export interface Resource {
     resourceId: number,
     resourceName: string,
@@ -26,7 +30,8 @@ export interface Resource {
     perms?: string,
     orderNum?: string,
     resourceType: string,
-    children: Resource[]
+    children: Resource[],
+    pageCounter:Count,
 }
 
 export interface RoleList {

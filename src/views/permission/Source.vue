@@ -1,11 +1,12 @@
 <template>
     <div>
-        <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">{{ $t('common.quickEdit') }}</el-button>
+        <el-button @click="isShowParentSetDialog = true" type="primary" class="mb10">{{ $t('common.quickEdit')
+        }}</el-button>
         <el-button type="success" class="mb10" @click="handleAdd">{{ $t('common.add') }}</el-button>
         <el-button type="success" class="mb10" @click="handleSyncResource">{{ $t('common.sync') }}</el-button>
         <el-table :data="menuData.menuList" v-loading="menuData.isLoading" style="width: 100%; margin-bottom: 20px"
             row-key="resourceId" border header-row-class-name="table-header" class="table-header">
-            <el-table-column prop="resourceId" :label="$t('permission.parentId')" sortable />
+            <el-table-column prop="resourceId" :label="$t('permission.resourceId')" sortable />
             <el-table-column prop="resourceName" :label="$t('permission.resourceName')" sortable />
             <el-table-column :label="$t('permission.resourceType')" sortable>
                 <template #default="scope">
@@ -16,6 +17,10 @@
             <el-table-column prop="perms" :label="$t('permission.perms')" sortable />
             <el-table-column align="center" :label="$t('common.operation')">
                 <template #default="scope">
+                    <el-button v-if="scope.row.resourceType !== 'F'" size="small" link type="primary"
+                        @click="handleAdd(scope.row)">
+                        <icon icon="svg-icon:add" />{{ $t('common.add') }}
+                    </el-button>
                     <el-button v-if="scope.row.resourceType !== 'F'" size="small" link type="primary"
                         @click="handleEdit(scope.row)">
                         <icon icon="svg-icon:edit" />{{ $t('common.edit') }}
@@ -155,10 +160,18 @@ const configData = reactive({
     mode: ''
 });
 const isShowConfigDialog = ref(false);
-const handleAdd = () => {
+const handleAdd = (menu?: Resource) => {
+
     isShowConfigDialog.value = true;
     configData.title = $t('common.add');
-    configData.resource = initConfigSource;
+    if (menu) {
+        const configSource = initConfigSource;
+        configSource.parentId = menu.resourceId;
+        configData.resource = configSource;
+    } else {
+        configData.resource = initConfigSource;
+    }
+
     configData.mode = "Add";
 }
 const handleConfig = () => {

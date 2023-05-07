@@ -27,7 +27,8 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-    }
+    },
+    host: '0.0.0.0'
   },
   // 添加 @
   resolve: {

@@ -1,5 +1,5 @@
 import service from "../utils/request";
-import { Resource } from "@/api/types";
+import { Resource,Count } from "@/api/types";
 
 /**
  * @description: 获取菜单列表
@@ -68,5 +68,39 @@ export async function deleteResourceApi(resourceId: number) {
 export async function editResourceParentIdApi(data: Resource[]) {
     return await service.post<Resource[]>("/resource/all", {
         data
+    });
+}
+
+/**
+ * @description: api列表查询
+ * @param {number} during
+ * @return {*}
+ */
+export async function getApiListApi() {
+    return await service.get<Resource[]>("/resource/api");
+}
+
+/**
+ * @description: 页面访问量查询
+ * @param {number} during
+ * @return {*}
+ */
+export async function getApiUVApi(during: number) {
+    return await service.get<Count>("/resource/api/uv", {
+        params: {
+            during
+        }
+    });
+}
+
+/**
+ * @description: Api访问量查询
+ * @return {*}
+ */
+export async function getApiPVApi(resourceId: number,during: number) {
+    return await service.get<Resource>(`/resource/api/${resourceId}/pv`,{
+        params: {
+            during
+        }
     });
 }

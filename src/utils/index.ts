@@ -3,7 +3,7 @@ export function setCssVar(key: string, value: any, dom = document.documentElemen
     dom.style.setProperty(key, value)
 }
 
-export function dataFormat(date: string, formatStr: string) {
+export function dataFormat(date: string | Date, formatStr: string) {
     return dayjs(date).format(formatStr)
 }
 
